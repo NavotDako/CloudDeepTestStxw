@@ -8,6 +8,7 @@ import java.util.Base64;
 
 import MyMain.JTestRunner;
 import MyMain.Main;
+import Utils.Utilities;
 
 public class GetDevices {
     private String host = "qacloud.experitest.com";//TODO: host ip goes here
@@ -17,7 +18,7 @@ public class GetDevices {
 
 
     public GetDevices() throws IOException {
-        System.out.println("in GetDevices setup ");
+        Utilities.log("in GetDevices setup ");
         String name = "ayouba";//TODO: admin user name is here
         String password = "Experitest2012";//TODO: admin password is here
 
@@ -29,8 +30,8 @@ public class GetDevices {
 
     protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+        Utilities.log("\nSending 'GET' request to URL : " + url);
+        Utilities.log("Response Code : " + responseCode);
         System.out.println(result);
     }
 

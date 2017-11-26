@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
+import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -45,7 +46,7 @@ public class GetDeviceReservations{
         try
         {
         	CurrentThread.jsonArrayDeviceReservation =(JSONArray) (new JSONObject(doGet(getURL, webPage, authStringEnc))).get("data");
-        	System.out.println("my reservation : "+CurrentThread.jsonArrayDeviceReservation);
+        	Utilities.log("my reservation : "+CurrentThread.jsonArrayDeviceReservation);
         }
         catch(Exception e) 
         {
@@ -75,8 +76,8 @@ public class GetDeviceReservations{
     }
     protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+        Utilities.log("\nSending 'GET' request to URL : " + url);
+        Utilities.log("Response Code : " + responseCode);
         System.out.println(result);
     }
     /**

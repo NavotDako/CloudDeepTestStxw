@@ -1,31 +1,18 @@
 package MyMain;
 
 
-import org.junit.runner.JUnitCore;
-
-import ActionTests.Extendsession;
-import ActionTests.Install;
-import ActionTests.Monitors;
-import ActionTests.Openlogs;
-import ActionTests.Reboot;
-import ActionTests.StartVideo;
-import Cloud_API.GetDevices;
+import Utils.Utilities;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
 
 
 public class Main {
 
     public static Enums enums = new Enums();
-    public static file_operations operations = new file_operations();
-    public static File LogsFile = operations.createParentFile();
-    public static PrintWriter SummaryTestsWriter = operations.createSummaryFile();
+    public static File logsFolder = Utilities.CreateLogsFolderForRun();
+    public static PrintWriter overallWriter = Utilities.createOverallReportFile(logsFolder);
 
     public static void main(String[] args) throws IOException, InterruptedException {
         System.setProperty("webdriver.chrome.driver", "lib\\chromedriver.exe");
@@ -34,7 +21,7 @@ public class Main {
             Test.start();
             Thread.sleep(5000);
         }
-//				SummaryTestsWriter.close();
+//				overallWriter.close();
     }
 
 
