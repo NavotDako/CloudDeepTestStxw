@@ -14,10 +14,11 @@ import java.util.Date;
  * Created by navot.dako on 11/26/2017.
  */
 public class Utilities {
-    static Date currentTime = new Date();
+
     static SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yy-HH:mm:ss,SS");
 
     public static void log(JTestRunner currentThread, String command) {
+        Date currentTime = new Date();
         String line;
         currentTime.getTime();
 
@@ -30,6 +31,7 @@ public class Utilities {
     }
 
     public static void log(String message) {
+        Date currentTime = new Date();
         String line;
         currentTime.getTime();
         line = String.format("%-30s%-50s", ft.format(currentTime), message);
@@ -53,6 +55,7 @@ public class Utilities {
     }
 
     public static void log(Exception e) {
+        Date currentTime = new Date();
         String line;
         currentTime.getTime();
         line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage());
@@ -60,6 +63,7 @@ public class Utilities {
         e.printStackTrace();
         Main.overallWriter.println(line);
         e.printStackTrace(Main.overallWriter);
+
 
     }
 
@@ -98,6 +102,15 @@ public class Utilities {
         PrintWriter pw = new PrintWriter(fw);
         return pw;
 
+    }
+
+    public static void sleep(int time){
+        try {
+                Thread.sleep(time);
+                log("wait "+time+" milliseconds");
+            } catch (Exception e) {
+                Utilities.log(e);
+            }
     }
 
 }

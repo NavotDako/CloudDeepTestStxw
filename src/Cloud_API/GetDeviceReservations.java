@@ -76,7 +76,7 @@ public class GetDeviceReservations{
     }
     protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
-        Utilities.log("\nSending 'GET' request to URL : " + url);
+        Utilities.log("Sending 'GET' request to URL : " + url);
         Utilities.log("Response Code : " + responseCode);
         //Utilities.log(result);
     }

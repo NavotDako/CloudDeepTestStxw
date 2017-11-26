@@ -50,6 +50,8 @@ public abstract class BaseTest {
 
             NavigateToAvailableDevicesView();
 
+            driver.navigate().back();
+            driver.get("https://qacloud.experitest.com/index.html#/devices");
             int ChosenDevice = ChooseDeviceIndex(GetDeviceListSize());
 
             if (ChosenDevice == -1) {
@@ -62,8 +64,6 @@ public abstract class BaseTest {
                 Utilities.log(currentThread,"doesn't found any device !!");
                 return;
             }
-            driver.navigate().back();
-            driver.get("https://qacloud.experitest.com/index.html#/devices");
             driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
 //            driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]")).click();
 
@@ -118,7 +118,7 @@ public abstract class BaseTest {
     private boolean switchToTab() throws InterruptedException {
         boolean needToWaitFlag = true;
         long startWaitTime = System.currentTimeMillis();
-        while (needToWaitFlag || (System.currentTimeMillis() - startWaitTime) > 120000) {
+        while (needToWaitFlag && (System.currentTimeMillis() - startWaitTime) < 120000) {
             try {
                 ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
                 driver.switchTo().window(newTab.get(1));
@@ -126,6 +126,17 @@ public abstract class BaseTest {
                 needToWaitFlag = false;
             } catch (Exception e) {
                 Utilities.log(currentThread, "waiting for tab to open");
+                Thread.sleep(1000);
+            }
+
+        }
+        boolean needToWaitToLoadFlag = true;
+        startWaitTime = System.currentTimeMillis();
+        while (needToWaitToLoadFlag && (System.currentTimeMillis() - startWaitTime) < 120000) {
+            try{
+                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span"));
+            }catch (Exception e) {
+                Utilities.log(currentThread, "waiting for tab to load");
                 Thread.sleep(1000);
             }
 
@@ -215,19 +226,12 @@ public abstract class BaseTest {
         driver.findElement(By.name("login")).click();
         Utilities.log(currentThread, "click on login");
 
-        try {
-            Thread.sleep(3000);
-            Utilities.log(currentThread, "wait 3 seconds");
-        } catch (Exception e) {
-            writeFailedLineInLog("failed to wait 3 seconds " + e);
-        }
-        try {
-            driver.findElement(By.xpath("/html/body/md-backdrop")).click();
-            Utilities.log(currentThread, "click on place in page");
-        } catch (Exception e) {
-            writeFailedLineInLog(e.toString());
-        }
-        Utilities.log(currentThread, "click on place in page");
+//        try {
+//            driver.findElement(By.xpath("/html/body/md-backdrop")).click();
+//            Utilities.log(currentThread, "click on place in page");
+//        } catch (Exception e) {
+//            writeFailedLineInLog(e.toString());
+//        }
 
     }
 
@@ -253,46 +257,31 @@ public abstract class BaseTest {
     @After
     public void finish() {
         if (!enterToAfter) {
-//            Utilities.log(currentThread,"finish");
-//            try {
-//                Thread.sleep(3000);
-//                log("wait 3 seconds");
-//            } catch (Exception e) {
-//                writeFailedLineInLog("failed to wait 3 seconds " + e);
-//            }
-//            try {
-//                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[3]/button")).click();
-//                log("release device");
-//            } catch (Exception e) {
-//                passed = "failed";
-//                writeFailedLineInLog(e.toString());
-//                Utilities.log(e);
-//            }
-//
-//            try {
-//                Thread.sleep(5000);
-//                log("wait 5 seconds");
-//            } catch (Exception e) {
-//                writeFailedLineInLog("failed to wait 5 seconds " + e);
-//            }
-//
-//            try {
-//                driver.findElement(By.xpath("/html/body/div[1]/div/div/before-exit-dialog/div/div[3]/button[1]")).click();
-//                log("click Relese");
-//            } catch (Exception e) {
-//                passed = "failed";
-//                writeFailedLineInLog(e.toString());
-//                Utilities.log(e);
-//            }
-//
-//
-//            try {
-//                Thread.sleep(2000);
-//                log("wait 2 seconds");
-//            } catch (Exception e) {
-//                writeFailedLineInLog("failed to wait 2 seconds " + e);
-//            }
+            Utilities.log(currentThread,"finish");
+         try {
+                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[3]/button")).click();
+                Utilities.log(currentThread,"release device");
+            } catch (Exception e) {
+                passed = "failed";
+                writeFailedLineInLog(e.toString());
+                Utilities.log(e);
+            }
+
+            Utilities.sleep(5000);
+
+            try {
+                driver.findElement(By.xpath("/html/body/div[1]/div/div/before-exit-dialog/div/div[3]/button[1]")).click();
+                Utilities.log(currentThread,"click Relese");
+            } catch (Exception e) {
+                passed = "failed";
+                e.printStackTrace();
+                Utilities.log(e);
+            }
+
+            Utilities.sleep(2000);
+
         }
+
         driver.quit();
         Utilities.log(currentThread, "driver.quit");
         currentThread.pw.close();
@@ -300,7 +289,7 @@ public abstract class BaseTest {
 
         Date CurrentTime = new Date();
 
-        String line = String.format("%-30s, %-30s, %-30s, %-30s, %-30s, %-5s", CurrentTime, currentThread.User, currentThread.testClass.getName(), ((CurrentTime.getTime() - startTime.getTime()) / 60000), passed, "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + currentThread.TestName);
+        String line = String.format("%-30s, %-30s, %-30s, %-30s, %-30s, %-5s", CurrentTime, currentThread.User, currentThread.testClass.getName(), (double)(((double)(CurrentTime.getTime() - startTime.getTime())) / 60000), passed, "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + currentThread.TestName);
         Main.overallWriter.println(line);
         Main.overallWriter.flush();
         enterToAfter = true;
