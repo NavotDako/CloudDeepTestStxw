@@ -21,7 +21,7 @@ public class Utilities {
         String line;
         currentTime.getTime();
 
-        line = String.format("%-30s%-20s%-15s%-20s", ft.format(currentTime), currentThread.User, currentThread.testName, command);
+        line = String.format("%-30s%-30s%-30s%-25s%-20s", ft.format(currentTime), currentThread.getName(),currentThread.User, currentThread.testName, command);
 
         System.out.println(line);
         Main.overallWriter.println(line);
@@ -53,6 +53,13 @@ public class Utilities {
     }
 
     public static void log(Exception e) {
+        String line;
+        currentTime.getTime();
+        line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage());
+        System.out.println(line);
+        e.printStackTrace();
+        Main.overallWriter.println(line);
+        e.printStackTrace(Main.overallWriter);
 
     }
 

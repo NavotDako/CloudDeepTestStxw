@@ -45,7 +45,7 @@ public class Openlogs extends BaseTest {
                     passed = "failed";
                 }
             } catch (Exception e) {
-                System.out.println(e);
+                Utilities.log(e);
             }
         } catch (Exception e) {
             Utilities.log(currentThread,e.getMessage());

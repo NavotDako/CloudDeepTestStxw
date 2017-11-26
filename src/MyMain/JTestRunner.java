@@ -17,9 +17,9 @@ public class JTestRunner extends Thread {
     private int iteration;
     public Class testClass;
     public String testName = "";
-    public String User="";
+    public String User = "";
     public String TestName = "";
-    public String UserType ="";
+    public String UserType = "";
     public String STXW;
     public PrintWriter pw = null;
     public Enums enums = new Enums();
@@ -57,10 +57,13 @@ public class JTestRunner extends Thread {
 
             try {
                 int sleepTime = rand.nextInt(20);
-                Utilities.log(this,"Thread - " + iteration + " is Going to sleep for - " + sleepTime + " minutes");
-                Thread.sleep(rand.nextInt(20) * 60000);
+                Utilities.log(this, "Thread - " + iteration + " is Going to sleep for - " + sleepTime + " minutes");
+                for (int i = 0; i < sleepTime; i++) {
+                    Thread.sleep(60000);
+                    Utilities.log("Thread-"+iteration+" isSleeping");
+                }
             } catch (Exception e) {
-                System.out.println(e);
+                Utilities.log(e);
             }
         }
     }
@@ -86,15 +89,15 @@ public class JTestRunner extends Thread {
 
     public String getUserType(String UserName) {
         if (UserName.contains("ProjectAdmin")) {
-            Utilities.log("ProjectAdmin");
+            Utilities.log("Thread-"+iteration+" - ProjectAdmin");
             return "ProjectAdmin";
         } else {
             if (UserName.contains("Admin")) {
-                Utilities.log("Admin");
+                Utilities.log("Thread-"+iteration+" - Admin");
                 return "Admin";
             }
         }
-        Utilities.log("User");
+        Utilities.log("Thread-"+iteration+" - User");
         return "User";
     }
 

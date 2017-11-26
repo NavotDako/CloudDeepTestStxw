@@ -78,7 +78,7 @@ public class GetDeviceReservations{
         int responseCode = httpURLConnection.getResponseCode();
         Utilities.log("\nSending 'GET' request to URL : " + url);
         Utilities.log("Response Code : " + responseCode);
-        System.out.println(result);
+        //Utilities.log(result);
     }
     /**
      * @param entity can be "/users" / "/projects" / "/devices" etc

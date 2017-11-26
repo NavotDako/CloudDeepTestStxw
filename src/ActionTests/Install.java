@@ -64,7 +64,7 @@ public class Install extends BaseTest {
             try {
                 text = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[5]/div/div/install-progress-panel/div/code")).getText();
             } catch (Exception e) {
-                System.out.println(e);
+                Utilities.log(e);
             }
             Utilities.log(currentThread, "get the Text in application manager (" + text + ")");
             if (!(text.contains("Successfully") && text.contains("Starting"))) {
@@ -76,7 +76,7 @@ public class Install extends BaseTest {
 
             Utilities.log(currentThread,"my text: " + text);
         } catch (Exception e) {
-            System.out.println(e);
+            Utilities.log(e);
             writeFailedLineInLog(e.toString());
             passed = "failed";
         }

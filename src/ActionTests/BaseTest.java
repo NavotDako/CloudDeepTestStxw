@@ -266,7 +266,7 @@ public abstract class BaseTest {
 //            } catch (Exception e) {
 //                passed = "failed";
 //                writeFailedLineInLog(e.toString());
-//                System.out.println(e);
+//                Utilities.log(e);
 //            }
 //
 //            try {
@@ -282,7 +282,7 @@ public abstract class BaseTest {
 //            } catch (Exception e) {
 //                passed = "failed";
 //                writeFailedLineInLog(e.toString());
-//                System.out.println(e);
+//                Utilities.log(e);
 //            }
 //
 //
@@ -316,7 +316,7 @@ public abstract class BaseTest {
         try {
             Os = driver.findElement(By.xpath(Xpath)).getText();
         } catch (Exception e) {
-            System.out.println(e);
+            Utilities.log(e);
         }
         Utilities.log(currentThread, "get text (deviceOS = " + Os + ") from " + Xpath);
 

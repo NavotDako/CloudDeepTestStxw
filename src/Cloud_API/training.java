@@ -63,7 +63,6 @@ public class training {
 		
 		t.setMinutes(t.getMinutes() + 30);
 		
-		System.out.println(t.getTime() - d.getTime());
 	}
 
 	
