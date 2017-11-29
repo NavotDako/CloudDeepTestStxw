@@ -6,7 +6,7 @@ import org.junit.Test;
 public class SwipeAndClick extends BaseTest {
 
 
-
+//ayoub aadasdrf
     @Test
     public void test() {
         try {
