@@ -1,11 +1,9 @@
 package MyMain;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
 
-import ActionTests.ExtendSession;
-import Cloud_API.GetDevices;
+import STXWActionTests.ExtendSession;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;

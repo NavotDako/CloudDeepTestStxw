@@ -1,4 +1,4 @@
-package ActionTests;
+package STXWActionTests;
 
 
 import java.net.MalformedURLException;
@@ -170,11 +170,10 @@ public abstract class BaseTest {
         }
 
         int timeOutCounter = 0;
-        boolean flag = false;
-        while (!flag && timeOutCounter < 10) {
+        boolean needToWait = false;
+        while (!needToWait && timeOutCounter < 10) {
             try {
-                flag = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0");
-                flag = true;
+                needToWait = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0");
             } catch (Exception e) {
                 Utilities.log(currentThread, "Waiting For Devices To Update");
                 Utilities.sleep(currentThread, 500);
@@ -447,28 +446,27 @@ public abstract class BaseTest {
     }
 
 
-    public class WatchmanTest {
-        private String watchedLog;
+    private String watchedLog;
 
-        @Rule
-        public TestWatcher watchman= new TestWatcher() {
-            @Override
-            protected void failed(Throwable e, Description description) {
-                watchedLog+= description + "\n";
-                Utilities.log(currentThread, Thread.currentThread().getName() +" Failed!!!" + watchedLog);
-                Utilities.log(currentThread, (Exception) e);
-                Utilities.log(currentThread, "TEST HAS FAILED!!!");
-            }
+    @Rule
+    public TestWatcher watchman = new TestWatcher() {
+        @Override
+        protected void failed(Throwable e, Description description) {
+            watchedLog += description + "\n";
+            Utilities.log(currentThread, Thread.currentThread().getName() + " FAILED !!!" + watchedLog);
+            Utilities.log(currentThread, (Exception) e);
+            Utilities.log(currentThread, "TEST HAS FAILED!!!");
+        }
 
-            @Override
-            protected void succeeded(Description description) {
-                watchedLog+= description + " " + "success!\n";
-                Utilities.log(currentThread, Thread.currentThread().getName() +" Failed!!!" + watchedLog);
+        @Override
+        protected void succeeded(Description description) {
+            watchedLog += description + " " + "success!\n";
+            Utilities.log(currentThread, Thread.currentThread().getName() + " Failed!!!" + watchedLog);
 
-            }
-        };
+        }
+    };
 
-    }
+
 }
 
 

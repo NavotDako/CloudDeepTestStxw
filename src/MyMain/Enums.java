@@ -1,11 +1,11 @@
 package MyMain;
-import ActionTests.ExtendSession;
-import ActionTests.Install;
-import ActionTests.Monitors;
-import ActionTests.Openlogs;
-import ActionTests.Reboot;
-import ActionTests.StartVideo;
-import ActionTests.SwipeAndClick;
+import STXWActionTests.ExtendSession;
+import STXWActionTests.Install;
+import STXWActionTests.Monitors;
+import STXWActionTests.Openlogs;
+import STXWActionTests.Reboot;
+import STXWActionTests.StartVideo;
+import STXWActionTests.SwipeAndClick;
 
 public class Enums {
 	

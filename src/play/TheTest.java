@@ -8,16 +8,20 @@ import org.junit.Test;
  */
 public class TheTest extends BaseTempTest {
 
-    @Test(expected = Exception.class)
+    @Test
     public void test() {
         int a = 0;
         int b = 2;
         int c;
+
         try {
             c = b / a;
         } catch (Exception e) {
-
-            Assert.fail(e.getMessage());
+           Assert.fail("ddddddddddddddddddd");
         }
+//        } catch (Exception e) {
+//
+//            Assert.fail(e.getMessage());
+//        }
     }
 }

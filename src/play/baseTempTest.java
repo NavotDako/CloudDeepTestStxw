@@ -15,33 +15,35 @@ public abstract class BaseTempTest {
 
 
     @Before
-    public void SetUp() throws Exception {}
+    public void SetUp() throws Exception {
+    }
 
     @Test
     abstract public void test();
 
     @After
-    public void finish(){};
-
-    public class WatchmanTest {
-        private String watchedLog;
-
-        @Rule
-        public TestWatcher watchman= new TestWatcher() {
-            @Override
-            protected void failed(Throwable e, Description description) {
-                watchedLog+= description + "\n";
-                System.out.println(watchedLog);
-
-            }
-
-            @Override
-            protected void succeeded(Description description) {
-                watchedLog+= description + " " + "success!\n";
-                System.out.println(watchedLog);
-
-            }
-        };
-
+    public void finish() {
     }
+
+
+    private String watchedLog;
+
+    @Rule
+    public TestWatcher watchman = new TestWatcher() {
+        @Override
+        protected void failed(Throwable e, Description description) {
+            watchedLog += description + "\n";
+            System.out.println(watchedLog);
+        }
+
+        @Override
+        protected void succeeded(Description description) {
+            watchedLog += description + " " + "success!\n";
+            System.out.println(watchedLog);
+
+
+        }
+    };
+
+
 }

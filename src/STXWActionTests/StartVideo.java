@@ -1,4 +1,4 @@
-package ActionTests;
+package STXWActionTests;
 
 import Utils.Utilities;
 import org.junit.Test;

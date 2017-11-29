@@ -1,8 +1,6 @@
-package ActionTests;
+package STXWActionTests;
 
 import Utils.Utilities;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class SwipeAndClick extends BaseTest {
