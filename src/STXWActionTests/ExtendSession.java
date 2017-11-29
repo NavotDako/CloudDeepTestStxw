@@ -1,4 +1,4 @@
-package STXWActionTests;
+package ActionTests;
 
 
 import java.io.IOException;
@@ -18,7 +18,6 @@ import java.util.Date;
 import Utils.Utilities;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,8 +37,8 @@ public class ExtendSession extends BaseTest {
     @Test
     public void test() {
 
-    	
-        	Date currentTime = getCurrentDate() ;        	        	
+        try {
+            Date currentTime = getCurrentDate();
             Utilities.log(currentThread, "Enter to ExtendSessionTest");
 
             Utilities.sleep(currentThread, 2000);
@@ -53,7 +52,7 @@ public class ExtendSession extends BaseTest {
 
             try
             {
-	            if (currentThread.STXWType.equals("manual")) 
+	            if (currentThread.STXW.equals("manual")) 
 	            {
 	                popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div")).getText();
 	                Utilities.log(currentThread, "test if message is popUp " + popupMessage);
@@ -67,7 +66,6 @@ public class ExtendSession extends BaseTest {
             catch(Exception e) 
             {
             	Utilities.log(currentThread, e.toString());
-            	try{throw (new Exception("ExtendSession message doesn't popUp"));}catch(Exception e1) {}
             }
 
             Utilities.sleep(currentThread, 2000);
@@ -86,10 +84,14 @@ public class ExtendSession extends BaseTest {
             if (!extendTime.after(new Time(0, 29, 0)) && extendTime.before(new Time(0, 30, 0)))
             {
             	Utilities.log(currentThread,"extend time must be almost 30 min in UI");
-                try {throw (new Exception("extend time must be almost 30 min in UI"));}catch(Exception e) {}
+                try {throw (new Exception("extend time must be almost 30 min in UI"));}catch(Exception e) {throw e;}
             }
 
+//            String ID = currentThread.jsonDeviceInfo.getString("id");
+//            Utilities.log(currentThread, "the device Id : " + ID);
+
             Utilities.sleep(currentThread, 5000);
+
 
             /**********************************TEST API*************************************/
 
@@ -102,46 +104,44 @@ public class ExtendSession extends BaseTest {
             long startTime = System.currentTimeMillis();
             while((!reserveFound) && ((System.currentTimeMillis() - startTime) < 180000) ) {
 	            for (i = 0; i < currentThread.jsonArrayDeviceReservation.length(); i++) {
-	                try {
-						if (currentThread.jsonArrayDeviceReservation.get(i) instanceof JSONObject) {
-						    jsonDevcieReservationsObject = ((JSONObject) currentThread.jsonArrayDeviceReservation.get(i));
-						    if (jsonDevcieReservationsObject.getString("title").contains(currentThread.properCase(currentThread.User)))
-						        Utilities.log(currentThread, "test if its device reservation " + jsonDevcieReservationsObject + "suite");
-						    {
-
-						        Date first = DateFormat.parse(jsonDevcieReservationsObject.getString("start").split("T")[0] + " " + jsonDevcieReservationsObject.getString("start").split("T")[1]);
-						        if ((Math.abs(currentTime.getTime() - first.getTime())) < 100000) {
-						            Date End = DateFormat.parse(jsonDevcieReservationsObject.getString("end").split("T")[0] + " " + jsonDevcieReservationsObject.getString("end").split("T")[1]);
-						            long extend = 0;
-						            if (currentThread.STXWType.equals("manual")) {
-						                extend = 1800000 * 2;
-						            } else {
-						                extend = 1800000 * 5;
-						            }
-						            if (End.getTime() - first.getTime() == extend) {
-						                reserveFound = true;
-						                Utilities.log(currentThread,"the reserve is found");
-						            }
-						        }
-						    }
-
-						}
-					} catch (JSONException e) {
-						e.printStackTrace();
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
+	                if (currentThread.jsonArrayDeviceReservation.get(i) instanceof JSONObject) {
+	                    jsonDevcieReservationsObject = ((JSONObject) currentThread.jsonArrayDeviceReservation.get(i));
+	                    if (jsonDevcieReservationsObject.getString("title").contains(currentThread.properCase(currentThread.User)))
+	                        Utilities.log(currentThread, "test if its device reservation " + jsonDevcieReservationsObject + "suite");
+	                    {
+	
+	                        Date first = DateFormat.parse(jsonDevcieReservationsObject.getString("start").split("T")[0] + " " + jsonDevcieReservationsObject.getString("start").split("T")[1]);
+	                        if ((Math.abs(currentTime.getTime() - first.getTime())) < 100000) {
+	                            Date End = DateFormat.parse(jsonDevcieReservationsObject.getString("end").split("T")[0] + " " + jsonDevcieReservationsObject.getString("end").split("T")[1]);
+	                            long extend = 0;
+	                            if (currentThread.STXW.equals("manual")) {
+	                                extend = 1800000 * 2;
+	                            } else {
+	                                extend = 1800000 * 5;
+	                            }
+	                            if (End.getTime() - first.getTime() == extend) {
+	                                reserveFound = true;
+	                                Utilities.log(currentThread,"the reserve is found");
+	                            }
+	                        }
+	                    }
+	
+	                }
 	            }
-	            Utilities.sleep(currentThread, 1000);
+	            Thread.sleep(1000);
             }
             
             if (i == currentThread.jsonArrayDeviceReservation.length() && !reserveFound)
             {                
-            	Utilities.log(currentThread,"the reserve doesn't found");            	
-                try {throw (new Exception("the reserve doesn't found"));}catch(Exception e) {}
+            	Utilities.log(currentThread,"the reserve doesn't found");
+                try {throw (new Exception("the reserve doesn't found"));}catch(Exception e) {throw e;}
             }
             /**********************************TEST API*************************************/
-     
+        } 
+        catch (Exception e) 
+        {                        
+            try{throw e;}catch(Exception e1) {Utilities.log(currentThread, "Throw Exception doesn't succeed");}
+        }
 
     }
 
@@ -150,7 +150,7 @@ public class ExtendSession extends BaseTest {
         return time;
     }
 
-    public Date getCurrentDate() /*throws ParseException */{
+    public Date getCurrentDate() throws ParseException {
         DateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd" + " " + "HH:mm:ss.SSS+02:00");
         Date currDate = new Date();
         String year = Integer.toString(currDate.getYear() + 1900);
@@ -161,17 +161,11 @@ public class ExtendSession extends BaseTest {
         String seconds = Integer.toString(currDate.getSeconds());
 
         String currDateText = year + "-" + month + "-" + day + " " + hour + ":" + minuts + ":" + seconds + ".000+02:00";
-        try 
-        {
-			currDate = DateFormat.parse(currDateText);
-		} 
-        catch (ParseException e) 
-        {
-			e.printStackTrace();
-		}
+        currDate = DateFormat.parse(currDateText);
 
         return currDate;
     }
+    
     
     /***********************************************************************************************************/
     
@@ -268,3 +262,195 @@ public class ExtendSession extends BaseTest {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//import java.sql.Time;
+//import java.text.DateFormat;
+//import java.text.ParseException;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
+//
+//import Utils.Utilities;
+//import org.json.JSONObject;
+//import org.junit.Test;
+//import org.junit.runner.JUnitCore;
+//import org.openqa.selenium.By;
+//
+//import Cloud_API.GetDeviceReservations;
+//
+//
+//public class Extendsession extends BaseTest {
+//
+//
+//    String popupMessage = "";
+//    Time reservation;
+//    Time reservationEnd;
+//
+//    @Test
+//    public void test() {
+//
+//        try {
+//            Date currentTime = getCurrentDate();
+//            Utilities.log(currentThread,"Extendsession!!");
+//            Utilities.log(currentThread, "Enter to ExtendSessionTest");
+//
+//            reservation = toTime(driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText());
+//            Utilities.log(currentThread, "reservation Time end after : " + reservation + " hours");
+//
+//            driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button")).click();
+//            Utilities.log(currentThread, "click on Extend Session Button");
+//
+//            try {
+//                Thread.sleep(2000);
+//                Utilities.log(currentThread, "wait 2 seconds");
+//            } catch (Exception e) {
+//                writeFailedLineInLog("failed to wait 2 seconds " + e);
+//            }
+//
+//
+//            if (currentThread.STXW.equals("manual")) {
+//                popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div")).getText();
+//                Utilities.log(currentThread, "test if message is popup " + popupMessage);
+//            } else {
+//                popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div/div[3]/div")).getText();
+//                Utilities.log(currentThread, "test if message is popup " + popupMessage);
+//
+//
+//            }
+//
+//            try {
+//                Thread.sleep(2000);
+//                Utilities.log(currentThread, "wait 2 seconds");
+//            } catch (Exception e) {
+//                writeFailedLineInLog("failed to wait 2 seconds " + e);
+//            }
+//
+//            reservationEnd = toTime(driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText());
+//            Utilities.log(currentThread, "the new reservation Time End after : " + reservationEnd + " hours");
+//
+//            Time extendTime = new Time(0, 0, 0);
+//            extendTime.setHours(reservationEnd.getHours() - reservation.getHours());
+//            extendTime.setMinutes(reservationEnd.getMinutes() - reservation.getMinutes());
+//            extendTime.setSeconds(reservationEnd.getSeconds() - reservation.getSeconds());
+//            Utilities.log(currentThread,"extend Time End : " + extendTime);
+//            Utilities.log(currentThread, "extend Time added : " + extendTime + " hours");
+//
+//
+//            if (!extendTime.after(new Time(0, 29, 0)) && extendTime.before(new Time(0, 30, 0))) {
+//                passed = "failed";
+//                writeFailedLineInLog("extend time must be almost 30 min in UI");
+//            }
+//
+//            String ID = currentThread.jsonDeviceInfo.getString("id");
+//            Utilities.log(currentThread, "the device Id : " + ID);
+//
+//            try {
+//                Thread.sleep(5000);
+//                Utilities.log(currentThread, "wait 5 seconds");
+//            } catch (Exception e) {
+//                writeFailedLineInLog("failed to wait 5 seconds " + e);
+//            }
+//
+//
+//            /***********************************************************************/
+//            JUnitCore.runClasses(GetDeviceReservations.class);
+//            Utilities.log(currentThread, "Get Device Reservations " + currentThread.jsonArrayDeviceReservation);
+//            JSONObject jsonDevcieReservationsObject = null;
+//            DateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd" + " " + "HH:mm:ss.SSS+02:00");
+//            int i;
+//            boolean reserveFound = false;
+//            for (i = 0; i < currentThread.jsonArrayDeviceReservation.length(); i++) {
+//                if (currentThread.jsonArrayDeviceReservation.get(i) instanceof JSONObject) {
+//                    jsonDevcieReservationsObject = ((JSONObject) currentThread.jsonArrayDeviceReservation.get(i));
+//                    if (jsonDevcieReservationsObject.getString("title").contains(currentThread.properCase(currentThread.User)))
+//                        Utilities.log(currentThread, "test if its device reservation " + jsonDevcieReservationsObject + "suite");
+//                    {
+//
+//                        Date first = DateFormat.parse(jsonDevcieReservationsObject.getString("start").split("T")[0] + " " + jsonDevcieReservationsObject.getString("start").split("T")[1]);
+//                        if ((Math.abs(currentTime.getTime() - first.getTime())) < 100000) {
+//                            Date End = DateFormat.parse(jsonDevcieReservationsObject.getString("end").split("T")[0] + " " + jsonDevcieReservationsObject.getString("end").split("T")[1]);
+//                            long extend = 0;
+//                            if (currentThread.STXW.equals("manual")) {
+//                                extend = 1800000 * 2;
+//                            } else {
+//                                extend = 1800000 * 5;
+//                            }
+//                            if (End.getTime() - first.getTime() == extend) {
+//                                reserveFound = true;
+//                            }
+//                        }
+//                    }
+//
+//                }
+//            }
+//            if (i == currentThread.jsonArrayDeviceReservation.length() && !reserveFound) {
+//                writeFailedLineInLog("the reserve doesn't found");
+//                passed = "failed";
+//            }
+//            /***********************************************************************/
+//        } catch (Exception e) {
+//            writeFailedLineInLog(e.toString());
+//            passed = "failed";
+//        }
+//
+//    }
+//
+//    public Time toTime(String strTime) {
+//        Time time = new Time(Integer.parseInt(strTime.split(":")[0]), Integer.parseInt(strTime.split(":")[1]), Integer.parseInt(strTime.split(":")[2].substring(0, 2)));
+//        return time;
+//    }
+//
+//    public Date getCurrentDate() throws ParseException {
+//        DateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd" + " " + "hh:mm:ss.SSS+02:00");
+//        Date currDate = new Date();
+//        String year = Integer.toString(currDate.getYear() + 1900);
+//        String month = Integer.toString(currDate.getMonth() + 1);
+//        String day = Integer.toString(currDate.getDate());
+//        String hour = Integer.toString(currDate.getHours());
+//        String minuts = Integer.toString(currDate.getMinutes());
+//        String seconds = Integer.toString(currDate.getSeconds());
+//
+//        String currDateText = year + "-" + month + "-" + day + " " + hour + ":" + minuts + ":" + seconds + ".000+02:00";
+//        currDate = DateFormat.parse(currDateText);
+//
+//        return currDate;
+//    }
+//}
