@@ -6,13 +6,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+import MyMain.STXWRunner;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +25,6 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import MyMain.JTestRunner;
 import MyMain.Main;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -29,7 +32,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public abstract class BaseTest {
 
     WebDriver driver;
-    JTestRunner currentThread = (JTestRunner) Thread.currentThread();
+    STXWRunner currentThread = (STXWRunner) Thread.currentThread();
     String DevicesInfo = "";
     int DevicesListSize = 0;
     int ManualIndex = 0;
@@ -94,7 +97,7 @@ public abstract class BaseTest {
             boolean needToWaitFlag = switchToTab();
 
             if (needToWaitFlag) {
-                throw new Exception(currentThread.STXW + " tab didn't open");
+                throw new Exception(currentThread.STXWType + " tab didn't open");
             }
             needToReleaseOnFinish = true;
             getChosenDeviceJson(currentThread.chosenDeviceName);
@@ -117,7 +120,7 @@ public abstract class BaseTest {
             try {
                 ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
                 driver.switchTo().window(newTab.get(1));
-                Utilities.log(currentThread, "Switched window to the STXW tab");
+                Utilities.log(currentThread, "Switched window to the STXWType tab");
                 needToWaitFlag = false;
             } catch (Exception e) {
                 Utilities.log(currentThread, "waiting for tab to open");
@@ -144,7 +147,7 @@ public abstract class BaseTest {
 
     private void OpenSTA() {
         Utilities.log(currentThread, "OPENING AUTOMATION");
-        currentThread.STXW = "automation";
+        currentThread.STXWType = "automation";
         driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + (ManualIndex + 1) + "]")).click();
         Utilities.log(currentThread, "click on Automation Button");
 
@@ -152,7 +155,7 @@ public abstract class BaseTest {
 
     private void OpenSTM() {
         Utilities.log(currentThread, "OPENING MANUAL");
-        currentThread.STXW = "manual";
+        currentThread.STXWType = "manual";
         driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + ManualIndex + "]")).click();
         Utilities.log(currentThread, "click on Manual Button");
     }
@@ -444,6 +447,28 @@ public abstract class BaseTest {
     }
 
 
+    public class WatchmanTest {
+        private String watchedLog;
+
+        @Rule
+        public TestWatcher watchman= new TestWatcher() {
+            @Override
+            protected void failed(Throwable e, Description description) {
+                watchedLog+= description + "\n";
+                Utilities.log(currentThread, Thread.currentThread().getName() +" Failed!!!" + watchedLog);
+                Utilities.log(currentThread, (Exception) e);
+                Utilities.log(currentThread, "TEST HAS FAILED!!!");
+            }
+
+            @Override
+            protected void succeeded(Description description) {
+                watchedLog+= description + " " + "success!\n";
+                Utilities.log(currentThread, Thread.currentThread().getName() +" Failed!!!" + watchedLog);
+
+            }
+        };
+
+    }
 }
 
 

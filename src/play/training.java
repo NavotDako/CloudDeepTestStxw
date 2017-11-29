@@ -1,4 +1,4 @@
-package Cloud_API;
+package play;
 
 import static org.junit.Assert.*;
 

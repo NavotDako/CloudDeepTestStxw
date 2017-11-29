@@ -11,13 +11,13 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
+import MyMain.STXWRunner;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import MyMain.JTestRunner;
 
 public class GetDeviceReservations{
     private static final String DEVICES_URL  = "/devices/";
@@ -27,7 +27,7 @@ public class GetDeviceReservations{
     private String port = "";//TODO: open port goes here
     private String webPage= "https://" + host + ":" + port + "/api/v1";
     private String authStringEnc;
-    JTestRunner CurrentThread = (JTestRunner)Thread.currentThread();
+    STXWRunner CurrentThread = (STXWRunner)Thread.currentThread();
    
     @Before
     public void setup() {

@@ -13,14 +13,14 @@ import org.junit.runner.JUnitCore;
 
 import org.junit.runner.Result;
 
-public class JTestRunner extends Thread {
+public class STXWRunner extends Thread {
     private int iteration;
     public Class testClass;
     public String testName = "";
     public String User = "";
     public String TestName = "";
     public String UserType = "";
-    public String STXW;
+    public String STXWType;
     public PrintWriter pw = null;
     public Enums enums = new Enums();
     public String CloudDevicesInfo = Main.CloudDevicesInfo;
@@ -29,7 +29,7 @@ public class JTestRunner extends Thread {
     public JSONArray jsonArrayDeviceReservation = null;
     Random rand = new Random();
 
-    public JTestRunner(int i) {
+    public STXWRunner(int i) {
         pw = Utilities.CreateReportFile(i);
         Utilities.log("Starting Thread Num - " + i +" - Thread Name is - "+Thread.currentThread().getName());
         this.iteration = i;

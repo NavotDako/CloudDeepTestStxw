@@ -6,8 +6,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
 
-import MyMain.JTestRunner;
-import MyMain.Main;
 import Utils.Utilities;
 
 public class GetDevices {

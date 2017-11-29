@@ -20,15 +20,15 @@ public class Main {
         CloudDevicesInfo = (new GetDevices("MAIN")).doGet();
 
         System.setProperty("webdriver.chrome.driver", "lib\\chromedriver.exe");
-        JTestRunner[] threadArray = new JTestRunner[numOfThreads];
+        STXWRunner[] threadArray = new STXWRunner[numOfThreads];
 
         for (int i = 0; i < numOfThreads; i++) {
-            threadArray[i] = new JTestRunner(i);
+            threadArray[i] = new STXWRunner(i);
             threadArray[i].start();
             Thread.sleep(60000);
         }
 
-        overallWriter.close();
+//        overallWriter.close();
 
     }
 

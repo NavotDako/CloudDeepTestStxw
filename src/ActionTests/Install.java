@@ -1,8 +1,6 @@
 package ActionTests;
 
 import Utils.Utilities;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -18,7 +16,7 @@ public class Install extends BaseTest {
             Utilities.log(currentThread,"installlllll");
             Utilities.log(currentThread, "Enter to Install testClass");
 
-            if (currentThread.STXW.equals("manual")) {
+            if (currentThread.STXWType.equals("manual")) {
                 driver.findElement(By.xpath("//*[( contains(@id,'accordiongroup-') and contains(@id,'-panel'))]/div/md-list/md-list-item[1]/div/button[contains(@aria-label,'Install')]")).click();
                 Utilities.log(currentThread, "click on Install Button");
             } else {
@@ -38,7 +36,7 @@ public class Install extends BaseTest {
             Thread.sleep(2000);
             Utilities.log(currentThread, "wait 2 seconds");
 
-            if (currentThread.STXW.equals("manual")) {
+            if (currentThread.STXWType.equals("manual")) {
                 driver.findElement(By.xpath("/html/body/div[2]/div/install-panel/div/md-list/md-list-item/div/div[1]/div[contains(text(),'ank')]/md-card/md-card-actions/button")).click();
 
                 Utilities.log(currentThread, "click on install Button");

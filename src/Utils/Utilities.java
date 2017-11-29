@@ -1,6 +1,6 @@
 package Utils;
 
-import MyMain.JTestRunner;
+import MyMain.STXWRunner;
 import MyMain.Main;
 
 import java.io.File;
@@ -17,7 +17,7 @@ public class Utilities {
 
     static SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yy-HH:mm:ss,SS");
 
-    public static void log(JTestRunner currentThread, String command) {
+    public static void log(STXWRunner currentThread, String command) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
@@ -66,7 +66,7 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static void log(JTestRunner currentThread, Exception e) {
+    public static void log(STXWRunner currentThread, Exception e) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
@@ -115,7 +115,7 @@ public class Utilities {
 
     }
 
-    public static void sleep(JTestRunner currentThread, int time) {
+    public static void sleep(STXWRunner currentThread, int time) {
         try {
             log(currentThread, "starting to wait - " + time + " milliseconds");
             Thread.sleep(time);
