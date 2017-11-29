@@ -6,22 +6,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.openqa.selenium.By;
-
-
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
-
 import org.json.JSONObject;
 import org.junit.*;
 
 public class Reboot extends BaseTest  {
-
-
-
+	
     @Test
     public void test() {
 
@@ -51,8 +45,7 @@ public class Reboot extends BaseTest  {
             	 }
             	 Thread.sleep(1000);
             }
-           
-            
+
             /*********************************************************************************************************************************************/
             Utilities.log(currentThread, "new device Info : " + deviceInfo);
             
@@ -100,8 +93,6 @@ public class Reboot extends BaseTest  {
     }
 
 
-
-    
     public JSONObject GetSpecificDevice(String deviceId)
     {
     	 JSONObject JSONObject = null;
