@@ -58,15 +58,13 @@ public class ExtendSession extends BaseTest {
         Utilities.log(currentThread, "clicked on Extend Session Button");
         Utilities.sleep(currentThread, 1000);
 
-        if (currentThread.STXWType.equals("MANUAL")) {
-            popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div")).getText();
-            Utilities.log(currentThread, "test if message is popup " + popupMessage.replace("\n", "\t"));
-        } else {
-            popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div/div[3]/div")).getText();
-            Utilities.log(currentThread, "test if message is popup " + popupMessage.replace("\n", "\t"));
-
-
-        }
+//        if (currentThread.STXWType.equals("MANUAL")) {
+//            popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div")).getText();
+//            Utilities.log(currentThread, "test if message is popup " + popupMessage.replace("\n", "\t"));
+//        } else {
+//            popupMessage = driver.findElement(By.xpath("//*[@id=\"toast-container\"]/div/div[3]/div")).getText();
+//            Utilities.log(currentThread, "test if message is popup " + popupMessage.replace("\n", "\t"));
+//        }
 
         Utilities.sleep(currentThread, 1000);
 

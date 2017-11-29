@@ -461,8 +461,8 @@ public abstract class BaseTest {
         @Override
         protected void succeeded(Description description) {
             watchedLog += description + " " + "success!\n";
-            Utilities.log(currentThread, Thread.currentThread().getName() + " Failed!!!" + watchedLog);
-
+            Utilities.log(currentThread, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
+            Utilities.log(currentThread, "TEST HAS PASSED!!!");
         }
     };
 
