@@ -11,16 +11,17 @@ import MyMain.Main;
 import Utils.Utilities;
 
 public class GetDevices {
-    private String host = "qacloud.experitest.com";//TODO: host ip goes here
-    private String port = "";//TODO: open port goes here
+    private String host = "qacloud.experitest.com";
+    private String port = "";
     private String Devices_URL = "https://" + host + port + "/api/v1/devices";
     private String authStringEnc;
+    String threadName;
 
-
-    public GetDevices() throws IOException {
-        Utilities.log("in GetDevices setup ");
-        String name = "ayouba";//TODO: admin user name is here
-        String password = "Experitest2012";//TODO: admin password is here
+    public GetDevices(String threadName) throws IOException {
+        this.threadName = threadName;
+        Utilities.log(threadName + " - GetDevices setup");
+        String name = "ayouba";
+        String password = "Experitest2012";
 
         String authString = name + ":" + password;
         authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
@@ -30,8 +31,8 @@ public class GetDevices {
 
     protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
-        Utilities.log("Sending 'GET' request to URL : " + url);
-        Utilities.log("Response Code : " + responseCode);
+        Utilities.log(threadName+ " - Sending 'GET' request to URL : " + url);
+        Utilities.log(threadName+ " - Response Code : " + responseCode);
         //Utilities.log(result);
     }
 

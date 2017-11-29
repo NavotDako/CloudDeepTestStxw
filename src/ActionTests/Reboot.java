@@ -8,11 +8,6 @@ import org.openqa.selenium.By;
 
 public class Reboot extends BaseTest {
 
-    @Before
-    public void SetUp() {
-        super.SetUp();
-    }
-
     @Test
     public void test() {
 
@@ -31,13 +26,10 @@ public class Reboot extends BaseTest {
             driver.findElement(By.xpath("/html/body/div[1]/div/div/reboot-confirm-dialog/div/div[3]/button[2]")).click();
             Utilities.log(currentThread, "click on confirm Button ");
         } catch (Exception e) {
-            writeFailedLineInLog(e.toString());
+            Utilities.log(currentThread,e);
         }
     }
 
-    @After
-    public void finsh() {
-        super.finish();
-    }
+
 
 }

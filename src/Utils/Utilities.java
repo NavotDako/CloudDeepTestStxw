@@ -22,12 +22,13 @@ public class Utilities {
         String line;
         currentTime.getTime();
 
-        line = String.format("%-30s%-30s%-30s%-25s%-20s", ft.format(currentTime), currentThread.getName(),currentThread.User, currentThread.testName, command);
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, command);
 
         System.out.println(line);
         Main.overallWriter.println(line);
         currentThread.pw.println(line);
         currentThread.pw.flush();
+        Main.overallWriter.flush();
     }
 
     public static void log(String message) {
@@ -37,8 +38,7 @@ public class Utilities {
         line = String.format("%-30s%-50s", ft.format(currentTime), message);
         System.out.println(line);
         Main.overallWriter.println(line);
-
-
+        Main.overallWriter.flush();
     }
 
     public static PrintWriter CreateReportFile(int i) {
@@ -58,13 +58,24 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage());
+        line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage().replace("\n","\t"));
         System.out.println(line);
         e.printStackTrace();
         Main.overallWriter.println(line);
         e.printStackTrace(Main.overallWriter);
+        Main.overallWriter.flush();
+    }
 
-
+    public static void log(JTestRunner currentThread, Exception e) {
+        Date currentTime = new Date();
+        String line;
+        currentTime.getTime();
+        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, e.getMessage().replace("\n","\t"));
+        System.out.println(line);
+        e.printStackTrace();
+        Main.overallWriter.println(line);
+        e.printStackTrace(Main.overallWriter);
+        Main.overallWriter.flush();
     }
 
     public static File CreateLogsFolderForRun() {
@@ -104,13 +115,13 @@ public class Utilities {
 
     }
 
-    public static void sleep(int time){
+    public static void sleep(JTestRunner currentThread, int time) {
         try {
-                Thread.sleep(time);
-                log("wait "+time+" milliseconds");
-            } catch (Exception e) {
-                Utilities.log(e);
-            }
+            log(currentThread, "starting to wait - " + time + " milliseconds");
+            Thread.sleep(time);
+        } catch (Exception e) {
+            log(currentThread, e);
+        }
     }
 
 }

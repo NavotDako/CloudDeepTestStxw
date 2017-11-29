@@ -7,10 +7,7 @@ import org.junit.Test;
 
 public class SwipeAndClick extends BaseTest {
 
-    @Before
-    public void SetUp() {
-        super.SetUp();
-    }
+
 
     @Test
     public void test() {
@@ -18,13 +15,10 @@ public class SwipeAndClick extends BaseTest {
             Utilities.log(currentThread,"swipeandclickkk");
             Utilities.log(currentThread, "Enter to swipeAndClick testClass");
         } catch (Exception e) {
-            writeFailedLineInLog(e.toString());
+            Utilities.log(currentThread,e);
         }
     }
 
-    @After
-    public void finsh() {
-        super.finish();
-    }
+
 
 }

@@ -8,10 +8,7 @@ import org.openqa.selenium.By;
 
 public class Openlogs extends BaseTest {
 
-    @Before
-    public void SetUp() {
-        super.SetUp();
-    }
+
 
     @Test
     public void test() {
@@ -42,7 +39,7 @@ public class Openlogs extends BaseTest {
                 {
                     Utilities.log(currentThread, "the logs after 5 seconds" + driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[5]/div/div/log-panel/md-content/code/text()")).getText());
                 } else {
-                    passed = "failed";
+
                 }
             } catch (Exception e) {
                 Utilities.log(e);
@@ -53,10 +50,6 @@ public class Openlogs extends BaseTest {
 
     }
 
-    @After
-    public void finsh() {
-        super.finish();
-    }
 
 }
 // /html/body/div[2]/div/div[2]/div/div/div[5]/div/div/log-panel/md-content/code

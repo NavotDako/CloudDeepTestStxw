@@ -14,6 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.CapabilityType;
@@ -22,6 +23,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import MyMain.JTestRunner;
 import MyMain.Main;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public abstract class BaseTest {
@@ -32,43 +34,37 @@ public abstract class BaseTest {
     int DevicesListSize = 0;
     int ManualIndex = 0;
     Random rand = new Random();
-    public String passed = "passed";
-    public String status = "passed";
     public Date startTime = new Date();
-    public boolean enterToAfter = false;
+    private boolean needToReleaseOnFinish = false;
+    private boolean needToQuitDriverOnFinish = false;
 
 
     @Before
-    public void SetUp() {
-        try {
+    public void SetUp() throws Exception {
 
-            Utilities.log(currentThread,"Enter to setUp");
+        System.out.println("-----------------------------" + currentThread.getName() + " Starting A New Test!-----------------------------");
+        try {
+            Utilities.log(currentThread, "Enter to setUp");
 
             driver = createDriver();
-
+            needToQuitDriverOnFinish = true;
             LoginInToCloud();
-
             NavigateToAvailableDevicesView();
 
-            driver.navigate().back();
-            driver.get("https://qacloud.experitest.com/index.html#/devices");
             int ChosenDevice = ChooseDeviceIndex(GetDeviceListSize());
 
             if (ChosenDevice == -1) {
-                writeFailedLineInLog("doesn't found a valid device!!");
-                Utilities.log(currentThread,"doesn't found a valid device!!");
-                return;
+                Utilities.log(currentThread, "doesn't found a valid device!!");
+                throw new Exception("Can't find any device on the cloud");
             }
             if (ChosenDevice == -2) {
-                writeFailedLineInLog("doesn't found any device !!");
-                Utilities.log(currentThread,"doesn't found any device !!");
-                return;
+                Utilities.log(currentThread, "doesn't found any device !!");
+                throw new Exception("Can't find any device on the cloud");
             }
-            driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
-//            driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]")).click();
 
-            currentThread.choosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
-            Utilities.log(currentThread, "choosing device by xpath :" + currentThread.choosenDeviceName);
+            driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
+            currentThread.chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
+            Utilities.log(currentThread, "choosing device by xpath :" + currentThread.chosenDeviceName);
 
             switch (currentThread.UserType) {
                 case "ProjectAdmin":
@@ -86,31 +82,30 @@ public abstract class BaseTest {
             }
 
 
-            Utilities.log(currentThread,"ManualIndex :" + ManualIndex);
+            Utilities.log(currentThread, "ManualIndex :" + ManualIndex);
             if (rand.nextInt(2) == 0) {
-                Utilities.log(currentThread, "choosing STMW");
+                Utilities.log(currentThread, "choosing MANUAL");
                 OpenSTM();
             } else {
-                Utilities.log(currentThread, "choosing STAW");
+                Utilities.log(currentThread, "choosing AUTOMATION");
                 OpenSTA();
             }
 
             boolean needToWaitFlag = switchToTab();
 
             if (needToWaitFlag) {
-                throw new Exception("tab didn't open");
+                throw new Exception(currentThread.STXW + " tab didn't open");
             }
-
-            getChosenDeviceJson(currentThread.choosenDeviceName);
+            needToReleaseOnFinish = true;
+            getChosenDeviceJson(currentThread.chosenDeviceName);
             Utilities.log(currentThread, "build json object for chosen device ");
 
 //            currentThread.chosenDeviceUdid = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[1]/h4")).getText();
 
         } catch (Exception e) {
-           e.printStackTrace();
-            writeFailedLineInLog(e.toString());
-            passed = "failed";
-            driver.quit();
+            Utilities.log(currentThread, e);
+            Utilities.log(currentThread, "SETUP FOR - " + Thread.currentThread().getName() + " HAS FAILED!!!");
+            throw e;
         }
 
     }
@@ -127,15 +122,18 @@ public abstract class BaseTest {
             } catch (Exception e) {
                 Utilities.log(currentThread, "waiting for tab to open");
                 Thread.sleep(1000);
+//                if(driver.findElement(By.xpath("//*[contains(text(), 'My Button')]")).isDisplayed());
             }
 
         }
         boolean needToWaitToLoadFlag = true;
         startWaitTime = System.currentTimeMillis();
         while (needToWaitToLoadFlag && (System.currentTimeMillis() - startWaitTime) < 120000) {
-            try{
-                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span"));
-            }catch (Exception e) {
+            try {
+                driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).isEnabled();
+                needToWaitToLoadFlag = false;
+                waitForLoad(driver);
+            } catch (Exception e) {
                 Utilities.log(currentThread, "waiting for tab to load");
                 Thread.sleep(1000);
             }
@@ -145,7 +143,7 @@ public abstract class BaseTest {
     }
 
     private void OpenSTA() {
-        Utilities.log(currentThread,"automation");
+        Utilities.log(currentThread, "OPENING AUTOMATION");
         currentThread.STXW = "automation";
         driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + (ManualIndex + 1) + "]")).click();
         Utilities.log(currentThread, "click on Automation Button");
@@ -153,23 +151,42 @@ public abstract class BaseTest {
     }
 
     private void OpenSTM() {
-        Utilities.log(currentThread,"manual");
+        Utilities.log(currentThread, "OPENING MANUAL");
         currentThread.STXW = "manual";
         driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + ManualIndex + "]")).click();
         Utilities.log(currentThread, "click on Manual Button");
     }
 
     private int GetDeviceListSize() {
+        int index = 0;
         try {
-            DevicesInfo = (driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[3]/span")).getText());
+            driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[3]/span"));
+            index = 3;
         } catch (Exception e) {
-            try {
-                DevicesInfo = (driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[2]/span")).getText());
-                Utilities.log(currentThread, "get information about number available devices");
-            } catch (Exception e1) {
-                throw e1;
-            }
+            index = 2;
         }
+
+        int timeOutCounter = 0;
+        boolean flag = false;
+        while (!flag && timeOutCounter < 10) {
+            try {
+                flag = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0");
+                flag = true;
+            } catch (Exception e) {
+                Utilities.log(currentThread, "Waiting For Devices To Update");
+                Utilities.sleep(currentThread, 500);
+                timeOutCounter++;
+            }
+
+        }
+
+        try {
+            DevicesInfo = (driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText());
+            Utilities.log(currentThread, "get information about number available devices");
+        } catch (Exception e1) {
+            throw e1;
+        }
+
 
         Utilities.log(currentThread, "Devices Number Info : " + DevicesInfo);
 
@@ -179,38 +196,40 @@ public abstract class BaseTest {
         return DevicesListSize;
     }
 
-    private void NavigateToAvailableDevicesView() {
+    private void NavigateToAvailableDevicesView() throws Exception {
         driver.get("https://qacloud.experitest.com/index.html#/devices");
         Utilities.log(currentThread, "go to the devices - https://qacloud.experitest.com/index.html#/devices");
 
-        try {
-            Thread.sleep(3000);
-            Utilities.log(currentThread, "wait 3 seconds");
-        } catch (Exception e) {
-            writeFailedLineInLog("failed to wait 3 seconds " + e);
-        }
+        boolean needToWaitForPageLoad = true;
 
+        long startWaitTime = System.currentTimeMillis();
+        while (needToWaitForPageLoad && (System.currentTimeMillis() - startWaitTime) < 120000) {
+            try {
+                driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]"));
+                needToWaitForPageLoad = false;
+            } catch (Exception e) {
+                Utilities.log(currentThread, "waiting for devices page to load");
+                Utilities.sleep(currentThread, 1000);
+            }
+
+        }
+        if (needToWaitForPageLoad) {
+            throw new Exception("Devices Page Did Not Load!");
+        }
         driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]")).click();
         Utilities.log(currentThread, "click on status");
 
-        try {
-            Thread.sleep(5000);
-            Utilities.log(currentThread, "wait 5 seconds");
-        } catch (Exception e) {
-            writeFailedLineInLog("failed to wait 5 seconds " + e);
-        }
+        Utilities.sleep(currentThread, 1000);
 
         Utilities.log(currentThread, "trying to click on clear ");
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/section/button[2] ")).click();
 
         Utilities.log(currentThread, "trying to click on Available");
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
-        try {
-            Thread.sleep(2000);
-            Utilities.log(currentThread, "wait 2 seconds");
-        } catch (Exception e) {
-            writeFailedLineInLog("failed to wait 2 seconds " + e);
-        }
+        Utilities.sleep(currentThread, 1000);
+        driver.navigate().back();
+        driver.get("https://qacloud.experitest.com/index.html#/devices");
+
     }
 
     private void LoginInToCloud() {
@@ -256,43 +275,48 @@ public abstract class BaseTest {
 
     @After
     public void finish() {
-        if (!enterToAfter) {
-            Utilities.log(currentThread,"finish");
-         try {
+        Utilities.log(currentThread, "finish");
+
+        if (needToReleaseOnFinish) {
+            try {
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[3]/button")).click();
-                Utilities.log(currentThread,"release device");
+                Utilities.log(currentThread, "release device");
             } catch (Exception e) {
-                passed = "failed";
-                writeFailedLineInLog(e.toString());
-                Utilities.log(e);
+
+                Utilities.log(currentThread, e);
             }
 
-            Utilities.sleep(5000);
+            Utilities.sleep(currentThread, 5000);
 
             try {
                 driver.findElement(By.xpath("/html/body/div[1]/div/div/before-exit-dialog/div/div[3]/button[1]")).click();
-                Utilities.log(currentThread,"click Relese");
+                Utilities.log(currentThread, "click Release");
             } catch (Exception e) {
-                passed = "failed";
-                e.printStackTrace();
-                Utilities.log(e);
+                Utilities.log(currentThread, e);
             }
 
-            Utilities.sleep(2000);
+            Utilities.sleep(currentThread, 2000);
 
         }
 
-        driver.quit();
-        Utilities.log(currentThread, "driver.quit");
-        currentThread.pw.close();
+        if (needToQuitDriverOnFinish) {
+            try {
+                Utilities.log(currentThread, driver.getPageSource().replace("\n", "\t"));
+            } catch (Exception e1) {
+                Utilities.log("UNABLE TO GET PAGE SOURCE");
+            }
+            driver.quit();
+            Utilities.log(currentThread, "driver.quit");
+        }
 
+//        currentThread.pw.close();
 
         Date CurrentTime = new Date();
 
-        String line = String.format("%-30s, %-30s, %-30s, %-30s, %-30s, %-5s", CurrentTime, currentThread.User, currentThread.testClass.getName(), (double)(((double)(CurrentTime.getTime() - startTime.getTime())) / 60000), passed, "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + currentThread.TestName);
+        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, currentThread.User, currentThread.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + currentThread.TestName);
         Main.overallWriter.println(line);
         Main.overallWriter.flush();
-        enterToAfter = true;
+
 
     }
 
@@ -314,22 +338,14 @@ public abstract class BaseTest {
             VersionParts = VersionParts.substring(0, 3);
             Version = Double.parseDouble(VersionParts);
             VersionParts = VersionParts.substring(0, 3);
-            if (Version <= 8) {
-                Valid = false;
-            } else {
-                Valid = true;
-            }
+            Valid = Version > 8;
         } else {
             if (Os.contains("Android")) {
                 String VersionParts = (Os.split("Android ")[1]);
                 VersionParts = VersionParts.substring(0, 3);
 
                 Version = Double.parseDouble(VersionParts);
-                if (Version < 4.3) {
-                    Valid = false;
-                } else {
-                    Valid = true;
-                }
+                Valid = Version >= 4.3;
             }
         }
         return Valid;
@@ -384,15 +400,8 @@ public abstract class BaseTest {
         return -1;
     }
 
-
-
-    public void writeFailedLineInLog(String command) {
-        status = "failed";
-        Utilities.log(currentThread, command);
-        status = "passed";
-    }
-
     public JSONObject getChosenDeviceJson(String deviceName) throws JSONException {
+        Utilities.log(currentThread, "getting The Chosen Device Json");
         JSONObject jsonObject = new JSONObject(currentThread.CloudDevicesInfo);
         JSONArray jsonArray = (JSONArray) jsonObject.get("data");
         JSONObject jsondevcieObject = null;
@@ -401,13 +410,37 @@ public abstract class BaseTest {
                 jsondevcieObject = ((JSONObject) jsonArray.get(i));
                 if (jsondevcieObject.getString("deviceName").contains(deviceName) || (jsondevcieObject.getString("deviceName").contains("hadar.zarihan") && deviceName.contains("hadar.zarihan")) ||
                         ((jsondevcieObject.getString("deviceName").contains("navot D’s iPad")) && (deviceName.contains("navot D’s iPad")))) {
-                    Utilities.log(currentThread,"arraive in !!");
+                    Utilities.log(currentThread, "arraive in !!");
                     currentThread.jsonDeviceInfo = jsondevcieObject;
                     return jsondevcieObject;
                 }
             }
         }
         return jsondevcieObject;
+    }
+
+    void waitForLoad(WebDriver driver) {
+        new WebDriverWait(driver, 30).until(wd ->
+                ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+    }
+
+    public boolean waitForElement(String xpath) {
+
+        boolean needToWaitToElement = true;
+        long startWaitTime = System.currentTimeMillis();
+
+        while (needToWaitToElement && (System.currentTimeMillis() - startWaitTime) < 60000) {
+            try {
+                driver.findElement(By.xpath(xpath));
+                needToWaitToElement = false;
+            } catch (Exception e) {
+                Utilities.log(currentThread, "waiting for Element - " + xpath);
+                Utilities.sleep(currentThread, 1000);
+            }
+
+        }
+        return !needToWaitToElement;
+
     }
 
 

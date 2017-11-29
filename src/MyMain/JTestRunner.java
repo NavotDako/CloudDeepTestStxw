@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Random;
 
-import ActionTests.Extendsession;
+import ActionTests.ExtendSession;
 import Cloud_API.GetDevices;
 import Utils.Utilities;
 import org.json.JSONArray;
@@ -23,33 +23,27 @@ public class JTestRunner extends Thread {
     public String STXW;
     public PrintWriter pw = null;
     public Enums enums = new Enums();
-    public String chosenDeviceUdid = "";
-    public String CloudDevicesInfo = "";
-    public String choosenDeviceName = "";
-    public String chosenDeviceInfo = "";
+    public String CloudDevicesInfo = Main.CloudDevicesInfo;
+    public String chosenDeviceName = "";
     public JSONObject jsonDeviceInfo = null;
     public JSONArray jsonArrayDeviceReservation = null;
     Random rand = new Random();
 
     public JTestRunner(int i) {
         pw = Utilities.CreateReportFile(i);
-        Utilities.log("Starting Thread Num - " + i);
+        Utilities.log("Starting Thread Num - " + i +" - Thread Name is - "+Thread.currentThread().getName());
         this.iteration = i;
     }
 
     @Override
     public void run() {
         while (true) {
-            this.testClass = Extendsession.class;
+            this.testClass = ExtendSession.class;
             //       this.testClass = getAction(rand.nextInt(enums.Actions.length));
             this.User = getUser(rand.nextInt(enums.Users.length));
             testName = testClass.getName().substring(12, testClass.getName().length());
             this.UserType = getUserType(User);
-            try {
-                this.CloudDevicesInfo = (new GetDevices()).doGet();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
             Long currTime = System.currentTimeMillis();
             TestName = testClass.getName().substring(12, testClass.getName().length()) + " " + currTime;
 
@@ -57,17 +51,16 @@ public class JTestRunner extends Thread {
 
             try {
                 int sleepTime = rand.nextInt(20);
-                Utilities.log(this, "Thread - " + iteration + " is Going to sleep for - " + sleepTime + " minutes");
+                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log("Thread-"+iteration+" isSleeping");
+                    Utilities.log("Thread-" + iteration + " isSleeping");
                 }
             } catch (Exception e) {
                 Utilities.log(e);
             }
         }
     }
-
 
     public String properCase(String inputVal) {
 
@@ -89,15 +82,15 @@ public class JTestRunner extends Thread {
 
     public String getUserType(String UserName) {
         if (UserName.contains("ProjectAdmin")) {
-            Utilities.log("Thread-"+iteration+" - ProjectAdmin");
+            Utilities.log("Thread-" + iteration + " - ProjectAdmin");
             return "ProjectAdmin";
         } else {
             if (UserName.contains("Admin")) {
-                Utilities.log("Thread-"+iteration+" - Admin");
+                Utilities.log("Thread-" + iteration + " - Admin");
                 return "Admin";
             }
         }
-        Utilities.log("Thread-"+iteration+" - User");
+        Utilities.log("Thread-" + iteration + " - User");
         return "User";
     }
 

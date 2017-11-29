@@ -68,7 +68,7 @@ public class Install extends BaseTest {
             }
             Utilities.log(currentThread, "get the Text in application manager (" + text + ")");
             if (!(text.contains("Successfully") && text.contains("Starting"))) {
-                passed = "failed";
+
             }
 
             driver.findElement(By.xpath("/html/body/div[2]/div/install-panel/div/div[1]/button")).click();
@@ -77,8 +77,8 @@ public class Install extends BaseTest {
             Utilities.log(currentThread,"my text: " + text);
         } catch (Exception e) {
             Utilities.log(e);
-            writeFailedLineInLog(e.toString());
-            passed = "failed";
+            Utilities.log(currentThread,e);
+
         }
 
     }

@@ -1,5 +1,5 @@
 package MyMain;
-import ActionTests.Extendsession;
+import ActionTests.ExtendSession;
 import ActionTests.Install;
 import ActionTests.Monitors;
 import ActionTests.Openlogs;
@@ -15,7 +15,7 @@ public class Enums {
 	public String [] Project = {"ayoubProjectDeepTest1","ayoubProjectDeepTest2"};
 	//	public String [] Devices = {"hadar.zarihan�s iPhone","Sony F3116","iPad(2)","LGE Nexus 5","samsung SM-G920F","samsung SM-G920F","iPhone","LGE LG-F180L","Green iPhone","LGE Nexus 4","samsung SM-G900H-mac","samsung SM-T560 -mac"};
 
-	public Class [] Actions = {Install.class,Reboot.class,Extendsession.class,Openlogs.class,StartVideo.class,SwipeAndClick.class,Monitors.class};
+	public Class [] Actions = {Install.class,Reboot.class, ExtendSession.class,Openlogs.class,StartVideo.class,SwipeAndClick.class,Monitors.class};
 
 	public String Password = "Experitest2012";
 

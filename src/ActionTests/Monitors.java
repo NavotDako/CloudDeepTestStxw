@@ -8,11 +8,6 @@ import org.openqa.selenium.By;
 
 public class Monitors extends BaseTest {
 
-    @Before
-    public void SetUp() {
-        super.SetUp();
-    }
-
     @Test
     public void test() {
 
@@ -33,13 +28,10 @@ public class Monitors extends BaseTest {
             Utilities.log(currentThread, "test if monitor popUp");
 
         } catch (Exception e) {
-            writeFailedLineInLog(e.toString());
-            passed = "failed";
+            Utilities.log(currentThread,e);
+
         }
     }
 
-    @After
-    public void finsh() {
-        super.finish();
-    }
+
 }
