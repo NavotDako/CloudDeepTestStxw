@@ -170,8 +170,8 @@ public abstract class BaseTest {
         }
 
         int timeOutCounter = 0;
-        boolean needToWait = false;
-        while (!needToWait && timeOutCounter < 10) {
+        boolean needToWait = true;
+        while (needToWait && timeOutCounter < 10) {
             try {
                 needToWait = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0");
             } catch (Exception e) {
