@@ -1,4 +1,4 @@
-package ActionTests;
+package STXWActionTests;
 
 import Utils.Utilities;
 import org.junit.After;
@@ -25,7 +25,6 @@ public class Reboot extends BaseTest  {
     @Test
     public void test() {
 
-        try {
 
             Utilities.log(currentThread, "Enter to Reboot testClass");
             Utilities.sleep(currentThread, 2000);
@@ -37,56 +36,59 @@ public class Reboot extends BaseTest  {
             Utilities.log(currentThread, "click on confirm Button ");
             
             Utilities.sleep(currentThread, 4000);
-            JSONObject deviceJson = getChosenDeviceJson(currentThread.chosenDeviceName);
-            JSONObject deviceInfo = GetSpecificDevice(deviceJson.getString("id"));
+            JSONObject deviceJson = null, deviceInfo = null;
+         
+            try 
+            {            
+	            deviceJson = getChosenDeviceJson(currentThread.chosenDeviceName);
+            }
+            catch(Exception e) {}
+	        deviceInfo = GetSpecificDevice(getStringFromJson(deviceJson,"id"));
+            
+            
             /*********************************************************************************************************************************************/
             boolean needToWait = true;
             long startTime = System.currentTimeMillis();
-            while(needToWait && ((System.currentTimeMillis() - startTime) < 240000) ) 
-            {
-            	 deviceInfo = GetSpecificDevice(deviceJson.getString("id"));
-            	 if(deviceInfo.getString("currentStatus").equals("Offline") ||deviceInfo.getString("currentStatus").equals("offline") ) 
-            	 {
-            		 needToWait = false;
-            	 }
-            	 Thread.sleep(1000);
-            }
-           
+             
+            
+	            while(needToWait && ((System.currentTimeMillis() - startTime) < 240000) ) 
+	            {    
+	            	 deviceInfo = GetSpecificDevice(getStringFromJson(deviceJson,"id"));
+	            	 if(getStringFromJson(deviceInfo,"currentStatus").equals("Offline") ||getStringFromJson(deviceInfo,"currentStatus").equals("offline") ) 
+	            	 {
+	            		 needToWait = false;
+	            	 }
+	            	 Utilities.sleep(currentThread, 1000);
+	            }
+            
             
             /*********************************************************************************************************************************************/
             Utilities.log(currentThread, "new device Info : " + deviceInfo);
             
-            if(deviceInfo.getString("currentStatus").equals("Offline") ||deviceInfo.getString("currentStatus").equals("offline") )
+            if(getStringFromJson(deviceInfo,"currentStatus").equals("Offline") ||getStringFromJson(deviceInfo,"currentStatus").equals("offline") )
             {
             	Utilities.log(currentThread, "the device's currentStatus is Offline");
-//            	Utilities.sleep(180000);
             	
             	/******************************************************************************************/
             	  needToWait = true;
                   startTime = System.currentTimeMillis();
                  while(needToWait && ((System.currentTimeMillis() - startTime) < 240000) ) 
                  {
-                 	 deviceInfo = GetSpecificDevice(deviceJson.getString("id"));
-                 	 if(deviceInfo.getString("currentStatus").equals("online") ||deviceInfo.getString("currentStatus").equals("Online") ) 
+                	 
+                 	 deviceInfo = GetSpecificDevice(getStringFromJson(deviceJson,"id"));
+                 	 if(getStringFromJson(deviceInfo,"currentStatus").equals("online") ||getStringFromJson(deviceInfo,"currentStatus").equals("Online") ) 
                  	 {
                  		 needToWait= false;
                  	 }
-                 	 Thread.sleep(1000);
+                 	 Utilities.sleep(currentThread, 1000);
                  }
             	/******************************************************************************************/
-            	
-            	
-            	
-            	
-            	
-            	
-            	
-            	Utilities.log(currentThread,GetSpecificDevice(deviceJson.getString("id")).toString());
-            	if(! (GetSpecificDevice(deviceJson.getString("id")).getString("currentStatus").equals("online")) )
+            	Utilities.log(currentThread,GetSpecificDevice(getStringFromJson(deviceJson,"id")).toString());
+            	if(! (getStringFromJson(GetSpecificDevice(getStringFromJson(deviceJson,"id")),"currentStatus").equals("online")) )
             	{            		
                 	Utilities.log(currentThread, "the device doesn't transformation to online");
-                	System.out.println("the displayStatus " + deviceInfo.getString("currentStatus"));
-                	throw new Exception("the device doesn't transformation to online");
+                	System.out.println("the displayStatus " + getStringFromJson(deviceInfo,"currentStatus"));
+                	Assert.fail("the device doesn't transformation to online");
             	}
             	else 
             	{
@@ -94,18 +96,24 @@ public class Reboot extends BaseTest  {
             	}
             }
             else 
-            {            	
-            	Utilities.log(currentThread, "the device doesn't transformation to offline");
-            	System.out.println("the displayStatus " + deviceInfo.getString("displayStatus"));
-            	throw new Exception("the device doesn't transformation to offline");
+            {
+            	Utilities.log(currentThread, "the device doesn't transformation to offline");            	
+            	Assert.fail("the device doesn't transformation to offline");
             }
             
-        } catch (Exception e) {
-        	Utilities.log(currentThread, e.toString());
-            try{throw e;}catch(Exception e1) {Utilities.log(currentThread, "Throw Exception doesn't succeed");}
-        }
     }
 
+    public String getStringFromJson(JSONObject jsonObject, String cell) 
+    {
+    	String result = "";
+    	try
+    	{
+    		result = jsonObject.getString(cell);
+    	}
+    	catch(Exception e) {}
+    	
+    	return result;
+    }
 
 
     
@@ -164,86 +172,3 @@ public class Reboot extends BaseTest  {
     	   
  
 }
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//package ActionTests;
-//
-//import Utils.Utilities;
-//import org.junit.After;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.openqa.selenium.By;
-//
-//public class Reboot extends BaseTest {
-//
-//    @Test
-//    public void test() {
-//
-//        try {
-//
-//            Utilities.log(currentThread, "Enter to Reboot testClass");
-//            Utilities.log(currentThread,"rebootttttt");
-//            driver.findElement(By.xpath("//*[( contains(@id,'accordiongroup-') and contains(@id,'-panel'))]/div/md-list/md-list-item[2]/div/button[contains(@aria-label,'Reboot')]")).click();
-//            Utilities.log(currentThread, "click on reboot button ");
-//
-//
-//            Thread.sleep(2000);
-//            Utilities.log(currentThread, "wait 2 seconds");
-//
-//
-//            driver.findElement(By.xpath("/html/body/div[1]/div/div/reboot-confirm-dialog/div/div[3]/button[2]")).click();
-//            Utilities.log(currentThread, "click on confirm Button ");
-//        } catch (Exception e) {
-//            Utilities.log(currentThread,e);
-//        }
-//    }
-//
-//
-//
-//}
