@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.openqa.selenium.By;
 
-
+import com.google.common.base.Enums;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -59,17 +59,12 @@ public class Reboot extends BaseTest  {
 	            		 needToWait = false;
 	            	 }
 	            	 Utilities.sleep(currentThread, 1000);
-	            }
-            
-            
-            /*********************************************************************************************************************************************/
-            Utilities.log(currentThread, "new device Info : " + deviceInfo);
-            
+	            }            
+                        
+            Utilities.log(currentThread, "new device Info : " + deviceInfo);            
             if(getStringFromJson(deviceInfo,"currentStatus").equals("Offline") ||getStringFromJson(deviceInfo,"currentStatus").equals("offline") )
             {
-            	Utilities.log(currentThread, "the device's currentStatus is Offline");
-            	
-            	/******************************************************************************************/
+            	Utilities.log(currentThread, "the device's currentStatus is Offline");                        	
             	  needToWait = true;
                   startTime = System.currentTimeMillis();
                  while(needToWait && ((System.currentTimeMillis() - startTime) < 240000) ) 
@@ -81,8 +76,7 @@ public class Reboot extends BaseTest  {
                  		 needToWait= false;
                  	 }
                  	 Utilities.sleep(currentThread, 1000);
-                 }
-            	/******************************************************************************************/
+                 }            	
             	Utilities.log(currentThread,GetSpecificDevice(getStringFromJson(deviceJson,"id")).toString());
             	if(! (getStringFromJson(GetSpecificDevice(getStringFromJson(deviceJson,"id")),"currentStatus").equals("online")) )
             	{            		
@@ -121,9 +115,9 @@ public class Reboot extends BaseTest  {
     {
     	 JSONObject JSONObject = null;
          String DEVICES_URL = "/devices/";
-	     String host = "qacloud.experitest.com";
+	     String host = currentThread.enums.hostName;
 	     String port = "";
-	     String webPage= "https://" + host + "" + port + "/api/v1";
+	     String webPage= "" + host + "" + port + "/api/v1";
 	     String authStringEnc;
 	     
 	     String name = "ayouba";//TODO: admin user name is here
