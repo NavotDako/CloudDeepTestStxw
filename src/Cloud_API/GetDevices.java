@@ -6,12 +6,13 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
 
+import MyMain.Enums;
 import Utils.Utilities;
 
 public class GetDevices {
-    private String host = "qacloud.experitest.com";
+    private String host = (new Enums()).hostName.replace("index.html#/login","");
     private String port = "";
-    private String Devices_URL = "https://" + host + port + "/api/v1/devices";
+    private String Devices_URL = host + port + "/api/v1/devices";
     private String authStringEnc;
     String threadName;
 

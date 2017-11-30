@@ -41,9 +41,9 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static PrintWriter CreateReportFile(int i) {
+    public static PrintWriter CreateReportFile(Thread thread, int i) {
 
-        File report = new File(Main.logsFolder, "Thread-" + i + ".txt");
+        File report = new File(Main.logsFolder, i + "-" + thread.getName() + ".txt");
         FileWriter fw = null;
         try {
             fw = new FileWriter(report);
@@ -58,7 +58,7 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage().replace("\n","\t"));
+        line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage().replace("\n", "\t"));
         System.out.println(line);
         e.printStackTrace();
         Main.overallWriter.println(line);
@@ -70,7 +70,7 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, e.getMessage().replace("\n","\t"));
+        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, e.getMessage().replace("\n", "\t"));
         System.out.println(line);
         e.printStackTrace();
         Main.overallWriter.println(line);
@@ -79,6 +79,10 @@ public class Utilities {
     }
 
     public static File CreateLogsFolderForRun() {
+        File logs = new File("logs");
+        if(!logs.exists())
+            logs.mkdir();
+
         Date currentTime = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
         File parentFile = new File("logs/" + ft.format(currentTime));
@@ -100,9 +104,9 @@ public class Utilities {
         return parentFile;
     }
 
-    public static PrintWriter createOverallReportFile(File logsFolder) {
+    public static PrintWriter createOverallReportFile(File logsFolder, String fileName) {
 
-        String reportName = "OverallReport.txt";
+        String reportName = fileName + ".txt";
         File report = new File(logsFolder + "/" + reportName);
         FileWriter fw = null;
         try {
@@ -124,4 +128,13 @@ public class Utilities {
         }
     }
 
+    public static void writeToSummary(STXWRunner currentThread, String status) {
+        Date currentTime = new Date();
+        String line;
+        currentTime.getTime();
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, status);
+        System.out.println(line);
+        Main.overallSummaryWriter.println(line);
+        Main.overallSummaryWriter.flush();
+    }
 }

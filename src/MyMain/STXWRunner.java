@@ -28,16 +28,18 @@ public class STXWRunner extends Thread {
     Random rand = new Random();
 
     public STXWRunner(int i) {
-        pw = Utilities.CreateReportFile(i);
-        Utilities.log("Starting Thread Num - " + i +" - Thread Name is - "+Thread.currentThread().getName());
+
         this.iteration = i;
     }
 
     @Override
     public void run() {
+        pw = Utilities.CreateReportFile(currentThread(),iteration);
+        Utilities.log("Starting Thread Num - " + iteration +" - Thread Name is - "+Thread.currentThread().getName());
         while (true) {
-            this.testClass = ExtendSession.class;
-            //       this.testClass = getAction(rand.nextInt(enums.Actions.length));
+//            this.testClass = ExtendSession.class;
+            this.testClass = getAction(rand.nextInt(enums.Actions.length));
+            Utilities.log(this,testClass.getName());
             this.User = getUser(rand.nextInt(enums.Users.length));
             testName = testClass.getName().substring(12, testClass.getName().length());
             this.UserType = getUserType(User);
@@ -52,7 +54,7 @@ public class STXWRunner extends Thread {
                 Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log("Thread-" + iteration + " isSleeping");
+                    Utilities.log(currentThread().getName() + " isSleeping");
                 }
             } catch (Exception e) {
                 Utilities.log(e);
@@ -80,15 +82,15 @@ public class STXWRunner extends Thread {
 
     public String getUserType(String UserName) {
         if (UserName.contains("ProjectAdmin")) {
-            Utilities.log("Thread-" + iteration + " - ProjectAdmin");
+            Utilities.log(currentThread().getName() + " - ProjectAdmin");
             return "ProjectAdmin";
         } else {
             if (UserName.contains("Admin")) {
-                Utilities.log("Thread-" + iteration + " - Admin");
+                Utilities.log(currentThread().getName() + " - Admin");
                 return "Admin";
             }
         }
-        Utilities.log("Thread-" + iteration + " - User");
+        Utilities.log(currentThread().getName() + " - User");
         return "User";
     }
 

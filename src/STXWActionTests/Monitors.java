@@ -10,14 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-public class Monitors extends BaseTest {
+public class Monitors extends STXWBaseTest {
 
 
     @Test
     public void test() {
-
-
-      
 
             Utilities.log(currentThread, "Enter to monitors testClass");
 

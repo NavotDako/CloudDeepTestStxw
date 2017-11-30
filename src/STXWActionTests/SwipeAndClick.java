@@ -3,7 +3,7 @@ package STXWActionTests;
 import Utils.Utilities;
 import org.junit.Test;
 
-public class SwipeAndClick extends BaseTest {
+public class SwipeAndClick extends STXWBaseTest {
 
 
 //ayoub aadasdrf

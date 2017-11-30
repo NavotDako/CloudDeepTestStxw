@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 
-public class Install extends BaseTest {
+public class Install extends STXWBaseTest {
 
     String text = "";
 
