@@ -29,7 +29,7 @@ public class GetDeviceReservations{
     private String authStringEnc;
     STXWRunner CurrentThread = (STXWRunner)Thread.currentThread();
    
-    @Before
+
     public void setup() {
         String name = "ayouba";//TODO: admin user name is here
         String password = "Experitest2012";//TODO: admin password is here
@@ -37,9 +37,7 @@ public class GetDeviceReservations{
         String authString = name + ":" + password;
         authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
     }
-   
-   
-    @Test
+
     public void getReservationDetails() throws IOException {
          
         String getURL = prepareURL();
@@ -56,8 +54,7 @@ public class GetDeviceReservations{
     }
      
     private String prepareURL() {
-         
-    	DateFormat Ft = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        DateFormat Ft = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     	Date currTime = new Date();
     	Date dateEndTime = new Date();
     	currTime.setTime(currTime.getTime()-600000);
@@ -74,15 +71,14 @@ public class GetDeviceReservations{
                             "&end=" + endTime ;
         return getURL;
     }
+
     protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
         Utilities.log("Sending 'GET' request to URL : " + url);
         Utilities.log("Response Code : " + responseCode);
         //Utilities.log(result);
     }
-    /**
-     * @param entity can be "/users" / "/projects" / "/devices" etc
-     */
+
     protected String doGet(String entity, String webPage, String authStringEnc) throws IOException {
         URL url = new URL(webPage+entity);
         URLConnection urlConnection = url.openConnection();

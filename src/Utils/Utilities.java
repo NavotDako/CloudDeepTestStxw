@@ -128,11 +128,11 @@ public class Utilities {
         }
     }
 
-    public static void writeToSummary(STXWRunner currentThread, String status) {
+    public static void writeToSummary(STXWRunner currentThread,String chosenDeviceName, String status) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, status);
+        line = String.format("%-25s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, chosenDeviceName, status);
         System.out.println(line);
         Main.overallSummaryWriter.println(line);
         Main.overallSummaryWriter.flush();

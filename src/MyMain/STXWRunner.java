@@ -22,7 +22,6 @@ public class STXWRunner extends Thread {
     public PrintWriter pw = null;
     public Enums enums = new Enums();
     public String CloudDevicesInfo = Main.CloudDevicesInfo;
-    public String chosenDeviceName = "";
     public JSONObject jsonDeviceInfo = null;
     public JSONArray jsonArrayDeviceReservation = null;
     Random rand = new Random();

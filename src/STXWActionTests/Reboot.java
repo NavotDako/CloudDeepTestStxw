@@ -37,7 +37,7 @@ public class Reboot extends STXWBaseTest {
         JSONObject deviceJson = null, deviceInfo = null;
 
         try {
-            deviceJson = getChosenDeviceJson(currentThread.chosenDeviceName);
+            deviceJson = getChosenDeviceJson(chosenDeviceName);
         } catch (Exception e) {
         }
         deviceInfo = GetSpecificDevice(getStringFromJson(deviceJson, "id"));
@@ -67,15 +67,15 @@ public class Reboot extends STXWBaseTest {
             }
             Utilities.log(currentThread, GetSpecificDevice(getStringFromJson(deviceJson, "id")).toString());
             if (!(getStringFromJson(GetSpecificDevice(getStringFromJson(deviceJson, "id")), "currentStatus").equals("online"))) {
-                Utilities.log(currentThread, "the device doesn't transformation to online");
-                System.out.println("the displayStatus " + getStringFromJson(deviceInfo, "currentStatus"));
-                Assert.fail("the device doesn't transformation to online");
+                Utilities.log(currentThread, "the device doesn't goes to online");
+                System.out.println("The displayStatus " + getStringFromJson(deviceInfo, "currentStatus"));
+                Assert.fail("The device doesn't go to online");
             } else {
                 Utilities.log(currentThread, "the device's currentStatus is online");
             }
         } else {
-            Utilities.log(currentThread, "the device doesn't transformation to offline");
-            Assert.fail("the device doesn't transformation to offline");
+            Utilities.log(currentThread, "the device doesn't go to offline");
+            Assert.fail("the device doesn't go to offline");
         }
 
     }

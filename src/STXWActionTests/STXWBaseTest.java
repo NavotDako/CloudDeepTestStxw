@@ -1,8 +1,6 @@
 package STXWActionTests;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,7 +8,6 @@ import java.util.Random;
 
 import MyMain.STXWRunner;
 import Utils.Utilities;
-import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,14 +28,14 @@ public abstract class STXWBaseTest {
 
     WebDriver driver;
     STXWRunner currentThread = (STXWRunner) Thread.currentThread();
-    String DevicesInfo = "";
-    int DevicesListSize = 0;
-    int ManualIndex = 0;
+    String devicesInfo = "";
+    int devicesListSize = 0;
+    int manualIndex = 0;
     Random rand = new Random();
     public Date startTime = new Date();
     private boolean needToReleaseOnFinish = false;
     private boolean needToQuitDriverOnFinish = false;
-
+    public String chosenDeviceName = "";
 
     @Before
     public void SetUp() throws Exception {
@@ -65,26 +62,26 @@ public abstract class STXWBaseTest {
         }
 
         driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
-        currentThread.chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
-        Utilities.log(currentThread, "choosing device by xpath :" + currentThread.chosenDeviceName);
+        chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
+        Utilities.log(currentThread, "choosing device by xpath :" + chosenDeviceName);
 
         switch (currentThread.UserType) {
             case "ProjectAdmin":
-                ManualIndex = 5;
+                manualIndex = 5;
                 break;
             case "Admin":
-                ManualIndex = 5;
+                manualIndex = 5;
                 break;
             case "User":
-                ManualIndex = 4;
+                manualIndex = 4;
                 break;
             default:
-                ManualIndex = 4;
+                manualIndex = 4;
                 break;
         }
 
 
-        Utilities.log(currentThread, "ManualIndex :" + ManualIndex);
+        Utilities.log(currentThread, "manualIndex :" + manualIndex);
         if (rand.nextInt(2) == 0) {
             Utilities.log(currentThread, "choosing MANUAL");
             OpenSTM();
@@ -96,7 +93,7 @@ public abstract class STXWBaseTest {
         switchToTab();
 
         needToReleaseOnFinish = true;
-        getChosenDeviceJson(currentThread.chosenDeviceName);
+        getChosenDeviceJson(chosenDeviceName);
         Utilities.log(currentThread, "build json object for chosen device ");
 
     }
@@ -143,7 +140,7 @@ public abstract class STXWBaseTest {
     private void OpenSTA() {
         Utilities.log(currentThread, "OPENING AUTOMATION");
         currentThread.STXWType = "automation";
-        driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + (ManualIndex + 1) + "]")).click();
+        driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).click();
         Utilities.log(currentThread, "click on Automation Button");
 
     }
@@ -151,7 +148,7 @@ public abstract class STXWBaseTest {
     private void OpenSTM() {
         Utilities.log(currentThread, "OPENING MANUAL");
         currentThread.STXWType = "manual";
-        driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + ManualIndex + "]")).click();
+        driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + manualIndex + "]")).click();
         Utilities.log(currentThread, "click on Manual Button");
     }
 
@@ -174,23 +171,25 @@ public abstract class STXWBaseTest {
                 Utilities.sleep(currentThread, 500);
                 timeOutCounter++;
             }
-
         }
 
         try {
-            DevicesInfo = (driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText());
+            devicesInfo = (driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText());
             Utilities.log(currentThread, "get information about number available devices");
         } catch (Exception e1) {
             throw e1;
         }
 
 
-        Utilities.log(currentThread, "Devices Number Info : " + DevicesInfo);
+        Utilities.log(currentThread, "Devices Number Info : " + devicesInfo);
 
-        DevicesInfo = DevicesInfo.split("Devices: ")[1];
-        DevicesListSize = Integer.parseInt(DevicesInfo.split(" /")[0]);
-        System.out.println(DevicesListSize);
-        return DevicesListSize;
+        devicesInfo = devicesInfo.split("Devices: ")[1];
+        devicesListSize = Integer.parseInt(devicesInfo.split(" /")[0]);
+        Utilities.log(currentThread, "" + devicesListSize);
+        if (devicesListSize > 10) devicesListSize -= 10;
+        Utilities.log(currentThread, "Taking the device list below 10 - " + devicesListSize);
+
+        return devicesListSize;
     }
 
     private void NavigateToAvailableDevicesView() throws Exception {
@@ -199,12 +198,12 @@ public abstract class STXWBaseTest {
 
         boolean needToWaitForPageLoad = true;
 
-        try{
-            Utilities.log(currentThread,"Checking if we are on launchPad");
+        try {
+            Utilities.log(currentThread, "Checking if we are on launchPad");
             driver.findElement(By.xpath("//*[@id=\"content\"]/md-content/md-toolbar/div/div/a")).click();
-            Utilities.log(currentThread,"We Clicked to move to devices page from launchPad");
-        }catch (Exception e){
-            Utilities.log(currentThread,"On Devices Page");
+            Utilities.log(currentThread, "We Clicked to move to devices page from launchPad");
+        } catch (Exception e) {
+            Utilities.log(currentThread, "On Devices Page");
         }
         long startWaitTime = System.currentTimeMillis();
         while (needToWaitForPageLoad && (System.currentTimeMillis() - startWaitTime) < 120000) {
@@ -304,12 +303,6 @@ public abstract class STXWBaseTest {
         }
 
         if (needToQuitDriverOnFinish) {
-            try {
-                Utilities.log(currentThread, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
-
-            } catch (Exception e1) {
-                Utilities.log(currentThread, "UNABLE TO GET PAGE SOURCE");
-            }
             driver.quit();
             Utilities.log(currentThread, "driver.quit");
         }
@@ -455,11 +448,41 @@ public abstract class STXWBaseTest {
     public TestWatcher watchman = new TestWatcher() {
         @Override
         protected void failed(Throwable e, Description description) {
-            watchedLog += description + "\n";
-            Utilities.log(currentThread, Thread.currentThread().getName() + " FAILED !!!" + watchedLog);
-            Utilities.log(currentThread, (Exception) e);
+            watchedLog = description + "";
+            Utilities.log(currentThread, Thread.currentThread().getName() + " FAILED !!! - " + watchedLog);
+            try {
+                Exception ex = (Exception) e;
+                Utilities.log(currentThread, ex);
+            } catch (Exception e1) {
+                //Utilities.log(currentThread,e1);
+            }
             Utilities.log(currentThread, "TEST HAS FAILED!!!");
-//            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            Utilities.log(currentThread, e.getMessage());
+
+//            takeScreenShot();
+            if (needToQuitDriverOnFinish) {
+                try {
+                    Utilities.log(currentThread, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
+
+                } catch (Exception e1) {
+                    Utilities.log(currentThread, "UNABLE TO GET PAGE SOURCE");
+                }
+            }
+            Utilities.writeToSummary(currentThread, chosenDeviceName, "----FAILED----"/* + "\t" + destFile.getAbsolutePath()*/ + "\t" + e.getMessage().replace("\n", "\t"));
+
+        }
+
+        @Override
+        protected void succeeded(Description description) {
+            watchedLog = description + " " + "success!\n";
+            Utilities.log(currentThread, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
+            Utilities.log(currentThread, "TEST HAS PASSED!!!");
+            Utilities.writeToSummary(currentThread, chosenDeviceName, "passed");
+        }
+    };
+
+    private void takeScreenShot() {
+        //            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 //            File destFile = new File(Main.logsFolder + "/" + Thread.currentThread().getName() + "_" + System.currentTimeMillis() + ".png");
 //            try {
 //                FileUtils.copyFile(scrFile, destFile);
@@ -467,18 +490,7 @@ public abstract class STXWBaseTest {
 //                e1.printStackTrace();
 //            }
 //            scrFile.delete();
-            Utilities.writeToSummary(currentThread, "----FAILED----"/* + "\t" + destFile.getAbsolutePath()*/ + "\t" + e.getMessage().replace("\n", "\t"));
-
-        }
-
-        @Override
-        protected void succeeded(Description description) {
-            watchedLog += description + " " + "success!\n";
-            Utilities.log(currentThread, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
-            Utilities.log(currentThread, "TEST HAS PASSED!!!");
-            Utilities.writeToSummary(currentThread, "passed");
-        }
-    };
+    }
 
 
 }

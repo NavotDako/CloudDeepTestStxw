@@ -8,14 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Utils.Utilities;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.JUnitCore;
 import org.openqa.selenium.By;
 
-import Cloud_API.GetDeviceReservations;
 
 
 public class ExtendSession extends STXWBaseTest {

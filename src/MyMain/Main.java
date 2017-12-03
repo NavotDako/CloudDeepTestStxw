@@ -13,7 +13,7 @@ public class Main {
     public static File logsFolder = Utilities.CreateLogsFolderForRun();
     public static PrintWriter overallWriter = Utilities.createOverallReportFile(logsFolder,"OverallReport");
     public static PrintWriter overallSummaryWriter = Utilities.createOverallReportFile(logsFolder,"Summary");
-    private static int numOfThreads = 4;
+    private static int numOfThreads = 5;
     public static String CloudDevicesInfo;
     public static void main(String[] args) throws IOException, InterruptedException {
 
