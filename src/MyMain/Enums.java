@@ -1,12 +1,10 @@
 package MyMain;
 
-import STXWActionTests.ExtendSession;
-import STXWActionTests.Install;
-import STXWActionTests.Monitors;
-import STXWActionTests.OpenLogs;
-import STXWActionTests.Reboot;
-import STXWActionTests.StartVideo;
-import STXWActionTests.SwipeAndClick;
+import STXWActionTests.*;
+import testPlanTests.CreateTestPlans;
+import testPlanTests.DeleteTestPlan;
+import testPlanTests.RunTestAppFromAPI;
+import testPlanTests.RunTestPlanFromUI;
 
 public class Enums {
 
@@ -18,9 +16,17 @@ public class Enums {
 
     public Class[] Actions = {Install.class, Reboot.class, ExtendSession.class, OpenLogs.class, StartVideo.class, Monitors.class};
 
+    public Class[] TestPlanActions = {CreateTestPlans.class, RunTestPlanFromUI.class, RunTestAppFromAPI.class, DeleteTestPlan.class};
+
     public String Password = "Experitest2012";
 
     public String hostName = "http://releasecloud/index.html#/login";
 
+    public enum ROLES{
+        ADMIN, USER, PROJECT_ADMIN
+    }
+    public enum OS{
+        ANDROID, IOS
+    }
 
 }
