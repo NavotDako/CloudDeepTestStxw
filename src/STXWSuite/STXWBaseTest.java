@@ -1,4 +1,4 @@
-package STXWActionTests;
+package STXWSuite;
 
 
 import java.util.ArrayList;

@@ -1,14 +1,10 @@
-package STXWActionTests;
+package STXWSuite;
 
 import java.io.PrintWriter;
-import java.util.Random;
 
 import MyMain.BaseRunner;
-import MyMain.Enums;
 import MyMain.Main;
 import Utils.Utilities;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.runner.JUnitCore;
 
 import org.junit.runner.Result;
@@ -41,7 +37,7 @@ public class STXWRunner extends BaseRunner {
                 Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " isSleeping");
+                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
                 }
             } catch (Exception e) {
                 Utilities.log(e);

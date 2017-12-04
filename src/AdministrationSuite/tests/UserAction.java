@@ -1,8 +1,8 @@
-package Administration.tests;
+package AdministrationSuite.tests;
 
 import java.util.Random;
 
-import Administration.AdminBaseTest;
+import AdministrationSuite.AdminBaseTest;
 import org.junit.Test;
 import org.openqa.selenium.By;
 

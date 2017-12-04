@@ -1,6 +1,6 @@
-package STXWActionTests.tests;
+package STXWSuite.tests;
 
-import STXWActionTests.STXWBaseTest;
+import STXWSuite.STXWBaseTest;
 import Utils.Utilities;
 import junit.framework.Assert;
 

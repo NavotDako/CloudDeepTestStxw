@@ -1,7 +1,7 @@
 
-package STXWActionTests.tests;
+package STXWSuite.tests;
 
-import STXWActionTests.STXWBaseTest;
+import STXWSuite.STXWBaseTest;
 import Utils.Utilities;
 import org.junit.Test;
 import org.openqa.selenium.By;

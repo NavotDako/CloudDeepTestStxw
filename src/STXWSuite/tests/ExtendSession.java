@@ -1,9 +1,9 @@
-package STXWActionTests.tests;
+package STXWSuite.tests;
 
 
 import java.sql.Time;
 
-import STXWActionTests.STXWBaseTest;
+import STXWSuite.STXWBaseTest;
 import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;

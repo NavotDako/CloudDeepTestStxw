@@ -1,8 +1,8 @@
 package MyMain;
 
-import Administration.AdminRunner;
+import AdministrationSuite.AdminRunner;
 import Cloud_API.GetDevices;
-import STXWActionTests.STXWRunner;
+import STXWSuite.STXWRunner;
 import Utils.Utilities;
 
 import java.io.File;
@@ -17,8 +17,8 @@ public class Main {
     public static Enums enums = new Enums();
     public static File logsFolder = Utilities.CreateLogsFolderForRun();
     public static Map<String, Boolean> suites = new HashMap<>();
-    public static PrintWriter overallWriter = Utilities.createReportFile(logsFolder, "","OverallReport");
-    public static PrintWriter summaryWriter = Utilities.createReportFile(logsFolder, "","Summary");
+    public static PrintWriter overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
+    public static PrintWriter summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
 
     private static int numOfThreads = 5;
     public static String CloudDevicesInfo;
@@ -33,30 +33,29 @@ public class Main {
         System.out.println(CloudDevicesInfo);
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 
-        STXWRunner[] threadArray = new STXWRunner[numOfThreads];
-        PrintWriter STXWRunnerOverallWriter = Utilities.createReportFile(logsFolder, "STXWRunner","OverallReport");
-        PrintWriter STXWRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "STXWRunner","Summary");
+        if (suites.get("STXWRunner")) {
+            STXWRunner[] threadArray = new STXWRunner[numOfThreads];
+            PrintWriter STXWRunnerOverallWriter = Utilities.createReportFile(logsFolder, "STXWRunner", "OverallReport");
+            PrintWriter STXWRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "STXWRunner", "Summary");
 
-
-        AdminRunner[] adminThreadArray = new AdminRunner[numOfThreads];
-        PrintWriter AdminRunnerOverallWriter = Utilities.createReportFile(logsFolder, "AdminRunner","OverallReport");
-        PrintWriter AdminRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "AdminRunner","Summary");
-
-
-        for (int i = 0; i < numOfThreads; i++) {
-            threadArray[i] = new STXWRunner(i, STXWRunnerSummaryWriter, STXWRunnerOverallWriter);
-            threadArray[i].start();
-            adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
-            adminThreadArray[i].start();
-            Thread.sleep(60000);
+            for (int i = 0; i < numOfThreads; i++) {
+                threadArray[i] = new STXWRunner(i, STXWRunnerSummaryWriter, STXWRunnerOverallWriter);
+                threadArray[i].start();
+                Thread.sleep(10000);
+            }
         }
 
+        if (suites.get("AdminRunner")) {
+            AdminRunner[] adminThreadArray = new AdminRunner[numOfThreads];
+            PrintWriter AdminRunnerOverallWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "OverallReport");
+            PrintWriter AdminRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "Summary");
 
-//        for (int i = 0; i < numOfThreads; i++) {
-//            adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
-//            adminThreadArray[i].start();
-//            Thread.sleep(60000);
-//        }
+            for (int i = 0; i < numOfThreads; i++) {
+                adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
+                adminThreadArray[i].start();
+                Thread.sleep(10000);
+            }
+        }
 
 
 //        overallWriter.close();

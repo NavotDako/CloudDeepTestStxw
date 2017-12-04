@@ -11,7 +11,7 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
-import STXWActionTests.STXWRunner;
+import STXWSuite.STXWRunner;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;

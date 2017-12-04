@@ -1,9 +1,8 @@
-package Administration;
+package AdministrationSuite;
 
 import java.io.PrintWriter;
-import java.util.Random;
 
-import Administration.tests.UserAction;
+import AdministrationSuite.tests.UserAction;
 import MyMain.BaseRunner;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
@@ -32,10 +31,10 @@ public class AdminRunner extends BaseRunner {
 
             try {
                 int sleepTime = rand.nextInt(20);
-//                Utilities.log(this, Thread.runner().getName() + " is Going to sleep for - " + sleepTime + " minutes");
+                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log("Thread-" + iteration + " isSleeping");
+                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
                 }
             } catch (Exception e) {
                 Utilities.log(e);
