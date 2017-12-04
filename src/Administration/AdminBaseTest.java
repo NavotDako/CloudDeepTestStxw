@@ -2,6 +2,7 @@ package Administration;
 
 import java.net.MalformedURLException;
 
+import MyMain.BaseBaseTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,16 +18,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import Utils.Utilities;
 
-public abstract class AdminBaseTest {
-
-    protected AdminRunner runner = (AdminRunner) Thread.currentThread();
-    protected WebDriver driver;
-    private boolean needToQuitDriverOnFinish = false;
+public abstract class AdminBaseTest extends BaseBaseTest{
 
 
     @Before
     public void setUp() throws Exception {
-
+        runner = (AdminRunner) Thread.currentThread();
         System.out.println("-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
         try {
             driver = createDriver();
@@ -41,31 +38,14 @@ public abstract class AdminBaseTest {
 
     }
 
-
     @Test
     abstract public void test();
 
     @After
     public void finish() {
         Utilities.log(runner, "finish");
-//		driver.quit();
-//        Utilities.log(runner, "driver.quit");
-    }
-
-
-    private WebDriver createDriver() throws MalformedURLException {
-
-        Utilities.log(runner, "connect to selenium hub");
-
-        Utilities.log(runner, "choose chrome capabilities");
-
-        DesiredCapabilities dc = new DesiredCapabilities().chrome();
-        dc.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        ChromeOptions chromeOption = new ChromeOptions();
-        chromeOption.addArguments("--start-maximized");
-        dc.setCapability(ChromeOptions.CAPABILITY, chromeOption);
-
-        return new ChromeDriver(dc);
+		driver.quit();
+        Utilities.log(runner, "driver.quit");
     }
 
     private void LoginInToCloud() {
@@ -119,42 +99,4 @@ public abstract class AdminBaseTest {
         return !needToWaitToText;
     }
 
-
-    private String watchedLog;
-
-    @Rule
-    public TestWatcher watchman = new TestWatcher() {
-        @Override
-        protected void failed(Throwable e, Description description) {
-            watchedLog = description + "";
-            Utilities.log(runner, Thread.currentThread().getName() + " FAILED !!! - " + watchedLog);
-            Utilities.log(runner, "TEST HAS FAILED!!!");
-            if (e instanceof Exception) {
-                Utilities.log(runner, (Exception) e);
-            } else {
-                Utilities.log(runner, e.getMessage());
-            }
-
-
-//            takeScreenShot();
-            if (needToQuitDriverOnFinish) {
-                try {
-                    Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
-
-                } catch (Exception e1) {
-                    Utilities.log(runner, "UNABLE TO GET PAGE SOURCE");
-                }
-            }
-            Utilities.writeToSummary(runner, "No Device", "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
-
-        }
-
-        @Override
-        protected void succeeded(Description description) {
-            watchedLog = description + " " + "success!\n";
-            Utilities.log(runner, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
-            Utilities.log(runner, "TEST HAS PASSED!!!");
-            Utilities.writeToSummary(runner, "No Device", "passed");
-        }
-    };
 }

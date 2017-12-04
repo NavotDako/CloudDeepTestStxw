@@ -1,43 +1,27 @@
 package STXWActionTests;
 
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 
+import MyMain.BaseBaseTest;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.*;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import MyMain.Main;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-public abstract class STXWBaseTest {
+public abstract class STXWBaseTest extends BaseBaseTest{
 
-    protected WebDriver driver;
-    protected STXWRunner runner = (STXWRunner) Thread.currentThread();
-    String devicesInfo = "";
-    int devicesListSize = 0;
-    int manualIndex = 0;
-    Random rand = new Random();
-    public Date startTime = new Date();
-    private boolean needToReleaseOnFinish = false;
-    private boolean needToQuitDriverOnFinish = false;
-    public String chosenDeviceName = "";
 
     @Before
     public void SetUp() throws Exception {
+        runner = (STXWRunner) Thread.currentThread();
 
         System.out.println("-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
 
@@ -123,7 +107,7 @@ public abstract class STXWBaseTest {
             try {
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).isEnabled();
                 needToWaitToLoadFlag = false;
-                waitForLoad(driver);
+                waitForPageToLoad(driver);
             } catch (Exception e) {
                 Utilities.log(runner, "waiting for tab to load");
                 Thread.sleep(1000);
@@ -254,22 +238,6 @@ public abstract class STXWBaseTest {
 //            writeFailedLineInLog(e.toString());
 //        }
 
-    }
-
-    private WebDriver createDriver() throws MalformedURLException {
-//        Url = new URL("http://192.168.2.141:4444/wd/hub");
-
-        Utilities.log(runner, "connect to selenium hub");
-
-        Utilities.log(runner, "choose chrome capabilities");
-
-        DesiredCapabilities dc = new DesiredCapabilities().chrome();
-        dc.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        ChromeOptions chromeOption = new ChromeOptions();
-        chromeOption.addArguments("--start-maximized");
-        dc.setCapability(ChromeOptions.CAPABILITY, chromeOption);
-
-        return new ChromeDriver(dc);
     }
 
     @Test
@@ -416,7 +384,7 @@ public abstract class STXWBaseTest {
         return jsondevcieObject;
     }
 
-    void waitForLoad(WebDriver driver) {
+    void waitForPageToLoad(WebDriver driver) {
         new WebDriverWait(driver, 30).until(wd ->
                 ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
     }
@@ -441,54 +409,6 @@ public abstract class STXWBaseTest {
     }
 
 
-    private String watchedLog;
-
-    @Rule
-    public TestWatcher watchman = new TestWatcher() {
-        @Override
-        protected void failed(Throwable e, Description description) {
-            watchedLog = description + "";
-            Utilities.log(runner, Thread.currentThread().getName() + " FAILED !!! - " + watchedLog);
-            Utilities.log(runner, "TEST HAS FAILED!!!");
-            if (e instanceof Exception){
-                Utilities.log(runner, (Exception) e);
-            }else{
-                Utilities.log(runner,e.getMessage());
-            }
-
-
-//            takeScreenShot();
-            if (needToQuitDriverOnFinish) {
-                try {
-                    Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
-
-                } catch (Exception e1) {
-                    Utilities.log(runner, "UNABLE TO GET PAGE SOURCE");
-                }
-            }
-            Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
-
-        }
-
-        @Override
-        protected void succeeded(Description description) {
-            watchedLog = description + " " + "success!\n";
-            Utilities.log(runner, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
-            Utilities.log(runner, "TEST HAS PASSED!!!");
-            Utilities.writeToSummary(runner, chosenDeviceName, "passed");
-        }
-    };
-
-    private void takeScreenShot() {
-        //            File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-//            File destFile = new File(Main.logsFolder + "/" + Thread.runner().getName() + "_" + System.currentTimeMillis() + ".png");
-//            try {
-//                FileUtils.copyFile(scrFile, destFile);
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//            scrFile.delete();
-    }
 
 
 }
