@@ -1,14 +1,13 @@
 package MyMain;
 
+import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.PrintWriter;
 import java.util.Random;
 
-/**
- * Created by navot.dako on 12/4/2017.
- */
+
 public class BaseRunner extends Thread{
 
     public String TYPE;
@@ -26,6 +25,13 @@ public class BaseRunner extends Thread{
     public JSONArray jsonArrayDeviceReservation = null;
     public Random rand = new Random();
 
+    public static PrintWriter overallWriter;
+    public static PrintWriter overallSummaryWriter;
 
-
+    public BaseRunner(String TYPE, int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
+        iteration = i;
+        this.overallSummaryWriter = overallSummaryWriter;
+        this.overallWriter = overallWriter;
+        this.TYPE = TYPE;
+    }
 }

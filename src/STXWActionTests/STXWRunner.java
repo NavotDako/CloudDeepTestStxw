@@ -15,19 +15,18 @@ import org.junit.runner.Result;
 
 public class STXWRunner extends BaseRunner {
 
-    public STXWRunner(int i) {
-        TYPE = "STXWRunner";
-        this.iteration = i;
+    public STXWRunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
+        super("STXWRunner", i, overallSummaryWriter, overallWriter);
     }
 
     @Override
     public void run() {
-        pw = Utilities.CreateReportFile(currentThread(),iteration);
-        Utilities.log("Starting Thread Num - " + iteration +" - Thread Name is - "+Thread.currentThread().getName());
+        pw = Utilities.CreateReportFile(this, iteration);
+        Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
 //            this.testClass = ExtendSession.class;
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
-            Utilities.log(this,testClass.getName());
+            Utilities.log(this, testClass.getName());
             this.User = getUser(rand.nextInt(enums.Users.length));
             testName = testClass.getName().substring(12, testClass.getName().length());
             this.UserType = getUserType(User);

@@ -19,9 +19,9 @@ public class UserAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		Utilities.log(currentThread, "enter UserTest class");
-//		Utilities.sleep(currentThread, 2000);
+//		Utilities.sleep(runner, 2000);
 //		driver.findElement(By.xpath("//*[@id='side-menu']/li/a[span[contains(text(),'More')]]")).click();
-//		Utilities.sleep(currentThread, 2000);
+//		Utilities.sleep(runner, 2000);
 		driver.get(currentThread.enums.hostName + "/users");
 		Utilities.sleep(currentThread, 10000);
 		CreateUser();		

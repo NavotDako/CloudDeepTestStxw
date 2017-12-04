@@ -11,14 +11,15 @@ import org.junit.runner.Result;
 
 public class AdminRunner extends BaseRunner {
 
-    public AdminRunner(int i) {
-        TYPE = "AdminRunner";
-        this.iteration = i;
+    public AdminRunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
+        super("AdminRunner", i, overallSummaryWriter, overallWriter);
+
+
     }
 
     @Override
     public void run() {
-        pw = Utilities.CreateReportFile(currentThread(), iteration);
+        pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
             this.testClass = UserAction.class;
@@ -31,7 +32,7 @@ public class AdminRunner extends BaseRunner {
 
             try {
                 int sleepTime = rand.nextInt(20);
-//                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
+//                Utilities.log(this, Thread.runner().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
                     Utilities.log("Thread-" + iteration + " isSleeping");

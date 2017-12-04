@@ -31,7 +31,7 @@ public class training {
 //		s=s.split("T")[0] + " " + s.split("T")[1];
 //		System.out.println(s);
 //		Date date = tt.parse(s);
-//		Utilities.log(currentThread,"date : " + date);
+//		Utilities.log(runner,"date : " + date);
 //		Date currDate = getCurrentDate();
 //		try{Thread.sleep(5000);}catch(Exception e) {}
 //		Date afterTime = getCurrentDate();
@@ -47,13 +47,13 @@ public class training {
 //		
 		
 //		Date d = new Date();
-//		Utilities.log(currentThread,"year " + d.getYear() + " day : " + d.getDay() + " month " + d.getMonth() + " hours " + d.getHours() + "minuts " + d.getMinutes() + " seconds " + d.getSeconds());
+//		Utilities.log(runner,"year " + d.getYear() + " day : " + d.getDay() + " month " + d.getMonth() + " hours " + d.getHours() + "minuts " + d.getMinutes() + " seconds " + d.getSeconds());
 //		String s = "ayoubprojectadmindeeptest1@ayalas-mac-mini.local";
 //		String t = "ayoubProjectAdminDeepTest1";
 //		
 //		if(s.contains(properCase(t))) 
 //		{
-//			Utilities.log(currentThread,"yes");
+//			Utilities.log(runner,"yes");
 //		}
 //		System.out.println(properCase(t));
 //	

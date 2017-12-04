@@ -2,10 +2,6 @@ package STXWActionTests.tests;
 
 
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import STXWActionTests.STXWBaseTest;
 import Utils.Utilities;
@@ -23,18 +19,18 @@ public class ExtendSession extends STXWBaseTest {
     @Test
     public void test() {
 
-        Utilities.log(currentThread, "ExtendSession Test Starts");
+        Utilities.log(runner, "ExtendSession Test Starts");
         String reservationString;
         do {
             reservationString = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText();
-            Utilities.log(currentThread,reservationString);
-            Utilities.sleep(currentThread,1000);
+            Utilities.log(runner,reservationString);
+            Utilities.sleep(runner,1000);
         } while (reservationString.contains("00:00:00"));
 
         reservation = toTime(reservationString);
 
-        Utilities.log(currentThread, "reservation Time end after : " + reservation + " hours");
-        Utilities.sleep(currentThread, 1000);
+        Utilities.log(runner, "reservation Time end after : " + reservation + " hours");
+        Utilities.sleep(runner, 1000);
 
         if (waitForElement("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button/md-icon")) {
             driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button/md-icon")).click();
@@ -42,19 +38,19 @@ public class ExtendSession extends STXWBaseTest {
             Assert.fail("The Extend Session element was not found");
         }
 
-        Utilities.log(currentThread, "Clicked on Extend Session Button");
-        Utilities.sleep(currentThread, 1000);
+        Utilities.log(runner, "Clicked on Extend Session Button");
+        Utilities.sleep(runner, 1000);
 
 
         reservationEnd = toTime(driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText());
-        Utilities.log(currentThread, "The new reservation Time End after : " + reservationEnd + " hours");
+        Utilities.log(runner, "The new reservation Time End after : " + reservationEnd + " hours");
 
 
         Time extendTime = new Time(0, 0, 0);
         extendTime.setHours(reservationEnd.getHours() - reservation.getHours());
         extendTime.setMinutes(reservationEnd.getMinutes() - reservation.getMinutes());
         extendTime.setSeconds(reservationEnd.getSeconds() - reservation.getSeconds());
-        Utilities.log(currentThread, "extend Time End : " + extendTime);
+        Utilities.log(runner, "extend Time End : " + extendTime);
 
 
         if (!extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) {

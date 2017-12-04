@@ -9,23 +9,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 public class Utilities {
 
     static SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yy-HH:mm:ss,SS");
 
-    public static void log(BaseRunner currentThread, String command) {
+    public static void log(BaseRunner runner, String command) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
 
-        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, command);
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.getName(), runner.User, runner.testName, command);
 
         System.out.println(line);
-        Main.overallWriter.println(line);
-        currentThread.pw.println(line);
-        currentThread.pw.flush();
-        Main.overallWriter.flush();
+        runner.overallWriter.println(line);
+        runner.pw.println(line);
+        runner.pw.flush();
+        runner.overallWriter.flush();
     }
 
     public static void log(String message) {
@@ -38,9 +40,12 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static PrintWriter CreateReportFile(Thread thread, int i) {
+    public static PrintWriter CreateReportFile(BaseRunner runner, int i) {
+        File logs = new File(Main.logsFolder + "/" + runner.TYPE);
+        if (!logs.exists())
+            logs.mkdir();
 
-        File report = new File(Main.logsFolder, i + "-" + thread.getName() + ".txt");
+        File report = new File(logs, i + "-" + runner.getName() + ".txt");
         FileWriter fw = null;
         try {
             fw = new FileWriter(report);
@@ -77,7 +82,7 @@ public class Utilities {
 
     public static File CreateLogsFolderForRun() {
         File logs = new File("logs");
-        if(!logs.exists())
+        if (!logs.exists())
             logs.mkdir();
 
 
@@ -99,13 +104,34 @@ public class Utilities {
                 return parentFile;
             }
         }
+        Iterator it = Main.suites.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            if ((boolean) pair.getValue()) {
+                File logsForRunner = new File("logs/" + pair.getKey());
+                if (!logsForRunner.exists())
+                    logsForRunner.mkdir();
+
+            }
+
+        }
+
         return parentFile;
     }
 
-    public static PrintWriter createOverallReportFile(File logsFolder, String fileName) {
+    public static PrintWriter createReportFile(File logsFolder, String runner, String fileName) {
+        File logs;
+        if (runner.equals("")) {
+            logs = logsFolder;
+        } else {
+            logs = new File(logsFolder + "/" + runner);
+        }
+
+        if (!logs.exists())
+            logs.mkdir();
 
         String reportName = fileName + ".txt";
-        File report = new File(logsFolder + "/" + reportName);
+        File report = new File(logs + "/" + reportName);
         FileWriter fw = null;
         try {
             fw = new FileWriter(report);
@@ -126,13 +152,16 @@ public class Utilities {
         }
     }
 
-    public static void writeToSummary(BaseRunner currentThread,String chosenDeviceName, String status) {
+    public static void writeToSummary(BaseRunner runner, String chosenDeviceName, String status) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-25s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, chosenDeviceName, status);
+        line = String.format("%-25s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
         System.out.println(line);
-        Main.overallSummaryWriter.println(line);
-        Main.overallSummaryWriter.flush();
+        runner.overallSummaryWriter.println(line);
+        runner.overallSummaryWriter.flush();
+
+        Main.summaryWriter.println(line);
+        Main.summaryWriter.flush();
     }
 }

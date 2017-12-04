@@ -11,10 +11,10 @@ public class SwipeAndClick extends STXWBaseTest {
     @Test
     public void test() {
         try {
-            Utilities.log(currentThread,"swipeandclickkk");
-            Utilities.log(currentThread, "Enter to swipeAndClick testClass");
+            Utilities.log(runner,"swipeandclickkk");
+            Utilities.log(runner, "Enter to swipeAndClick testClass");
         } catch (Exception e) {
-            Utilities.log(currentThread,e);
+            Utilities.log(runner,e);
         }
     }
 

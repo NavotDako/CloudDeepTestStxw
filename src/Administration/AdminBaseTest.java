@@ -20,8 +20,8 @@ import Utils.Utilities;
 
 public abstract class AdminBaseTest {
 
-	AdminRunner currentThread = (AdminRunner) Thread.currentThread();
-	WebDriver driver;
+	protected AdminRunner currentThread = (AdminRunner) Thread.currentThread();
+	protected WebDriver driver;
 	private boolean needToQuitDriverOnFinish = false;
 	
 
@@ -53,7 +53,7 @@ public abstract class AdminBaseTest {
     public void finish() {
 		Utilities.log(currentThread, "finish");
 //		driver.quit();
-//        Utilities.log(currentThread, "driver.quit");
+//        Utilities.log(runner, "driver.quit");
 	}
 	
 	
