@@ -11,13 +11,11 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 
-import MyMain.STXWRunner;
+import STXWActionTests.STXWRunner;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 public class GetDeviceReservations{
     private static final String DEVICES_URL  = "/devices/";

@@ -1,6 +1,6 @@
 package Utils;
 
-import MyMain.STXWRunner;
+import MyMain.BaseRunner;
 import MyMain.Main;
 
 import java.io.File;
@@ -10,14 +10,11 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by navot.dako on 11/26/2017.
- */
 public class Utilities {
 
     static SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yy-HH:mm:ss,SS");
 
-    public static void log(STXWRunner currentThread, String command) {
+    public static void log(BaseRunner currentThread, String command) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
@@ -66,7 +63,7 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static void log(STXWRunner currentThread, Exception e) {
+    public static void log(BaseRunner currentThread, Exception e) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
@@ -82,6 +79,7 @@ public class Utilities {
         File logs = new File("logs");
         if(!logs.exists())
             logs.mkdir();
+
 
         Date currentTime = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
@@ -119,7 +117,7 @@ public class Utilities {
 
     }
 
-    public static void sleep(STXWRunner currentThread, int time) {
+    public static void sleep(BaseRunner currentThread, int time) {
         try {
             log(currentThread, "starting to wait - " + time + " milliseconds");
             Thread.sleep(time);
@@ -128,7 +126,7 @@ public class Utilities {
         }
     }
 
-    public static void writeToSummary(STXWRunner currentThread,String chosenDeviceName, String status) {
+    public static void writeToSummary(BaseRunner currentThread,String chosenDeviceName, String status) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();

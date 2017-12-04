@@ -1,9 +1,11 @@
-package MyMain;
+package STXWActionTests;
 
 import java.io.PrintWriter;
 import java.util.Random;
 
-import STXWActionTests.ExtendSession;
+import MyMain.BaseRunner;
+import MyMain.Enums;
+import MyMain.Main;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,23 +13,10 @@ import org.junit.runner.JUnitCore;
 
 import org.junit.runner.Result;
 
-public class STXWRunner extends Thread {
-    private int iteration;
-    public Class testClass;
-    public String testName = "";
-    public String User = "";
-    public String TestName = "";
-    public String UserType = "";
-    public String STXWType;
-    public PrintWriter pw = null;
-    public Enums enums = new Enums();
-    public String CloudDevicesInfo = Main.CloudDevicesInfo;
-    public JSONObject jsonDeviceInfo = null;
-    public JSONArray jsonArrayDeviceReservation = null;
-    Random rand = new Random();
+public class STXWRunner extends BaseRunner {
 
     public STXWRunner(int i) {
-
+        TYPE = "STXWRunner";
         this.iteration = i;
     }
 

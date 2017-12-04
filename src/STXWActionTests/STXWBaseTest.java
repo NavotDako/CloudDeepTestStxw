@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
-import MyMain.STXWRunner;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -450,14 +449,13 @@ public abstract class STXWBaseTest {
         protected void failed(Throwable e, Description description) {
             watchedLog = description + "";
             Utilities.log(currentThread, Thread.currentThread().getName() + " FAILED !!! - " + watchedLog);
-            try {
-                Exception ex = (Exception) e;
-                Utilities.log(currentThread, ex);
-            } catch (Exception e1) {
-                //Utilities.log(currentThread,e1);
-            }
             Utilities.log(currentThread, "TEST HAS FAILED!!!");
-            Utilities.log(currentThread, e.getMessage());
+            if (e instanceof Exception){
+                Utilities.log(currentThread, (Exception) e);
+            }else{
+                Utilities.log(currentThread,e.getMessage());
+            }
+
 
 //            takeScreenShot();
             if (needToQuitDriverOnFinish) {

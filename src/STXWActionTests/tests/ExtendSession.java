@@ -1,4 +1,4 @@
-package STXWActionTests;
+package STXWActionTests.tests;
 
 
 import java.sql.Time;
@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import STXWActionTests.STXWBaseTest;
 import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;

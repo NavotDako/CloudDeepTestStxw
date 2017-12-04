@@ -1,5 +1,5 @@
 
-package STXWActionTests;
+package STXWActionTests.tests;
 
 import STXWActionTests.STXWBaseTest;
 import Utils.Utilities;

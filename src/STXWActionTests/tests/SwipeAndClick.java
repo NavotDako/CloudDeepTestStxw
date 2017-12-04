@@ -1,5 +1,6 @@
-package STXWActionTests;
+package STXWActionTests.tests;
 
+import STXWActionTests.STXWBaseTest;
 import Utils.Utilities;
 import org.junit.Test;
 
