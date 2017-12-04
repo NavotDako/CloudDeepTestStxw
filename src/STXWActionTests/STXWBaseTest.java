@@ -311,8 +311,8 @@ public abstract class STXWBaseTest {
         Date CurrentTime = new Date();
 
         String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.User, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + runner.TestName);
-        Main.overallWriter.println(line);
-        Main.overallWriter.flush();
+        runner.overallWriter.println(line);
+        runner.overallWriter.flush();
 
 
     }

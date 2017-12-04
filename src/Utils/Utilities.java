@@ -21,7 +21,7 @@ public class Utilities {
         String line;
         currentTime.getTime();
 
-        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.getName(), runner.User, runner.testName, command);
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.User, runner.testName, command);
 
         System.out.println(line);
         runner.overallWriter.println(line);
@@ -68,16 +68,16 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static void log(BaseRunner currentThread, Exception e) {
+    public static void log(BaseRunner runner, Exception e) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, e.getMessage().replace("\n", "\t"));
+        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.User, runner.testName, e.getMessage().replace("\n", "\t"));
         System.out.println(line);
         e.printStackTrace();
-        Main.overallWriter.println(line);
-        e.printStackTrace(Main.overallWriter);
-        Main.overallWriter.flush();
+        runner.overallWriter.println(line);
+        e.printStackTrace(runner.overallWriter);
+        runner.overallWriter.flush();
     }
 
     public static File CreateLogsFolderForRun() {
@@ -143,12 +143,12 @@ public class Utilities {
 
     }
 
-    public static void sleep(BaseRunner currentThread, int time) {
+    public static void sleep(BaseRunner runner, int time) {
         try {
-            log(currentThread, "starting to wait - " + time + " milliseconds");
+            log(runner, "starting to wait - " + time + " milliseconds");
             Thread.sleep(time);
         } catch (Exception e) {
-            log(currentThread, e);
+            log(runner, e);
         }
     }
 
@@ -156,7 +156,7 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-25s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
+        line = String.format("%-25s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
         System.out.println(line);
         runner.overallSummaryWriter.println(line);
         runner.overallSummaryWriter.flush();
