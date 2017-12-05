@@ -225,7 +225,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.User);
         Utilities.log(runner, "Write username (" + runner.User + ")");
 
-        driver.findElement(By.name("password")).sendKeys(runner.enums.Password);
+        driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
         Utilities.log(runner, "write the password ");
 
         driver.findElement(By.name("login")).click();

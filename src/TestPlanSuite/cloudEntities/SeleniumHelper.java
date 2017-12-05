@@ -50,7 +50,7 @@ public class SeleniumHelper {
             driver.findElement(By.xpath("//*[@placeholder='Password']")).sendKeys("Experitest2012");
             driver.findElement(By.xpath("//*[@name='login']")).click();
             try {
-                Utilities.log(baseRunnerThread, "Selecting project");
+                Utilities.log(baseRunnerThread, "Selecting testPlanProject");
                 (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='selectProject']")));
                 String choseProject = "//*[@name='name']";
                 WebElement projSelect = driver.findElement(By.xpath(choseProject));
@@ -63,7 +63,7 @@ public class SeleniumHelper {
                 driver.findElement(By.xpath("//*[@name='selectProject']")).click();
             } catch (Exception e) {
 //                    e.printStackTrace();
-                Utilities.log(baseRunnerThread, "failed to navigate to correct project: " + project.getProjName());
+                Utilities.log(baseRunnerThread, "failed to navigate to correct testPlanProject: " + project.getProjName());
                 Utilities.log(baseRunnerThread, e.getMessage());
                 this.loggedIn = true;
                 return true;
@@ -90,7 +90,7 @@ public class SeleniumHelper {
         login();
         navigateToTestPlansPage();
         ArrayList<TestPlan> testPlans = new ArrayList<TestPlan>();
-        Utilities.log(baseRunnerThread, "getting the project test plans");
+        Utilities.log(baseRunnerThread, "getting the testPlanProject test plans");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -131,7 +131,7 @@ public class SeleniumHelper {
                     j = j - 1;
                 }
             }
-            Utilities.log(baseRunnerThread, "Finished adding the current plan to test plans from project - " + this.project.getProjName());
+            Utilities.log(baseRunnerThread, "Finished adding the current plan to test plans from testPlanProject - " + this.project.getProjName());
             Utilities.log(baseRunnerThread, "found test plan with name" + testPlanName);
             testPlans.add(new TestPlan(os, deviceQueries, this.project.getProjName(), testPlanName, this.project.getProjId()));
         }
@@ -144,18 +144,18 @@ public class SeleniumHelper {
             if (!login()) {
                 return false;
             }
-            Utilities.log(baseRunnerThread, "navigate to project test plans");
+            Utilities.log(baseRunnerThread, "navigate to testPlanProject test plans");
             // navigate to test plans page
             navigateToTestPlansPage();
             (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@st-select-row='plan']")));
             List<TestPlan> testPlanList = getProjectTestPlans();
             boolean hasAndroid = testPlanList.stream().filter(p -> p.getOS().equals(Enums.OS.ANDROID)).collect(Collectors.toList()).size() > 0;
             boolean hasIOS = testPlanList.stream().filter(p -> p.getOS().equals(Enums.OS.IOS)).collect(Collectors.toList()).size() > 0;
-            Utilities.log(baseRunnerThread, ("project - " + project.getProjId() + ", has android- " + hasAndroid + ", has IOS " + hasIOS));
+            Utilities.log(baseRunnerThread, ("testPlanProject - " + project.getProjId() + ", has android- " + hasAndroid + ", has IOS " + hasIOS));
             return hasAndroid && hasIOS;
         } catch (Exception e) {
 //            e.printStackTrace();
-            Utilities.log(baseRunnerThread, "looks like this project " + this.project.getProjName() + " does not have test plans");
+            Utilities.log(baseRunnerThread, "looks like this testPlanProject " + this.project.getProjName() + " does not have test plans");
             return false;
         }
     }
@@ -210,7 +210,7 @@ public class SeleniumHelper {
     }
 
     private void navigateToTestPlansPage() {
-        Utilities.log(baseRunnerThread, "navigate to project test plans page");
+        Utilities.log(baseRunnerThread, "navigate to testPlanProject test plans page");
 //        driver.manage().window().fullscreen();
 
         try {
@@ -242,9 +242,9 @@ public class SeleniumHelper {
 
     private void uploadApp(Enums.OS os) {
         //Use robot to upload app based on path
-        String appPath = os.equals(Enums.OS.ANDROID) ? "testApps//app-eribank.apk" : "testApps//Monster Island Game.ipa";
+        String appPath = os.equals(Enums.OS.ANDROID) ? "lib/testApps/app-eribank.apk" : "lib/testApps/Monster Island Game.ipa";
         //Use robot to upload app based on path
-        String testAppPath = os.equals(Enums.OS.ANDROID) ? "testApps//app-eribank-androidTest-1Fail.apk" : "testApps//Monster Island GameUITests-Runner (2).zip";
+        String testAppPath = os.equals(Enums.OS.ANDROID) ? "lib/testApps/app-eribank-androidTest-1Fail.apk" : "lib/testApps/Monster Island GameUITests-Runner (2).zip";
 
 //        List<WebElement> applicationUploadButtons = driver.findElements(By.xpath("//input[@id='select-file-upload']"));
         Utilities.log(baseRunnerThread, "uploading the test application " + testAppPath + "for OS " + os);

@@ -12,9 +12,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +32,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
     protected HttpPost uploadFile;
     protected MultipartEntityBuilder builder;
     protected SeleniumHelper seleniumHelper;
-    protected Project project;
+    protected Project testPlanProject;
     protected User user;
 
     @Before
@@ -44,14 +41,14 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
 
 
         //Update project test plans
-        project = new Project(runner.project);
+        testPlanProject = new Project(runner.project);
         user = runner.testPlanUser;
-        seleniumHelper = new SeleniumHelper(this.user, project, (BaseRunner) Thread.currentThread());
-        this.project.readAndUpdateTestPlansFromProject(runner.testPlanUser, this.seleniumHelper);
+        seleniumHelper = new SeleniumHelper(this.user, testPlanProject, (BaseRunner) Thread.currentThread());
+        this.testPlanProject.readAndUpdateTestPlansFromProject(runner.testPlanUser, this.seleniumHelper);
 //        this.runTestPlanFromUI = fromAPI;
 
 
-        Utilities.log((BaseRunner) Thread.currentThread(),"building rest api request");
+        Utilities.log(runner,"building rest api request");
         restAPIBuilder = new RestAPIBuilder(Main.cloudServer);
         url = restAPIBuilder.getPrefix() + restAPIBuilder.getCloudIP() + ":" + restAPIBuilder.getCloudPort() + "/api/v1/execution-plan/execute-test-plan";
         httpClient = HttpClients.createDefault();
@@ -68,7 +65,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
         try {
             response = httpClient.execute(uploadFile);
         } catch (IOException e) {
-            Utilities.log((BaseRunner) Thread.currentThread(),"got exception while executing API CMD");
+            Utilities.log(runner,"got exception while executing API CMD");
             e.printStackTrace();
             throw e;
         }
@@ -77,7 +74,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
         try {
             stream = responseEntity.getContent();
         } catch (IOException e) {
-            Utilities.log((BaseRunner) Thread.currentThread(),"got exception while reading from response entity resources");
+            Utilities.log(runner,"got exception while reading from response entity resources");
             e.printStackTrace();
         }
         BufferedReader in = new BufferedReader(new InputStreamReader(stream));
@@ -88,14 +85,14 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
                 responseBuffer.append(inputLine);
             }
         } catch (IOException e) {
-            Utilities.log((BaseRunner) Thread.currentThread(),"got exception while reading from input");
+            Utilities.log(runner,"got exception while reading from input");
             e.printStackTrace();
             throw e;
         }
         try {
             in.close();
         } catch (IOException e) {
-            Utilities.log((BaseRunner) Thread.currentThread(),"got exception while closing resources");
+            Utilities.log(runner,"got exception while closing resources");
             e.printStackTrace();
             throw e;
         }
@@ -109,7 +106,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
 
 
     protected void createTestRequest(){
-        this.project.createTestPlansForProject(this.user, this.seleniumHelper);
+        this.testPlanProject.createTestPlansForProject(this.user, this.seleniumHelper);
     }
 
 
@@ -118,7 +115,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
      */
 
     protected boolean isThereTestPlanInProject(){
-        return this.project.doesProjectHaveTestPlans(this.user, this.seleniumHelper);
+        return this.testPlanProject.doesProjectHaveTestPlans(this.user, this.seleniumHelper);
     }
 
     public void setTestPlanToRun(TestPlan testPlan) {
