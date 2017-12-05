@@ -28,10 +28,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", true);
+        suites.put("STXWRunner", false);
         suites.put("AdminRunner", true);
-        suites.put("STARunner", true);
-        suites.put("TestPlanRunner", true);
+        suites.put("STARunner", false);
+        suites.put("TestPlanRunner", false);
 
         CloudDevicesInfo = CloudApiShit.doGet("devices");
         System.out.println(CloudDevicesInfo);

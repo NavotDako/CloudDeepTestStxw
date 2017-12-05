@@ -42,22 +42,6 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static PrintWriter CreateReportFile(BaseRunner runner, int i) {
-        File logs = new File(Main.logsFolder + "/" + runner.TYPE);
-        if (!logs.exists())
-            logs.mkdir();
-
-        File report = new File(logs, i + "-" + runner.getName() + ".txt");
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(report);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        PrintWriter pw = new PrintWriter(fw);
-        return pw;
-    }
-
     public static void log(Exception e) {
         Date currentTime = new Date();
         String line;
@@ -80,6 +64,22 @@ public class Utilities {
         runner.overallWriter.println(line);
         e.printStackTrace(runner.overallWriter);
         runner.overallWriter.flush();
+    }
+
+    public static PrintWriter CreateReportFile(BaseRunner runner, int i) {
+        File logs = new File(Main.logsFolder + "/" + runner.TYPE);
+        if (!logs.exists())
+            logs.mkdir();
+
+        File report = new File(logs, i + "-" + runner.getName() + ".txt");
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(report);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PrintWriter pw = new PrintWriter(fw);
+        return pw;
     }
 
     public static File CreateLogsFolderForRun() {

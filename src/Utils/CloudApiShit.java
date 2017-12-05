@@ -16,7 +16,7 @@ import java.util.Base64;
 public class CloudApiShit {
 
     public static String doGet(String objectsToGet) throws IOException {
-        String host = (new Enums()).hostName.replace("index.html#/login","");
+        String host = (new Enums()).hostName.replace("/index.html#","");
         String port = "";
         String Devices_URL = host + port + "/api/v1/"+objectsToGet;
         String authStringEnc;

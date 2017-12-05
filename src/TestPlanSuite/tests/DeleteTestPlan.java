@@ -22,15 +22,15 @@ public class DeleteTestPlan extends TestPlanBaseTest{
 
             System.out.println(this.getClass() + "-- started Running");
 //            if (!this.isThereTestPlanInProject()) {
-//                Utilities.log((BaseRunner) Thread.currentThread(), "Create test request");
+//                Utilities.log((BaseRunner) Thread.runner(), "Create test request");
 //                this.createTestRequest();
 //            }
             Utilities.log((BaseRunner) Thread.currentThread(), "create test plans");
             List<TestPlan> testPlansCreated = this.seleniumHelper.createTestPlans();
 //
-//            Utilities.log((BaseRunner) Thread.currentThread(), "get test plans");
+//            Utilities.log((BaseRunner) Thread.runner(), "get test plans");
 //            List<TestPlan> testPlans = this.project.getTestPlanByOS(Math.random() > Math.random() ? Enums.OS.IOS : Enums.OS.ANDROID);
-//            Utilities.log((BaseRunner) Thread.currentThread(), "get a random application");
+//            Utilities.log((BaseRunner) Thread.runner(), "get a random application");
             this.setTestPlanToRun(testPlansCreated.get((int) Math.random() * testPlansCreated.size()));
 
 

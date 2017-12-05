@@ -17,7 +17,7 @@ public class Enums {
     public String[] Project = {"ayoubProjectDeepTest1", "ayoubProjectDeepTest2"};
     public Class[] Actions = {Install.class, Reboot.class, ExtendSession.class, OpenLogs.class, StartVideo.class, Monitors.class};
     public String Password = "Experitest2012";
-    public String hostName = "http://releasecloud/index.html#/login";
+    public String hostName = "http://releasecloud/index.html#";
     public Class[] TestPlanActions = {CreateTestPlans.class, RunTestPlanFromUI.class, RunTestAppFromAPI.class, DeleteTestPlan.class};
     public enum OS{
         ANDROID, IOS
@@ -25,5 +25,5 @@ public class Enums {
     public enum ROLES{
         ADMIN, USER, PROJECT_ADMIN
     }
-
+    public String applicationPath = "UICatalog";
 }
