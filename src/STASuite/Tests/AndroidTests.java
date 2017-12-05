@@ -16,11 +16,11 @@ public class AndroidTests extends STABaseTest {
     @Test
     public void test() {
 
-        SeeTestTestsStandAlone.androidEriBankTestInstrumented((STARunner) runner);
-        SeeTestTestsStandAlone.androidEriBankTestNonInstrumented((STARunner) runner);
-        SeeTestTestsStandAlone.androidSimulateCaptureTest((STARunner) runner);
-        SeeTestTestsStandAlone.webAutomationSiteTest((STARunner) runner,"@os='android'");
-        SeeTestTestsStandAlone.webWikipediaTest((STARunner) runner,"@os='android'");
+        STA.androidEriBankTestInstrumented();
+        STA.androidEriBankTestNonInstrumented();
+        STA.androidSimulateCaptureTest();
+        STA.webAutomationSiteTest("@os='android'");
+        STA.webWikipediaTest("@os='android'");
 
     }
 }

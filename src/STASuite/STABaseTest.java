@@ -2,6 +2,7 @@ package STASuite;
 
 import MyMain.BaseBaseTest;
 import MyMain.Main;
+import STASuite.Tests.SeeTestTestsStandAlone;
 import Utils.Utilities;
 import org.junit.After;
 import org.junit.Before;
@@ -9,10 +10,10 @@ import org.junit.Before;
 import java.io.File;
 import java.util.Date;
 
-/**
- * Created by navot.dako on 12/4/2017.
- */
+
 public class STABaseTest extends BaseBaseTest{
+
+    protected SeeTestTestsStandAlone STA = new SeeTestTestsStandAlone((STARunner) runner);
 
     @Before
     public void SetUp() throws Exception {

@@ -2,12 +2,19 @@ package STASuite.Tests;
 
 import STASuite.STARunner;
 import Utils.MyILogger;
+import Utils.Utilities;
 import com.experitest.client.Client;
 
 public class SeeTestTestsStandAlone {
 
-    public static void androidEriBankTestInstrumented(STARunner runner) {
-        Client client = getClient(runner, "@os='android'", "Android EriBank Test Instrumented");
+    STARunner runner;
+
+    public SeeTestTestsStandAlone(STARunner runner) {
+        this.runner = runner;
+    }
+
+    public void androidEriBankTestInstrumented() {
+        Client client = getClient("@os='android'", "Android EriBank Test Instrumented");
 
         //client.startStepsGroup("Android EriBank Test Instrumented");
         client.uninstall("com.experitest.ExperiBank");
@@ -34,14 +41,17 @@ public class SeeTestTestsStandAlone {
         finish(client);
     }
 
-    private static void finish(Client client) {
+    private void finish(Client client) {
+        Utilities.log(runner, "Starting Finish");
         String deviceName = client.getDeviceProperty("device.name");
         client.generateReport(false);
         client.releaseDevice(deviceName, false, false, true);
         client.releaseClient();
+        Utilities.log(runner, "Client Released");
     }
 
-    private static Client getClient(STARunner runner, String testName, String query) {
+    private Client getClient(String testName, String query) {
+        Utilities.log(runner, "Starting Finish");
         Client client = new Client(runner.VMAddress, 8889, true);
         client.setLogger(new MyILogger(runner));
         client.setReporter("xml", runner.jarRemoteFolderPath + "/reports", testName);
@@ -49,8 +59,8 @@ public class SeeTestTestsStandAlone {
         return client;
     }
 
-    public static void androidEriBankTestNonInstrumented(STARunner runner) {
-        Client client = getClient(runner, "@os='android'", "Android EriBank Test Non Instrumented");
+    public void androidEriBankTestNonInstrumented() {
+        Client client = getClient("@os='android'", "Android EriBank Test Non Instrumented");
 
         //client.startStepsGroup("Android EriBank Test Non Instrumented");
 
@@ -78,8 +88,8 @@ public class SeeTestTestsStandAlone {
 
     }
 
-    public static void androidSimulateCaptureTest(STARunner runner) {
-        Client client = getClient(runner, "@os='android'", "Android Simulate Capture Test");
+    public void androidSimulateCaptureTest() {
+        Client client = getClient("@os='android'", "Android Simulate Capture Test");
 
 
         //client.startStepsGroup("Android Simulate Capture Test");
@@ -100,8 +110,8 @@ public class SeeTestTestsStandAlone {
 
     }
 
-    public static void webAutomationSiteTest(STARunner runner, String query) {
-        Client client = getClient(runner, query, "Web Automation Site Test");
+    public void webAutomationSiteTest(String query) {
+        Client client = getClient(query, "Web Automation Site Test");
 
         //client.startStepsGroup("Web Automation Site Test");
         client.launch("http://192.168.4.85:8060/html-tests/WebPageTests/WebPageTests.html", false, false);
@@ -129,8 +139,8 @@ public class SeeTestTestsStandAlone {
 
     }
 
-    public static void iOSEriBankTestInstrumented(STARunner runner) {
-        Client client = getClient(runner, "@os='ios'", "IOS EriBank Test Instrumented");
+    public void iOSEriBankTestInstrumented() {
+        Client client = getClient("@os='ios'", "IOS EriBank Test Instrumented");
 
         //client.startStepsGroup("IOS EriBank Test Instrumented");
 
@@ -158,8 +168,8 @@ public class SeeTestTestsStandAlone {
 
     }
 
-    public static void iOSEriBankTestNonInstrumented(STARunner runner) {
-        Client client = getClient(runner, "@os='ios'", "IOS EriBank Test Non Instrumented");
+    public void iOSEriBankTestNonInstrumented() {
+        Client client = getClient("@os='ios'", "IOS EriBank Test Non Instrumented");
 
 //		client.startStepsGroup("IOS EriBank Test Non Instrumented");
         client.uninstall("com.experitest.ExperiBank");
@@ -182,8 +192,8 @@ public class SeeTestTestsStandAlone {
 
     }
 
-    public static void iOSMobileTimerTest(STARunner runner) {
-        Client client = getClient(runner, "@os='ios'", "IOS Mobile Timer Test");
+    public void iOSMobileTimerTest() {
+        Client client = getClient("@os='ios'", "IOS Mobile Timer Test");
 
 //		client.startStepsGroup("IOS Mobile Timer Test ");
         client.launch("com.apple.mobiletimer", false, true);
@@ -215,8 +225,8 @@ public class SeeTestTestsStandAlone {
 
     }
 
-    public static void webWikipediaTest(STARunner runner, String query) {
-        Client client = getClient(runner, query, "IOS Mobile Timer Test");
+    public void webWikipediaTest(String query) {
+        Client client = getClient(query, "IOS Mobile Timer Test");
 
 
         //client.startStepsGroup("Web Wikipedia Test ");

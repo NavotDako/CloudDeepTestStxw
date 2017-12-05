@@ -1,8 +1,8 @@
 package MyMain;
 
 import AdministrationSuite.AdminRunner;
-import Cloud_API.GetDevices;
 import STXWSuite.STXWRunner;
+import Utils.CloudApiShit;
 import Utils.Utilities;
 
 import java.io.File;
@@ -30,7 +30,7 @@ public class Main {
         suites.put("AdminRunner", true);
         suites.put("STARunner", false);
 
-        CloudDevicesInfo = (new GetDevices("MAIN")).doGet();
+        CloudDevicesInfo = CloudApiShit.doGet("devices");
         System.out.println(CloudDevicesInfo);
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 

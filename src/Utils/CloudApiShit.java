@@ -1,41 +1,30 @@
-package Cloud_API;
+package Utils;
 
-import java.io.*;
+import MyMain.Enums;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
 
-import MyMain.Enums;
-import Utils.Utilities;
+/**
+ * Created by navot.dako on 12/5/2017.
+ */
+public class CloudApiShit {
 
-public class GetDevices {
-    private String host = (new Enums()).hostName.replace("index.html#/login","");
-    private String port = "";
-    private String Devices_URL = host + port + "/api/v1/devices";
-    private String authStringEnc;
-    String threadName;
-
-    public GetDevices(String threadName) throws IOException {
-        this.threadName = threadName;
-        Utilities.log(threadName + " - GetDevices setup");
+    public static String doGet(String objectsToGet) throws IOException {
+        String host = (new Enums()).hostName.replace("index.html#/login","");
+        String port = "";
+        String Devices_URL = host + port + "/api/v1/"+objectsToGet;
+        String authStringEnc;
         String name = "ayouba";
         String password = "Experitest2012";
 
         String authString = name + ":" + password;
         authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
-
-    }
-
-
-    protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
-        int responseCode = httpURLConnection.getResponseCode();
-        Utilities.log(threadName+ " - Sending 'GET' request to URL : " + url);
-        Utilities.log(threadName+ " - Response Code : " + responseCode);
-        //Utilities.log(result);
-    }
-
-    public String doGet() throws IOException {
         URL url = new URL(Devices_URL);
         URLConnection urlConnection = url.openConnection();
         urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
@@ -48,14 +37,13 @@ public class GetDevices {
             sb.append(charArray, 0, numCharsRead);
         }
         String result = sb.toString();
-        printGet(url, (HttpURLConnection) urlConnection, result);
+        int responseCode = ((HttpURLConnection) urlConnection).getResponseCode();
+        Utilities.log("Sending 'GET' request to URL : " + url);
+        Utilities.log("Response Code : " + responseCode);
         if (((HttpURLConnection) urlConnection).getResponseCode() < 300) {
-
             return result;
         } else {
             return null;
         }
     }
-
-
 }

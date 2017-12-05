@@ -8,16 +8,19 @@ import org.junit.Test;
  * Created by navot.dako on 12/4/2017.
  */
 public class iOSTests extends STABaseTest{
+
+
     @Test
     public void test() {
-        SeeTestTestsStandAlone.iOSEriBankTestInstrumented((STARunner) runner);
 
-        SeeTestTestsStandAlone.iOSEriBankTestNonInstrumented((STARunner) runner);
+        STA.iOSEriBankTestInstrumented();
 
-        SeeTestTestsStandAlone.webWikipediaTest((STARunner) runner,"@os='ios'");
+        STA.iOSEriBankTestNonInstrumented();
 
-        SeeTestTestsStandAlone.webAutomationSiteTest((STARunner) runner, "@os='ios'");
+        STA.webWikipediaTest("@os='ios'");
 
-        SeeTestTestsStandAlone.iOSMobileTimerTest((STARunner) runner);
+        STA.webAutomationSiteTest("@os='ios'");
+
+        STA.iOSMobileTimerTest();
     }
 }
