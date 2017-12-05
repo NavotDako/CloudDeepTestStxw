@@ -1,7 +1,9 @@
 package Utils;
 
-import MyMain.STXWRunner;
+import MyMain.BaseRunner;
 import MyMain.Main;
+import STASuite.STARunner;
+import org.junit.Assert;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,26 +11,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
-/**
- * Created by navot.dako on 11/26/2017.
- */
 public class Utilities {
 
     static SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yy-HH:mm:ss,SS");
 
-    public static void log(STXWRunner currentThread, String command) {
+    public static void log(BaseRunner runner, String command) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
 
-        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, command);
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.User, runner.testName, command);
 
         System.out.println(line);
-        Main.overallWriter.println(line);
-        currentThread.pw.println(line);
-        currentThread.pw.flush();
-        Main.overallWriter.flush();
+        runner.overallWriter.println(line);
+        runner.pw.println(line);
+        runner.pw.flush();
+        runner.overallWriter.flush();
     }
 
     public static void log(String message) {
@@ -39,19 +40,6 @@ public class Utilities {
         System.out.println(line);
         Main.overallWriter.println(line);
         Main.overallWriter.flush();
-    }
-
-    public static PrintWriter CreateReportFile(Thread thread, int i) {
-
-        File report = new File(Main.logsFolder, i + "-" + thread.getName() + ".txt");
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(report);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        PrintWriter pw = new PrintWriter(fw);
-        return pw;
     }
 
     public static void log(Exception e) {
@@ -66,22 +54,39 @@ public class Utilities {
         Main.overallWriter.flush();
     }
 
-    public static void log(STXWRunner currentThread, Exception e) {
+    public static void log(BaseRunner runner, Exception e) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, e.getMessage().replace("\n", "\t"));
+        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.User, runner.testName, e.getMessage().replace("\n", "\t"));
         System.out.println(line);
         e.printStackTrace();
-        Main.overallWriter.println(line);
-        e.printStackTrace(Main.overallWriter);
-        Main.overallWriter.flush();
+        runner.overallWriter.println(line);
+        e.printStackTrace(runner.overallWriter);
+        runner.overallWriter.flush();
+    }
+
+    public static PrintWriter CreateReportFile(BaseRunner runner, int i) {
+        File logs = new File(Main.logsFolder + "/" + runner.TYPE);
+        if (!logs.exists())
+            logs.mkdir();
+
+        File report = new File(logs, i + "-" + runner.getName() + ".txt");
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(report);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PrintWriter pw = new PrintWriter(fw);
+        return pw;
     }
 
     public static File CreateLogsFolderForRun() {
         File logs = new File("logs");
-        if(!logs.exists())
+        if (!logs.exists())
             logs.mkdir();
+
 
         Date currentTime = new Date();
         SimpleDateFormat ft = new SimpleDateFormat("HH-mm-ss");
@@ -101,13 +106,34 @@ public class Utilities {
                 return parentFile;
             }
         }
+        Iterator it = Main.suites.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            if ((boolean) pair.getValue()) {
+                File logsForRunner = new File("logs/" + pair.getKey());
+                if (!logsForRunner.exists())
+                    logsForRunner.mkdir();
+
+            }
+
+        }
+
         return parentFile;
     }
 
-    public static PrintWriter createOverallReportFile(File logsFolder, String fileName) {
+    public static PrintWriter createReportFile(File logsFolder, String runner, String fileName) {
+        File logs;
+        if (runner.equals("")) {
+            logs = logsFolder;
+        } else {
+            logs = new File(logsFolder + "/" + runner);
+        }
+
+        if (!logs.exists())
+            logs.mkdir();
 
         String reportName = fileName + ".txt";
-        File report = new File(logsFolder + "/" + reportName);
+        File report = new File(logs + "/" + reportName);
         FileWriter fw = null;
         try {
             fw = new FileWriter(report);
@@ -119,22 +145,64 @@ public class Utilities {
 
     }
 
-    public static void sleep(STXWRunner currentThread, int time) {
+    public static void sleep(BaseRunner runner, int time) {
         try {
-            log(currentThread, "starting to wait - " + time + " milliseconds");
+            log(runner, "starting to wait - " + time + " milliseconds");
             Thread.sleep(time);
         } catch (Exception e) {
-            log(currentThread, e);
+            log(runner, e);
         }
     }
 
-    public static void writeToSummary(STXWRunner currentThread, String status) {
+    public static void writeToSummary(BaseRunner runner, String chosenDeviceName, String status) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), currentThread.getName(), currentThread.User, currentThread.testName, status);
+        line = String.format("%-25s%-15s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE, runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
         System.out.println(line);
-        Main.overallSummaryWriter.println(line);
-        Main.overallSummaryWriter.flush();
+        runner.overallSummaryWriter.println(line);
+        runner.overallSummaryWriter.flush();
+
+        Main.summaryWriter.println(line);
+        Main.summaryWriter.flush();
     }
+
+    public static void RemoteCopy(String remoteAddress, String remoteUser, String remotePassword, String srcPath,
+                                  String dstPath) throws InterruptedException, IOException {
+        RemoteRoboCopy remoteMachine = new RemoteRoboCopy(remoteAddress, remoteUser, remotePassword);
+        try {
+            remoteMachine.Build();
+            remoteMachine.RoboCopy(srcPath, dstPath, remoteAddress);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        } finally {
+            remoteMachine.close();
+        }
+
+    }
+
+    public static String RemoteJarLaunchServer(STARunner runner, String remoteAddress, String jarRemoteFolderPath, String jarName, String userNumber, String arguments) {
+        String command = " java -jar " + jarRemoteFolderPath + jarName + " " + userNumber + " " + arguments;
+        SeeTestProp2 stp = SeeTestPropFactory.getSeeTestPropOS(remoteAddress);
+        Utilities.log(runner, "On Macine " + remoteAddress + " running: " + command);
+        String result = stp.runCommandLine(command);
+        return result;
+
+    }
+
+    public static void runCMD(String name, String command) throws IOException, InterruptedException {
+        Process process = runCMD(command);
+        ProcessReader processReader = new ProcessReader(process, name);
+        Thread thread = new Thread(processReader);
+        thread.start();
+        process.waitFor();
+    }
+
+    public static Process runCMD(String command) throws IOException {
+        //System.out.println(command);
+        Utils.Utilities.log(command);
+        return Runtime.getRuntime().exec(command);
+    }
+
+
 }
