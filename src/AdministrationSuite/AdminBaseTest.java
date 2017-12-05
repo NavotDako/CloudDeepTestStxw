@@ -109,24 +109,4 @@ public abstract class AdminBaseTest extends BaseBaseTest {
         return !needToWaitToText;
     }
 
-    private String watchedLog;
-
-    @Rule
-    public TestWatcher watchman = new TestWatcher() {
-        @Override
-        protected void failed(Throwable e, Description description) {
-            watchedLog += description + "\n";
-            Utilities.log(runner, Thread.currentThread().getName() + " FAILED !!!" + watchedLog);
-            Utilities.log(runner, (Exception) e);
-            Utilities.log(runner, "TEST HAS FAILED!!!");
-        }
-
-        @Override
-        protected void succeeded(Description description) {
-            watchedLog += description + " " + "success!\n";
-            Utilities.log(runner, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
-            Utilities.log(runner, "TEST HAS PASSED!!!");
-        }
-    };
-
 }

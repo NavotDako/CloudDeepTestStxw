@@ -16,7 +16,7 @@ public class Enums {
             "ayoubAdminDeepTest5", "ayoubUserDeepTest1", "ayoubUserDeepTest2", "ayoubUserDeepTest3", "ayoubProjectAdminDeepTest1", "ayoubProjectAdminDeepTest2"};
     public String[] Project = {"ayoubProjectDeepTest1", "ayoubProjectDeepTest2"};
     public Class[] Actions = {Install.class, Reboot.class, ExtendSession.class, OpenLogs.class, StartVideo.class, Monitors.class};
-    public String Password = "Experitest2012";
+    public String STXWPassword = "Experitest2012";
     public String hostName = "http://releasecloud/index.html#";
     public Class[] TestPlanActions = {CreateTestPlans.class, RunTestPlanFromUI.class, RunTestAppFromAPI.class, DeleteTestPlan.class};
     public enum OS{

@@ -76,7 +76,7 @@ public class Project {
 
     public void addNewTestPlan(TestPlan newTestPlan) {
         this.projectTestPlans.add(newTestPlan);
-        Utilities.log("added test plan " + newTestPlan + "to project" + this.projName);
+        Utilities.log("added test plan " + newTestPlan + "to testPlanProject" + this.projName);
     }
 
     public List<TestPlan> getTestPlanByOS(Enums.OS os) {
@@ -96,9 +96,9 @@ public class Project {
 
     public void readAndUpdateTestPlansFromProject(User user, SeleniumHelper sel) {
 
-        Utilities.log("reading the test plans using selenium from project " + this.projName);
+        Utilities.log("reading the test plans using selenium from testPlanProject " + this.projName);
         sel.getProjectTestPlans().stream().forEach(p -> addNewTestPlan(p));
-        Utilities.log("added the test plans using selenium from project " + this.projName);
+        Utilities.log("added the test plans using selenium from testPlanProject " + this.projName);
 
     }
 
@@ -110,9 +110,9 @@ public class Project {
 
     public void createTestPlansForProject(User user, SeleniumHelper sel) {
 
-        Utilities.log("reading the test plans using selenium from project " + this.projName);
+        Utilities.log("reading the test plans using selenium from testPlanProject " + this.projName);
         sel.createTestPlans().stream().forEach(p -> addNewTestPlan(p));
-        Utilities.log("added the test plans using selenium from project " + this.projName);
+        Utilities.log("added the test plans using selenium from testPlanProject " + this.projName);
 
 
     }

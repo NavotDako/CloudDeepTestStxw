@@ -32,7 +32,7 @@ public class ProjectsManager {
                 return proj;
             }
         }
-        Utilities.log("Did not find project " + id + "in projMGR");
+        Utilities.log("Did not find testPlanProject " + id + "in projMGR");
         return null;
     }
     public ArrayList<Project> getProjects() {

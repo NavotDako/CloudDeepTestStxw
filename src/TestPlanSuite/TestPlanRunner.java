@@ -20,7 +20,7 @@ public class TestPlanRunner extends BaseRunner {
 
     public TestPlanRunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
 
-        super("STXWRunner", i, overallSummaryWriter, overallWriter);
+        super("TestPlanRunner", i, overallSummaryWriter, overallWriter);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TestPlanRunner extends BaseRunner {
                 Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
+                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
                 }
             } catch (Exception e) {
                 Utilities.log(this, e);

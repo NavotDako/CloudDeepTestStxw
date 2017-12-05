@@ -51,7 +51,7 @@ public class TestPlan {
     }
 
     public String toString(){
-        return "test Plan name " + testPlanName + " for project " + projID;
+        return "test Plan name " + testPlanName + " for testPlanProject " + projID;
     }
 
     public void setDeviceQueries(int numOfQueries){

@@ -20,7 +20,6 @@ public class STXWRunner extends BaseRunner {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
-//            this.testClass = ExtendSession.class;
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
             this.User = getUser(rand.nextInt(enums.Users.length));
@@ -37,7 +36,7 @@ public class STXWRunner extends BaseRunner {
                 Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
+                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
                 }
             } catch (Exception e) {
                 Utilities.log(this, e);

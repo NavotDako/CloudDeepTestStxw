@@ -78,7 +78,7 @@ public class STARunner extends BaseRunner {
                 Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
                 for (int i = 0; i < sleepTime; i++) {
                     Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
+                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
                 }
             } catch (Exception e) {
                 Utilities.log(this,e);

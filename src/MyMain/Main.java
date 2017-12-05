@@ -17,22 +17,24 @@ import java.util.Map;
 public class Main {
     public static CloudServer cloudServer = new CloudServer(CloudServer.CloudServerName.RELEASE);
     public static Enums enums = new Enums();
-    public static File logsFolder = Utilities.CreateLogsFolderForRun();
+    public static File logsFolder;
     public static Map<String, Boolean> suites = new HashMap<>();
-    public static PrintWriter overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
-    public static PrintWriter summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
+    public static PrintWriter overallWriter;
+    public static PrintWriter summaryWriter;
 
     private static int numOfThreads = 1;
     public static String CloudDevicesInfo;
 
-
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", false);
+        suites.put("STXWRunner", true);
         suites.put("AdminRunner", true);
         suites.put("STARunner", false);
-        suites.put("TestPlanRunner", false);
+        suites.put("TestPlanRunner", true);
 
+        logsFolder = Utilities.CreateLogsFolderForRun();
+        overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
+        summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
         CloudDevicesInfo = CloudApiShit.doGet("devices");
         System.out.println(CloudDevicesInfo);
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");

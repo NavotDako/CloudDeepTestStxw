@@ -18,14 +18,14 @@ public class DeleteTestPlan extends TestPlanBaseTest{
 
         @Test
         public void run() {
-            Utilities.log((BaseRunner) Thread.currentThread(), "DeleteTestPlan Test Starts");
+            Utilities.log(runner, "DeleteTestPlan Test Starts");
 
             System.out.println(this.getClass() + "-- started Running");
 //            if (!this.isThereTestPlanInProject()) {
 //                Utilities.log((BaseRunner) Thread.runner(), "Create test request");
 //                this.createTestRequest();
 //            }
-            Utilities.log((BaseRunner) Thread.currentThread(), "create test plans");
+            Utilities.log(runner, "create test plans");
             List<TestPlan> testPlansCreated = this.seleniumHelper.createTestPlans();
 //
 //            Utilities.log((BaseRunner) Thread.runner(), "get test plans");
@@ -36,12 +36,12 @@ public class DeleteTestPlan extends TestPlanBaseTest{
 
             Assert.assertTrue("failed to delete test plan", this.seleniumHelper.deleteTestPlan(testPlanToRun));
 
-            Utilities.log((BaseRunner) Thread.currentThread(), "verify os test plan was deleted");
+            Utilities.log(runner, "verify os test plan was deleted");
 
             Assert.assertTrue("We have an existing test plan with the test plan name",
                     this.seleniumHelper.getProjectTestPlans().stream().filter(p -> p.getTestPlanName().equalsIgnoreCase(testPlanToRun.getTestPlanName())).count() == 0);
 
-            Utilities.log((BaseRunner) Thread.currentThread(), "successfully deleted test plan");
+            Utilities.log(runner, "successfully deleted test plan");
         }
 
 }

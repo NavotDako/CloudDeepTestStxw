@@ -36,8 +36,8 @@ public class BaseRunner extends Thread{
     public User testPlanUser;
     public Project project;
 
-    public static PrintWriter overallWriter;
-    public static PrintWriter overallSummaryWriter;
+    public PrintWriter overallWriter;
+    public PrintWriter overallSummaryWriter;
 
     public BaseRunner(String TYPE, int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         iteration = i;
