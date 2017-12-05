@@ -28,6 +28,8 @@ public class BaseBaseTest {
     public String chosenDeviceName = "";
     private String watchedLog;
 
+
+
     protected WebDriver createDriver() throws MalformedURLException {
         Utilities.log(runner, "Creating Driver");
         DesiredCapabilities dc = new DesiredCapabilities().chrome();

@@ -25,6 +25,15 @@ public class BaseRunner extends Thread{
     public JSONArray jsonArrayDeviceReservation = null;
     public Random rand = new Random();
 
+    public String VMAddress = "";
+    public int VMClientNumber = 1;
+    public String VMPassword;
+    public int UserIndex;
+    public String VMUser;
+    public String VMSTAVersion;
+
+
+
     public static PrintWriter overallWriter;
     public static PrintWriter overallSummaryWriter;
 

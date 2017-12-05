@@ -40,7 +40,7 @@ public class STXWRunner extends BaseRunner {
                     Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
                 }
             } catch (Exception e) {
-                Utilities.log(e);
+                Utilities.log(this,e);
             }
         }
     }

@@ -2,6 +2,8 @@ package Utils;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
+import STASuite.STARunner;
+import org.junit.Assert;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -164,4 +166,43 @@ public class Utilities {
         Main.summaryWriter.println(line);
         Main.summaryWriter.flush();
     }
+
+    public static void RemoteCopy(String remoteAddress, String remoteUser, String remotePassword, String srcPath,
+                                  String dstPath) throws InterruptedException, IOException {
+        RemoteRoboCopy remoteMachine = new RemoteRoboCopy(remoteAddress, remoteUser, remotePassword);
+        try {
+            remoteMachine.Build();
+            remoteMachine.RoboCopy(srcPath, dstPath, remoteAddress);
+        } catch (Exception e) {
+            Assert.fail(e.getMessage());
+        } finally {
+            remoteMachine.close();
+        }
+
+    }
+
+    public static String RemoteJarLaunchServer(STARunner runner, String remoteAddress, String jarRemoteFolderPath, String jarName, String userNumber, String arguments) {
+        String command = " java -jar " + jarRemoteFolderPath + jarName + " " + userNumber + " " + arguments;
+        SeeTestProp2 stp = SeeTestPropFactory.getSeeTestPropOS(remoteAddress);
+        Utilities.log(runner, "On Macine " + remoteAddress + " running: " + command);
+        String result = stp.runCommandLine(command);
+        return result;
+
+    }
+
+    public static void runCMD(String name, String command) throws IOException, InterruptedException {
+        Process process = runCMD(command);
+        ProcessReader processReader = new ProcessReader(process, name);
+        Thread thread = new Thread(processReader);
+        thread.start();
+        process.waitFor();
+    }
+
+    public static Process runCMD(String command) throws IOException {
+        //System.out.println(command);
+        Utils.Utilities.log(command);
+        return Runtime.getRuntime().exec(command);
+    }
+
+
 }

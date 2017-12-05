@@ -18,5 +18,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="java-json" level="project" />
     <orderEntry type="library" name="selenium-server-standalone-3.4.0" level="project" />
+    <orderEntry type="library" name="serverclient" level="project" />
+    <orderEntry type="library" name="ws-commons-util-1.0.2" level="project" />
+    <orderEntry type="library" name="client" level="project" />
   </component>
 </module>
