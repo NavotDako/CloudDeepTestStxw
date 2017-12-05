@@ -24,11 +24,11 @@ public class STXWRunner extends BaseRunner {
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
             this.User = getUser(rand.nextInt(enums.Users.length));
-            testName = testClass.getName().substring(12, testClass.getName().length());
+            testName = testClass.getSimpleName();
             this.UserType = getUserType(User);
 
             Long currTime = System.currentTimeMillis();
-            TestName = testClass.getName().substring(12, testClass.getName().length()) + " " + currTime;
+            TestName = testClass.getSimpleName() + " " + currTime;
 
             Result r = JUnitCore.runClasses(testClass);
 
@@ -40,7 +40,7 @@ public class STXWRunner extends BaseRunner {
                     Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + "minutes remaining ");
                 }
             } catch (Exception e) {
-                Utilities.log(this,e);
+                Utilities.log(this, e);
             }
         }
     }

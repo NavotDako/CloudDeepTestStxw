@@ -19,7 +19,7 @@ public class STABaseTest extends BaseBaseTest{
     public void SetUp() throws Exception {
         runner = (STARunner) Thread.currentThread();
 
-        String cloudUser = "user"+ runner.iteration;
+        String cloudUser = "testPlanUser"+ runner.iteration;
 
     }
     @After

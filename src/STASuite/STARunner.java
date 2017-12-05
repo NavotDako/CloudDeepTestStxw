@@ -45,7 +45,7 @@ public class STARunner extends BaseRunner {
         }
 
         UserIndex = iteration;
-        User = "user" + iteration;
+        User = "testPlanUser" + iteration;
         UserType = "Admin";
 
         Utilities.log(this, "On VM at " + VMAddress + "Installing And Launching STA version " + VMSTAVersion + " Login to Cloud as User " + UserIndex);

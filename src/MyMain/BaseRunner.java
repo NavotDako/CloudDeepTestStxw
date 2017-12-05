@@ -1,9 +1,10 @@
 package MyMain;
 
 import Utils.Utilities;
+import org.boon.Str;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import TestPlanSuite.cloudEntities.*;
 import java.io.PrintWriter;
 import java.util.Random;
 
@@ -32,7 +33,8 @@ public class BaseRunner extends Thread{
     public String VMUser;
     public String VMSTAVersion;
 
-
+    public User testPlanUser;
+    public Project project;
 
     public static PrintWriter overallWriter;
     public static PrintWriter overallSummaryWriter;

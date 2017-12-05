@@ -34,7 +34,7 @@ public class RemoteRoboCopy implements Closeable {
     }
 
     public void Build() throws IOException {
-        String command = "net use \\\\" + address + " /user:" + user + " " + password;
+        String command = "net use \\\\" + address + " /testPlanUser:" + user + " " + password;
         Utilities.runCMD(command);
         this.isOpen = true;
     }

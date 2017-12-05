@@ -44,13 +44,13 @@ public class UserAction extends AdminBaseTest {
 		NewLogin(userName, initialPassword);		
 		ChangePassword(initialPassword);
 		Utilities.sleep(runner, 5000);
-		if(!WaitForElement("//*[@id='nav-bar-current-user']")) 
+		if(!WaitForElement("//*[@id='nav-bar-current-testPlanUser']"))
 		{
 			Assert.fail("the adminstration doesn't succeed");
 		}
-		if(!driver.findElement(By.xpath("//*[@id='nav-bar-current-user']")).getText().equals(userName)) 
+		if(!driver.findElement(By.xpath("//*[@id='nav-bar-current-testPlanUser']")).getText().equals(userName))
 		{
-			Assert.fail("The UserName for current user does't equal to " + userName);
+			Assert.fail("The UserName for current testPlanUser does't equal to " + userName);
 		}
 		driver.findElement(By.xpath("//*[@id='page-wrapper']/div[1]/nav/ul[2]/md-menu/button")).click();
 		Utilities.log(runner, "Click on logout window");
@@ -143,7 +143,7 @@ public class UserAction extends AdminBaseTest {
 		Utilities.sleep(runner, 5000);
 		if(!driver.findElement(By.xpath("//*[@id='full-page-container']/ui-view/div/div[2]/md-virtual-repeat-container/div/div[2]/div/md-content/div/table/tbody/tr/td[9]/span")).getText().contains("Yes"))
 		{
-			Assert.fail("The user doesn't added to the project");
+			Assert.fail("The testPlanUser doesn't added to the project");
 		}
 	} 
 	

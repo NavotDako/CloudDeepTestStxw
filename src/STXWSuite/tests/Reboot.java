@@ -95,7 +95,7 @@ public class Reboot extends STXWBaseTest {
         String webPage = "" + host + "" + port + "/api/v1";
         String authStringEnc;
 
-        String name = "ayouba";//TODO: admin user name is here
+        String name = "ayouba";//TODO: admin testPlanUser name is here
         String password = "Experitest2012";//TODO: admin password is here
         String authString = name + ":" + password;
         authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
