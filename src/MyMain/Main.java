@@ -28,9 +28,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", false);
-        suites.put("AdminRunner", false);
-        suites.put("STARunner", false);
+        suites.put("STXWRunner", true);
+        suites.put("AdminRunner", true);
+        suites.put("STARunner", true);
         suites.put("TestPlanRunner", true);
 
         CloudDevicesInfo = CloudApiShit.doGet("devices");
@@ -72,17 +72,17 @@ public class Main {
             }
         }
 
-//        if (suites.get("STARunner")) {
-//            AdminRunner[] adminThreadArray = new AdminRunner[numOfThreads];
-//            PrintWriter AdminRunnerOverallWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "OverallReport");
-//            PrintWriter AdminRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "Summary");
-//
-//            for (int i = 0; i < numOfThreads; i++) {
-//                adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
-//                adminThreadArray[i].start();
-//                Thread.sleep(10000);
-//            }
-//        }
+        if (suites.get("STARunner")) {
+            AdminRunner[] adminThreadArray = new AdminRunner[numOfThreads];
+            PrintWriter AdminRunnerOverallWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "OverallReport");
+            PrintWriter AdminRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "Summary");
+
+            for (int i = 0; i < numOfThreads; i++) {
+                adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
+                adminThreadArray[i].start();
+                Thread.sleep(10000);
+            }
+        }
 
 //        overallWriter.close();
 
