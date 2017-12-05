@@ -36,7 +36,7 @@ public class Main {
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
         summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
         CloudDevicesInfo = CloudApiShit.doGet("devices");
-        System.out.println(CloudDevicesInfo);
+        Utilities.log(CloudDevicesInfo);
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 
         if (suites.get("TestPlanRunner")) {

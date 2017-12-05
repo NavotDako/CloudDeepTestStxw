@@ -212,7 +212,7 @@ public class SeeTestTestsStandAlone {
             for (int i = 0; i < 10; i++) {
                 client.sleep(5000);
                 String time = client.elementGetText("NATIVE", "xpath=//*[@text and @class='UIAView' and ./parent::*[@class='UIAView' and ./parent::*[@class='UIAScrollView']]]", 0);
-                System.out.println("Time :" + time);
+                Utilities.log(runner,"Time :" + time);
                 client.click("NATIVE", "xpath=//*[@text='Lap']", 0, 1);
             }
 
@@ -237,7 +237,7 @@ public class SeeTestTestsStandAlone {
             client.click("WEB", "xpath=//*[@id='mw-mf-main-menu-button']", 0, 1);
             client.click("WEB", "xpath=//*[@text='Random']", 0, 1);
             String section0 = client.elementGetText("WEB", "xpath=//*[@id='section_0']", 0);
-            System.out.println(section0);
+            Utilities.log(runner, section0);
         }
         client.applicationClose(client.getCurrentApplicationName());
         //client.stopStepsGroup();

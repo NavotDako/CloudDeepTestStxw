@@ -27,7 +27,7 @@ public abstract class AdminBaseTest extends BaseBaseTest {
     @Before
     public void setUp() throws Exception {
         runner = (AdminRunner) Thread.currentThread();
-        System.out.println("-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
+        Utilities.log(runner,"-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
         try {
             driver = createDriver();
             needToQuitDriverOnFinish = true;

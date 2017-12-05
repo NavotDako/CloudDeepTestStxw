@@ -23,7 +23,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     public void SetUp() throws Exception {
         runner = (STXWRunner) Thread.currentThread();
 
-        System.out.println("-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
+        Utilities.log(runner,"-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
 
         Utilities.log(runner, "Enter to setUp");
 
