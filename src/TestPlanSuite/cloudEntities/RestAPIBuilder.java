@@ -20,7 +20,7 @@ public final class RestAPIBuilder {
     private static String username;
     private static String password;
     private static String cloudIP;
-    private static String cloudPort;
+    private static int cloudPort;
     private static boolean isSecured;
     private static String prefix;
 
@@ -46,7 +46,7 @@ public final class RestAPIBuilder {
         return cloudIP;
     }
 
-    public static String getCloudPort() {
+    public static int getCloudPort() {
         return cloudPort;
     }
 

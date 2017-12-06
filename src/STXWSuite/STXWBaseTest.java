@@ -278,7 +278,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         Date CurrentTime = new Date();
 
-        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.user, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + runner.testName);
+        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.user, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), Main.logsFolder + "\\" + runner.testName);
         runner.overallWriter.println(line);
         runner.overallWriter.flush();
 

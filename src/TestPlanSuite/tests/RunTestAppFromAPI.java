@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class RunTestAppFromAPI extends TestPlanBaseTest {
 
-//    public RunTestAppFromAPI(Project proj, user testPlanUser) {
+//    public RunTestAppFromAPI(PROJECTS proj, user testPlanUser) {
 //        super(proj, testPlanUser);
 //    }
     @Test

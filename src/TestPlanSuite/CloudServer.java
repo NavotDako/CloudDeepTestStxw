@@ -6,8 +6,8 @@ public class CloudServer {
     private static String webPage;
     private static String authStringEnc;
     private static String DEVICES_URL = "/devices";
-    private String HOST;
-    private String PORT;
+    public String HOST;
+    public int PORT;
     public String USER;
     public String PASS;
     public boolean SECURED = false;
@@ -15,6 +15,7 @@ public class CloudServer {
     public CloudServerName cloudName;
     private String authString;
     String result;
+    public String PROJECT;
 
     public CloudServer(CloudServerName cloudName) {
         this.cloudName = cloudName;
@@ -35,7 +36,7 @@ public class CloudServer {
         authStringEnc = new String(authEncBytes);
     }
 
-    public String getPORT() {
+    public int getPORT() {
         return PORT;
     }
 
@@ -56,57 +57,57 @@ public class CloudServer {
     }
 
     public enum CloudServerName {
-        MY, QA, MIRRON, KHALED, MASTER, KHALED_SECURED, RELEASE,ATT
+        MY, QA, MIRRON, KHALED, MASTER, KHALED_SECURED, RELEASE, ATT
     }
 
     public void updateCloudDetails() {
         switch (cloudName) {
             case MY:
                 HOST = "192.168.2.13";
-                PORT = "80";
+                PORT = 80;
                 USER = "admin";
                 PASS = "Experitest2012";
                 break;
             case KHALED_SECURED:
                 HOST = "khaleds-mac-mini.local";
-                PORT = "8090";
+                PORT = 8090;
                 USER = "khaleda";
                 PASS = "Experitest2012";
                 SECURED = true;
                 break;
             case QA:
                 HOST = "192.168.2.135";
-                PORT = "80";
+                PORT = 80;
                 USER = "khaleda";
                 PASS = "Experitest2012";
                 break;
             case MIRRON:
                 HOST = "192.168.2.71";
-                PORT = "8080";
+                PORT = 8080;
                 USER = "user1";
                 PASS = "Welc0me!";
                 break;
             case KHALED:
                 HOST = "192.168.2.156";
-                PORT = "80";
+                PORT = 80;
                 USER = "khaleda";
                 PASS = "Experitest2012";
                 break;
             case MASTER:
                 HOST = "mastercloud";
-                PORT = "80";
+                PORT = 80;
                 USER = "khaleda";
                 PASS = "Experitest2012";
                 break;
             case RELEASE:
                 HOST = "releasecloud";
-                PORT = "80";
+                PORT = 80;
                 USER = "khaleda";
                 PASS = "Experitest2012";
                 break;
             default:
                 HOST = "192.168.2.13";
-                PORT = "80";
+                PORT = 80;
                 USER = "admin";
                 PASS = "Experitest2012";
                 break;

@@ -22,32 +22,18 @@ public class STXWRunner extends BaseRunner {
         while (true) {
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
-            this.user = getUser(rand.nextInt(enums.Users.length));
+            this.user = GetUser(rand.nextInt(enums.USERS.length));
             testName = testClass.getSimpleName();
             this.userType = getUserType(user);
 
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep();
+            GoToSleep(5);
         }
-    }
-
-    public String properCase(String inputVal) {
-
-        if (inputVal.length() == 0) return "";
-
-        if (inputVal.length() == 1) return inputVal.toLowerCase();
-
-        return inputVal.substring(0, 1).toLowerCase()
-                + inputVal.substring(1).toLowerCase();
     }
 
     public Class getAction(int actionNum) {
         return Main.enums.Actions[actionNum];
-    }
-
-    public String getUser(int userNum) {
-        return Main.enums.Users[userNum];
     }
 
     public String getUserType(String UserName) {

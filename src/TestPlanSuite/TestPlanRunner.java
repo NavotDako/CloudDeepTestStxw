@@ -42,7 +42,7 @@ public class TestPlanRunner extends BaseRunner {
 
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep();
+            GoToSleep(20);
         }
     }
 

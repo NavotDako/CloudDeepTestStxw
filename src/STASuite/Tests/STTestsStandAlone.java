@@ -5,11 +5,11 @@ import Utils.MyILogger;
 import Utils.Utilities;
 import com.experitest.client.Client;
 
-public class SeeTestTestsStandAlone {
+public class STTestsStandAlone {
 
     STARunner runner;
 
-    public SeeTestTestsStandAlone(STARunner runner) {
+    public STTestsStandAlone(STARunner runner) {
         this.runner = runner;
     }
 

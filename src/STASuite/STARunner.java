@@ -19,6 +19,13 @@ public class STARunner extends BaseRunner {
     String dstPath;
     public String jarRemoteFolderPath;
     String jarName;
+    public String VMAddress = "";
+    public int VMClientNumber = 1;
+    public String VMPassword;
+    public int UserIndex;
+    public String VMUser;
+    public String VMSTAVersion;
+
 
     public STARunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         super("STARunner", i, overallSummaryWriter, overallWriter);
@@ -73,15 +80,15 @@ public class STARunner extends BaseRunner {
 
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep();
+            GoToSleep(10);
         }
     }
 
     private Class SelectTestsToRun(int i) {
         switch (i){
-            case  0: return AndroidTests.class;
-            case  1: return iOSTests.class;
-            case  2: return BothOSTests.class;
+            case  0: return STAndroidTests.class;
+            case  1: return STiOSTests.class;
+            case  2: return STBothOSTests.class;
 
         }
         return null;

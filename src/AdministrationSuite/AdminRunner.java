@@ -2,8 +2,10 @@ package AdministrationSuite;
 
 import java.io.PrintWriter;
 
-import AdministrationSuite.tests.UserAction;
+import AdministrationSuite.tests.*;
 import MyMain.BaseRunner;
+import STGridSuite.tests.GridAndroidTests;
+import STGridSuite.tests.GridiOSTests;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -21,12 +23,31 @@ public class AdminRunner extends BaseRunner {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
-            this.testClass = UserAction.class;
-
+            testClass = SelectTestToRun(5);
             testName = testClass.getSimpleName();
             Result r = JUnitCore.runClasses(testClass);
-            GoToSleep();
+            GoToSleep(10);
         }
+    }
+
+    private Class SelectTestToRun(int i) {
+
+            switch (i){
+                case  0:
+                    return ApplicationAction.class;
+                case  1:
+                    return DeviceGroupAction.class;
+                case  2:
+                    return DHMAction.class;
+                case  3:
+                    return ProjectAction.class;
+                case  4:
+                    return ScreenShotAction.class;
+                case  5:
+                    return UserAction.class;
+            }
+            return null;
+
     }
 
 }

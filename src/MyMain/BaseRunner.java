@@ -1,16 +1,16 @@
 package MyMain;
 
+import TestPlanSuite.CloudServer;
 import Utils.Utilities;
-import org.boon.Str;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import TestPlanSuite.cloudEntities.*;
+
 import java.io.PrintWriter;
 import java.util.Random;
 
 
-public class BaseRunner extends Thread{
-
+public class BaseRunner extends Thread {
+    public CloudServer cs = new CloudServer(CloudServer.CloudServerName.RELEASE);
     public String TYPE;
     public int iteration;
     public Random rand = new Random();
@@ -25,19 +25,13 @@ public class BaseRunner extends Thread{
     public JSONObject jsonDeviceInfo = null;
     public String STXWType;
 
-    public String VMAddress = "";
-    public int VMClientNumber = 1;
-    public String VMPassword;
-    public int UserIndex;
-    public String VMUser;
-    public String VMSTAVersion;
-
     public User testPlanUser;
     public Project project;
 
     public PrintWriter pw = null;
     public PrintWriter overallWriter;
     public PrintWriter overallSummaryWriter;
+
 
     public BaseRunner(String TYPE, int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         iteration = i;
@@ -46,19 +40,21 @@ public class BaseRunner extends Thread{
         this.TYPE = TYPE;
     }
 
-
-    protected void GoToSleep(){
+    protected void GoToSleep(int maxTime) {
         try {
-            int sleepTime = rand.nextInt(20);
+            int sleepTime = rand.nextInt(maxTime);
             Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
             for (int i = 0; i < sleepTime; i++) {
                 Thread.sleep(60000);
-                Utilities.log(this,currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
+                Utilities.log(this, currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
             }
         } catch (Exception e) {
-            Utilities.log(this,e);
+            Utilities.log(this, e);
         }
     }
 
+    public String GetUser(int userNum) {
+        return Main.enums.USERS[userNum];
+    }
 
 }

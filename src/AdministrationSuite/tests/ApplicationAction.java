@@ -1,4 +1,4 @@
-package Administration;
+package AdministrationSuite.tests;
 
 import static org.junit.Assert.*;
 

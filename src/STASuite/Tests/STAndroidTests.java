@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Created by navot.dako on 12/4/2017.
  */
-public class AndroidTests extends STABaseTest {
+public class STAndroidTests extends STABaseTest {
     private String vmClientQuery;
 
     @Test

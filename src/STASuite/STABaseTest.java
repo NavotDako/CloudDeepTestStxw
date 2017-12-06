@@ -2,7 +2,7 @@ package STASuite;
 
 import MyMain.BaseBaseTest;
 import MyMain.Main;
-import STASuite.Tests.SeeTestTestsStandAlone;
+import STASuite.Tests.STTestsStandAlone;
 import Utils.Utilities;
 import org.junit.After;
 import org.junit.Before;
@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class STABaseTest extends BaseBaseTest{
 
-    protected SeeTestTestsStandAlone STA = new SeeTestTestsStandAlone((STARunner) runner);
+    protected STTestsStandAlone STA = new STTestsStandAlone((STARunner) runner);
 
     @Before
     public void SetUp() throws Exception {

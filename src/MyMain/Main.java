@@ -2,6 +2,7 @@ package MyMain;
 
 import AdministrationSuite.AdminRunner;
 import STASuite.STARunner;
+import STGridSuite.STGridRunner;
 import STXWSuite.STXWRunner;
 import TestPlanSuite.CloudServer;
 import TestPlanSuite.TestPlanRunner;
@@ -28,10 +29,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", true);
-        suites.put("AdminRunner", true);
+        suites.put("STXWRunner", false);
+        suites.put("AdminRunner", false);
         suites.put("STARunner", false);
         suites.put("TestPlanRunner", false);
+        suites.put("STGridRunner", true);
+
 
         logsFolder = Utilities.CreateLogsFolderForRun();
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
@@ -83,6 +86,18 @@ public class Main {
             for (int i = 0; i < numOfThreads; i++) {
                 STAThreadArray[i] = new STARunner(i, STARunnerSummaryWriter, STARunnerOverallWriter);
                 STAThreadArray[i].start();
+                Thread.sleep(10000);
+            }
+        }
+
+        if (suites.get("STGridRunner")) {
+            STGridRunner[] STGridRunnerArray = new STGridRunner[numOfThreads];
+            PrintWriter STGridRunnerOverallWriter = Utilities.createReportFile(logsFolder, "STGridRunner", "OverallReport");
+            PrintWriter STGridRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "STGridRunner", "Summary");
+
+            for (int i = 0; i < numOfThreads; i++) {
+                STGridRunnerArray[i] = new STGridRunner(i, STGridRunnerSummaryWriter, STGridRunnerOverallWriter);
+                STGridRunnerArray[i].start();
                 Thread.sleep(10000);
             }
         }
