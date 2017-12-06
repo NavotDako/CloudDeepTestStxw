@@ -1,16 +1,15 @@
 package MyMain;
 
-import TestPlanSuite.CloudServer;
+import TestPlanSuite.cloudEntities.Project;
+import TestPlanSuite.cloudEntities.User;
 import Utils.Utilities;
 import org.json.JSONObject;
-import TestPlanSuite.cloudEntities.*;
 
 import java.io.PrintWriter;
 import java.util.Random;
 
 
 public class BaseRunner extends Thread {
-    public CloudServer cs = new CloudServer(CloudServer.CloudServerName.RELEASE);
     public String TYPE;
     public int iteration;
     public Random rand = new Random();

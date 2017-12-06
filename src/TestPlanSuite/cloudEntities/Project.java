@@ -1,8 +1,8 @@
 package TestPlanSuite.cloudEntities;
 
+import MyMain.CloudServer;
 import MyMain.Enums;
 import MyMain.Main;
-import TestPlanSuite.CloudServer;
 import Utils.Utilities;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;

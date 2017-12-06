@@ -1,7 +1,7 @@
 package TestPlanSuite.cloudEntities;
 
+import MyMain.CloudServer;
 import MyMain.Enums;
-import TestPlanSuite.CloudServer;
 
 import java.io.IOException;
 

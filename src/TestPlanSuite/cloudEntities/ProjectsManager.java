@@ -1,11 +1,11 @@
 package TestPlanSuite.cloudEntities;
 
-import TestPlanSuite.CloudServer;
+import MyMain.CloudServer;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import TestPlanSuite.cloudEntities.*;
+
 import java.io.IOException;
 import java.util.ArrayList;
 

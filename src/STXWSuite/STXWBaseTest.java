@@ -1,19 +1,23 @@
 package STXWSuite;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import MyMain.BaseBaseTest;
+import MyMain.Main;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.*;
-import org.openqa.selenium.*;
-
-import MyMain.Main;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 
 public abstract class STXWBaseTest extends BaseBaseTest{
@@ -22,8 +26,6 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     @Before
     public void SetUp() throws Exception {
         runner = (STXWRunner) Thread.currentThread();
-
-        Utilities.log(runner,"-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
 
         Utilities.log(runner, "Enter to setUp");
 
@@ -179,8 +181,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     }
 
     private void NavigateToAvailableDevicesView() throws Exception {
-        driver.get(runner.enums.hostName + "/devices");
-        Utilities.log(runner, "go to the devices - " + runner.enums.hostName.replace("login", "devices"));
+        driver.get(Main.cs.HOST + "/devices");
+        Utilities.log(runner, "go to the devices - " + Main.cs.HOST.replace("login", "devices"));
 
         boolean needToWaitForPageLoad = true;
 
@@ -216,30 +218,19 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
         Utilities.sleep(runner, 2000);
         driver.navigate().back();
-        driver.get(runner.enums.hostName.replace("login", "devices"));
+        driver.get(Main.cs.HOST.replace("login", "devices"));
 
     }
 
     private void LoginInToCloud() {
-        driver.get(runner.enums.hostName);
+        driver.get(Main.cs.URL_ADDRESS);
 
-        Utilities.log(runner, "go to " + runner.enums.hostName);
+        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS);
         waitForElement("//*[@name='username']");
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
-        Utilities.log(runner, "Write username (" + runner.user + ")");
-
         driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
-        Utilities.log(runner, "write the password ");
-
         driver.findElement(By.name("login")).click();
-        Utilities.log(runner, "click on login");
-
-//        try {
-//            driver.findElement(By.xpath("/html/body/md-backdrop")).click();
-//            Utilities.log(runner, "click on place in page");
-//        } catch (Exception e) {
-//            writeFailedLineInLog(e.toString());
-//        }
+        Utilities.log(runner, "clicked on login");
 
     }
 

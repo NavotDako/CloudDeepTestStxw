@@ -1,6 +1,6 @@
 package TestPlanSuite.cloudEntities;
 
-import TestPlanSuite.CloudServer;
+import MyMain.CloudServer;
 import Utils.Utilities;
 import org.junit.Assert;
 
