@@ -21,7 +21,8 @@ public abstract class STGridBaseTest extends BaseBaseTest {
         public String deviceShortName = null;
 
 
-        public BaseSeeTest(String deviceID, String testName, int iteration) {
+        public STGridBaseTest(String deviceID, String testName, int iteration) {
+
             this.iteration = iteration;
             this.reportFolder = runner.reportFolderString;
             if (runner.GRID) {

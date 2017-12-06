@@ -23,13 +23,8 @@ public class AdminRunner extends BaseRunner {
         while (true) {
             this.testClass = UserAction.class;
 
-            testName = testClass.getName().substring(12, testClass.getName().length());
-            Long currTime = System.currentTimeMillis();
-            TestName = testClass.getName().substring(12, testClass.getName().length()) + " " + currTime;
-
+            testName = testClass.getSimpleName();
             Result r = JUnitCore.runClasses(testClass);
-
-
             GoToSleep();
         }
     }

@@ -45,8 +45,8 @@ public class STARunner extends BaseRunner {
         }
 
         UserIndex = iteration;
-        User = "testPlanUser" + iteration;
-        UserType = "Admin";
+        user = "testPlanUser" + iteration;
+        userType = "Admin";
 
         Utilities.log(this, "On VM at " + VMAddress + "Installing And Launching STA version " + VMSTAVersion + " Login to Cloud as User " + UserIndex);
         try {
@@ -69,7 +69,7 @@ public class STARunner extends BaseRunner {
             //       this.testClass = getAction(rand.nextInt(enums.Actions.length));
 
             Long currTime = System.currentTimeMillis();
-            TestName = testClass.getName().substring(12, testClass.getName().length()) + "[" + this.VMAddress + "]" + " " + currTime;
+            testName = testClass.getSimpleName() + "[" + this.VMAddress + "]" + " " + currTime;
 
             Result r = JUnitCore.runClasses(testClass);
 

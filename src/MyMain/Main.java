@@ -1,6 +1,7 @@
 package MyMain;
 
 import AdministrationSuite.AdminRunner;
+import STASuite.STARunner;
 import STXWSuite.STXWRunner;
 import TestPlanSuite.CloudServer;
 import TestPlanSuite.TestPlanRunner;
@@ -75,13 +76,13 @@ public class Main {
         }
 
         if (suites.get("STARunner")) {
-            AdminRunner[] adminThreadArray = new AdminRunner[numOfThreads];
-            PrintWriter AdminRunnerOverallWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "OverallReport");
-            PrintWriter AdminRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "Summary");
+            STARunner[] STAThreadArray = new STARunner[numOfThreads];
+            PrintWriter STARunnerOverallWriter = Utilities.createReportFile(logsFolder, "STARunner", "OverallReport");
+            PrintWriter STARunnerSummaryWriter = Utilities.createReportFile(logsFolder, "STARunner", "Summary");
 
             for (int i = 0; i < numOfThreads; i++) {
-                adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
-                adminThreadArray[i].start();
+                STAThreadArray[i] = new STARunner(i, STARunnerSummaryWriter, STARunnerOverallWriter);
+                STAThreadArray[i].start();
                 Thread.sleep(10000);
             }
         }

@@ -29,7 +29,7 @@ public class STABaseTest extends BaseBaseTest{
 
         String thisPath =(new File("")).getAbsolutePath()+"\\";
 
-        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.User, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), thisPath + Main.logsFolder.getName() + "\\" + runner.TestName);
+        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.user, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), thisPath + Main.logsFolder.getName() + "\\" + runner.testName);
         Main.overallWriter.println(line);
         Main.overallWriter.flush();
     }

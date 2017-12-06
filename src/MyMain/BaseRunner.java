@@ -13,18 +13,17 @@ public class BaseRunner extends Thread{
 
     public String TYPE;
     public int iteration;
+    public Random rand = new Random();
+    public Enums enums = new Enums();
+
     public Class testClass;
     public String testName = "";
-    public String User = "";
-    public String TestName = "";
-    public String UserType = "";
-    public String STXWType;
-    public PrintWriter pw = null;
-    public Enums enums = new Enums();
+    public String user = "";
+    public String userType = "";
+
     public String CloudDevicesInfo = Main.CloudDevicesInfo;
     public JSONObject jsonDeviceInfo = null;
-    public JSONArray jsonArrayDeviceReservation = null;
-    public Random rand = new Random();
+    public String STXWType;
 
     public String VMAddress = "";
     public int VMClientNumber = 1;
@@ -36,6 +35,7 @@ public class BaseRunner extends Thread{
     public User testPlanUser;
     public Project project;
 
+    public PrintWriter pw = null;
     public PrintWriter overallWriter;
     public PrintWriter overallSummaryWriter;
 

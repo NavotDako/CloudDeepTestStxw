@@ -22,12 +22,9 @@ public class STXWRunner extends BaseRunner {
         while (true) {
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
-            this.User = getUser(rand.nextInt(enums.Users.length));
+            this.user = getUser(rand.nextInt(enums.Users.length));
             testName = testClass.getSimpleName();
-            this.UserType = getUserType(User);
-
-            Long currTime = System.currentTimeMillis();
-            TestName = testClass.getSimpleName() + " " + currTime;
+            this.userType = getUserType(user);
 
             Result r = JUnitCore.runClasses(testClass);
 

@@ -47,7 +47,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
         Utilities.log(runner, "choosing device by xpath :" + chosenDeviceName);
 
-        switch (runner.UserType) {
+        switch (runner.userType) {
             case "ProjectAdmin":
                 manualIndex = 5;
                 break;
@@ -225,8 +225,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         Utilities.log(runner, "go to " + runner.enums.hostName);
         waitForElement("//*[@name='username']");
-        driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.User);
-        Utilities.log(runner, "Write username (" + runner.User + ")");
+        driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
+        Utilities.log(runner, "Write username (" + runner.user + ")");
 
         driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
         Utilities.log(runner, "write the password ");
@@ -278,7 +278,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         Date CurrentTime = new Date();
 
-        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.User, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + runner.TestName);
+        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.user, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + runner.testName);
         runner.overallWriter.println(line);
         runner.overallWriter.flush();
 

@@ -38,7 +38,7 @@ public class TestPlanRunner extends BaseRunner {
             project = getRunningCandidates().get(testPlanUser);
 
             Long currTime = System.currentTimeMillis();
-            TestName = testName + " " + currTime;
+            testName = testName + " " + currTime;
 
             Result r = JUnitCore.runClasses(testClass);
 

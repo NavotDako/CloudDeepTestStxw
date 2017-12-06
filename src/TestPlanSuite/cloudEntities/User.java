@@ -20,29 +20,29 @@ public class User {
     Enums.ROLES role;
     RestAPIBuilder restAPIBuilder;
 
-    public User (CloudServer cloudServer, String name, String id, String projectId) throws IOException {
+    public User(CloudServer cloudServer, String name, String id, String projectId) throws IOException {
         restAPIBuilder = new RestAPIBuilder(cloudServer);
         userName = name;
         userId = id;
         setRole(name);
         projId = projectId;
     }
-    public void setRole(String name){
-        if(name.contains("proj")){
+
+    public void setRole(String name) {
+        if (name.contains("proj")) {
             role = Enums.ROLES.PROJECT_ADMIN;
             return;
         }
-        if(name.contains("admin")){
+        if (name.contains("admin")) {
             role = Enums.ROLES.ADMIN;
-        }
-        else if(name.contains("khaleda")){
+        } else if (name.contains("khaleda")) {
             role = Enums.ROLES.ADMIN;
-        }
-        else{
+        } else {
             role = Enums.ROLES.USER;
         }
 
     }
+
     public String getUserName() {
         return userName;
     }
@@ -56,7 +56,7 @@ public class User {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "testPlanUser role is " + role + " Username is " + getUserName() + " Project ID " + getProjId();
     }
 }
