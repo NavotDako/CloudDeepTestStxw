@@ -64,7 +64,7 @@ public class Reboot extends STXWBaseTest {
             Utilities.log(runner, GetSpecificDevice(getStringFromJson(deviceJson, "id")).toString());
             if (!(getStringFromJson(GetSpecificDevice(getStringFromJson(deviceJson, "id")), "currentStatus").equals("online"))) {
                 Utilities.log(runner, "the device doesn't goes to online");
-                System.out.println("The displayStatus " + getStringFromJson(deviceInfo, "currentStatus"));
+                Utilities.log(runner, "The displayStatus " + getStringFromJson(deviceInfo, "currentStatus"));
                 Assert.fail("The device doesn't go to online");
             } else {
                 Utilities.log(runner, "the device's currentStatus is online");
@@ -112,14 +112,6 @@ public class Reboot extends STXWBaseTest {
         return getURL;
     }
 
-    protected void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
-        int responseCode = httpURLConnection.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-        System.out.println(result);
-    }
-
-
     protected String doGet(String entity, String webPage, String authStringEnc) throws IOException {
         URL url = new URL(webPage + entity);
         URLConnection urlConnection = url.openConnection();
@@ -133,7 +125,7 @@ public class Reboot extends STXWBaseTest {
             sb.append(charArray, 0, numCharsRead);
         }
         String result = sb.toString();
-     //   printGet(url, (HttpURLConnection) urlConnection, result);
+        //   printGet(url, (HttpURLConnection) urlConnection, result);
         boolean isResponseValid = ((HttpURLConnection) urlConnection).getResponseCode() < 300;
         Assert.assertTrue("Did not get a valid response", isResponseValid);
         return result;

@@ -158,7 +158,7 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-25s%-15s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE, runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
+        line = String.format("%-30s%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
         System.out.println(line);
         runner.overallSummaryWriter.println(line);
         runner.overallSummaryWriter.flush();

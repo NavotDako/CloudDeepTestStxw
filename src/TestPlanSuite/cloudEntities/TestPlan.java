@@ -23,7 +23,6 @@ public class TestPlan {
         this.testPlanName = testPlanName;
         this.project = project;
         this.projID = projectID;
-        Utilities.log("created a new test plan object " + toString());
     }
 
 //    public int getId() {

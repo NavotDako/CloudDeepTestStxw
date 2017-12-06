@@ -20,7 +20,7 @@ public class DeleteTestPlan extends TestPlanBaseTest{
         public void run() {
             Utilities.log(runner, "DeleteTestPlan Test Starts");
 
-            System.out.println(this.getClass() + "-- started Running");
+            Utilities.log(runner,this.getClass() + "-- started Running");
 //            if (!this.isThereTestPlanInProject()) {
 //                Utilities.log((BaseRunner) Thread.runner(), "Create test request");
 //                this.createTestRequest();

@@ -28,7 +28,6 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         Utilities.log(runner, "Enter to setUp");
 
         driver = createDriver();
-        needToQuitDriverOnFinish = true;
         LoginInToCloud();
         Utilities.sleep(runner, 1000);
         NavigateToAvailableDevicesView();
@@ -148,7 +147,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         boolean needToWait = true;
         while (needToWait && timeOutCounter < 10) {
             try {
-                needToWait = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0");
+                needToWait = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0") || driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("");
             } catch (Exception e) {
                 Utilities.log(runner, "Waiting For Devices To Update");
                 Utilities.sleep(runner, 500);
@@ -165,9 +164,13 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
 
         Utilities.log(runner, "Devices Number Info : " + devicesInfo);
-
+        try{
         devicesInfo = devicesInfo.split("Devices: ")[1];
         devicesListSize = Integer.parseInt(devicesInfo.split(" /")[0]);
+
+        }catch (Exception e){
+            Assert.fail("Can't get devices numbers");
+        }
         Utilities.log(runner, "" + devicesListSize);
         if (devicesListSize > 10) devicesListSize -= 10;
         Utilities.log(runner, "Taking the device list below 10 - " + devicesListSize);
@@ -176,7 +179,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     }
 
     private void NavigateToAvailableDevicesView() throws Exception {
-        driver.get(runner.enums.hostName.replace("login", "devices"));
+        driver.get(runner.enums.hostName + "/devices");
         Utilities.log(runner, "go to the devices - " + runner.enums.hostName.replace("login", "devices"));
 
         boolean needToWaitForPageLoad = true;
@@ -245,7 +248,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
     @After
     public void finish() {
-        Utilities.log(runner, "finish");
+        Utilities.log(runner, "Finishing");
+
 
         if (needToReleaseOnFinish) {
             try {
@@ -269,10 +273,6 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         }
 
-        if (needToQuitDriverOnFinish) {
-            driver.quit();
-            Utilities.log(runner, "driver.quit");
-        }
 
 //        runner.pw.close();
 

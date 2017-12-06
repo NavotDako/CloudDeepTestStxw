@@ -3,8 +3,6 @@ package TestPlanSuite.cloudEntities;
 import MyMain.BaseRunner;
 import MyMain.Enums;
 import MyMain.Main;
-import TestPlanSuite.TestPlanRunner;
-import TestPlanSuite.cloudEntities.*;
 
 import Utils.Utilities;
 import org.junit.Assert;
@@ -27,13 +25,13 @@ public class SeleniumHelper {
     private Project project;
     private User user;
     WebDriver driver;
-    private BaseRunner baseRunnerThread;
+    private BaseRunner runner;
 
     public SeleniumHelper(User user, Project project, BaseRunner thread) {
         driver = new ChromeDriver();
         this.project = project;
         this.user = user;
-        this.baseRunnerThread = thread;
+        this.runner = thread;
     }
 
     private boolean login() {
@@ -44,13 +42,13 @@ public class SeleniumHelper {
 
         //needs login
         try {
-            Utilities.log(baseRunnerThread, "logging in to Cloud UI");
+            Utilities.log(runner, "logging in to Cloud UI");
             driver.findElement(By.xpath("//*[@placeholder='Username']"));
             driver.findElement(By.xpath("//*[@placeholder='Username']")).sendKeys(user.getUserName());
             driver.findElement(By.xpath("//*[@placeholder='Password']")).sendKeys("Experitest2012");
             driver.findElement(By.xpath("//*[@name='login']")).click();
             try {
-                Utilities.log(baseRunnerThread, "Selecting testPlanProject");
+                Utilities.log(runner, "Selecting testPlanProject");
                 (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@name='selectProject']")));
                 String choseProject = "//*[@name='name']";
                 WebElement projSelect = driver.findElement(By.xpath(choseProject));
@@ -62,17 +60,17 @@ public class SeleniumHelper {
                 projToSelect.click();
                 driver.findElement(By.xpath("//*[@name='selectProject']")).click();
             } catch (Exception e) {
-//                    e.printStackTrace();
-                Utilities.log(baseRunnerThread, "failed to navigate to correct testPlanProject: " + project.getProjName());
-                Utilities.log(baseRunnerThread, e.getMessage());
+//                    Utilities.log(e);
+                Utilities.log(runner, "failed to navigate to correct testPlanProject: " + project.getProjName());
+                Utilities.log(runner, e.getMessage());
                 this.loggedIn = true;
                 return true;
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            Utilities.log(baseRunnerThread, "failed to login - testPlanUser: " + user.getUserName());
-            Utilities.log(baseRunnerThread, e.getMessage());
+            Utilities.log(e);
+            Utilities.log(runner, "failed to login - testPlanUser: " + user.getUserName());
+            Utilities.log(runner, e.getMessage());
             return false;
         }
         this.loggedIn = true;
@@ -90,11 +88,11 @@ public class SeleniumHelper {
         login();
         navigateToTestPlansPage();
         ArrayList<TestPlan> testPlans = new ArrayList<TestPlan>();
-        Utilities.log(baseRunnerThread, "getting the testPlanProject test plans");
+        Utilities.log(runner, "getting the testPlanProject test plans");
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
         List<WebElement> TestPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
 
@@ -105,7 +103,7 @@ public class SeleniumHelper {
                 int currIDX = 1;
                 String currString = currTestPlan[currIDX];
                 while ((!currString.toLowerCase().equals("ios")) && !currString.toLowerCase().equals("android")) {
-                    System.out.println(currString);
+                   Utilities.log(runner,currString);
                     testPlanName += " " + currString;
                     currString = currTestPlan[++currIDX];
                 }
@@ -119,7 +117,7 @@ public class SeleniumHelper {
                 continue;
             }
 
-            Utilities.log(baseRunnerThread, "chose the test plan, and get info");
+            Utilities.log(runner, "chose the test plan, and get info");
             driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/div[1]/button/md-icon")).click();
             ArrayList<String> deviceQueries = new ArrayList<>();
 
@@ -131,9 +129,10 @@ public class SeleniumHelper {
                     j = j - 1;
                 }
             }
-            Utilities.log(baseRunnerThread, "Finished adding the current plan to test plans from testPlanProject - " + this.project.getProjName());
-            Utilities.log(baseRunnerThread, "found test plan with name" + testPlanName);
+            Utilities.log(runner, "Finished adding the current plan to test plans from testPlanProject - " + this.project.getProjName());
+            Utilities.log(runner, "found test plan with name" + testPlanName);
             testPlans.add(new TestPlan(os, deviceQueries, this.project.getProjName(), testPlanName, this.project.getProjId()));
+            Utilities.log(runner,"created a new test plan object " + testPlans.get(testPlans.size()-1).toString());
         }
         return testPlans;
     }
@@ -144,24 +143,24 @@ public class SeleniumHelper {
             if (!login()) {
                 return false;
             }
-            Utilities.log(baseRunnerThread, "navigate to testPlanProject test plans");
+            Utilities.log(runner, "navigate to testPlanProject test plans");
             // navigate to test plans page
             navigateToTestPlansPage();
             (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@st-select-row='plan']")));
             List<TestPlan> testPlanList = getProjectTestPlans();
             boolean hasAndroid = testPlanList.stream().filter(p -> p.getOS().equals(Enums.OS.ANDROID)).collect(Collectors.toList()).size() > 0;
             boolean hasIOS = testPlanList.stream().filter(p -> p.getOS().equals(Enums.OS.IOS)).collect(Collectors.toList()).size() > 0;
-            Utilities.log(baseRunnerThread, ("testPlanProject - " + project.getProjId() + ", has android- " + hasAndroid + ", has IOS " + hasIOS));
+            Utilities.log(runner, ("testPlanProject - " + project.getProjId() + ", has android- " + hasAndroid + ", has IOS " + hasIOS));
             return hasAndroid && hasIOS;
         } catch (Exception e) {
-//            e.printStackTrace();
-            Utilities.log(baseRunnerThread, "looks like this testPlanProject " + this.project.getProjName() + " does not have test plans");
+//            Utilities.log(e);
+            Utilities.log(runner, "looks like this testPlanProject " + this.project.getProjName() + " does not have test plans");
             return false;
         }
     }
 
     public List<TestPlan> createTestPlans() {
-        Utilities.log(baseRunnerThread, "create test plans for android + ios");
+        Utilities.log(runner, "create test plans for android + ios");
         ArrayList<TestPlan> testPlans = new ArrayList<TestPlan>();
 
         //Login to cloud and navigate to project page
@@ -176,7 +175,7 @@ public class SeleniumHelper {
     public TestPlan createTestPlanForOS(Enums.OS os) {
 
         navigateToTestPlansPage();
-        Utilities.log(baseRunnerThread, "create test plan for os - " + os);
+        Utilities.log(runner, "create test plan for os - " + os);
         ArrayList<String> deviceQueries = new ArrayList<>();
         String testPlanName = "TestPlan" + os + (int) (Math.random() * 1000);
         //Click on create button
@@ -190,19 +189,19 @@ public class SeleniumHelper {
         (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(executionName)));
         driver.findElement(By.xpath(executionName)).sendKeys(testPlanName);
 
-        Utilities.log(baseRunnerThread, "upload the application");
+        Utilities.log(runner, "upload the application");
         uploadApp(os);
-        Utilities.log(baseRunnerThread, "choose the devices");
+        Utilities.log(runner, "choose the devices");
         pickDevicesToAdd(os, deviceQueries);
 
         String finishCreatingTestPlan = "//*[@class='white-color md-accent md-raised md-button md-ink-ripple md-button']";
         driver.findElements(By.xpath(finishCreatingTestPlan)).stream().filter(p -> p.getText().
                 equalsIgnoreCase("finish")).collect(Collectors.toList()).get(0).click();
         try {
-            Utilities.log(baseRunnerThread, "Created test plan, " + testPlanName + " waiting for 5 seconds before verifying it exists");
+            Utilities.log(runner, "Created test plan, " + testPlanName + " waiting for 5 seconds before verifying it exists");
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
 
         Assert.assertTrue("test plan was not created", testPlanExists(testPlanName));
@@ -210,15 +209,15 @@ public class SeleniumHelper {
     }
 
     private void navigateToTestPlansPage() {
-        Utilities.log(baseRunnerThread, "navigate to testPlanProject test plans page");
+        Utilities.log(runner, "navigate to testPlanProject test plans page");
 //        driver.manage().window().fullscreen();
 
         try {
             driver.findElement(By.xpath("//*[@st-select-row='plan']"));
-            Utilities.log(baseRunnerThread, "already in testPlansPage");
+            Utilities.log(runner, "already in testPlansPage");
             return;
         } catch (Exception e) {
-//            e.printStackTrace();
+//            Utilities.log(e);
         }
 //        driver.navigate().refresh();
         // navigate to test plans page
@@ -230,13 +229,13 @@ public class SeleniumHelper {
             driver.findElement(By.xpath("//*[@class='fa fa-list-ul']")).click();
 
         } catch (Exception e) {
-//            e.printStackTrace();
-            Utilities.log(baseRunnerThread, "Did not navigate to test plans page");
+//            Utilities.log(e);
+            Utilities.log(runner, "Did not navigate to test plans page");
         }
     }
 
     private boolean testPlanExists(String testPlan) {
-        Utilities.log(baseRunnerThread, "does test plan " + testPlan + " exists?");
+        Utilities.log(runner, "does test plan " + testPlan + " exists?");
         return getProjectTestPlans().stream().filter(p -> p.getTestPlanName().equals(testPlan)).count() > 0;
     }
 
@@ -247,20 +246,20 @@ public class SeleniumHelper {
         String testAppPath = os.equals(Enums.OS.ANDROID) ? "lib/testApps/app-eribank-androidTest-1Fail.apk" : "lib/testApps/Monster Island GameUITests-Runner (2).zip";
 
 //        List<WebElement> applicationUploadButtons = driver.findElements(By.xpath("//input[@id='select-file-upload']"));
-        Utilities.log(baseRunnerThread, "uploading the test application " + testAppPath + "for OS " + os);
-        Utilities.log(baseRunnerThread, "uploading the application " + appPath + "for OS " + os);
+        Utilities.log(runner, "uploading the test application " + testAppPath + "for OS " + os);
+        Utilities.log(runner, "uploading the application " + appPath + "for OS " + os);
         driver.findElement(By.xpath("//input[@id='select-file-upload']")).sendKeys(new File(appPath).getAbsolutePath());
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
         driver.findElement(By.xpath("//input[@id='select-test-file-upload']")).sendKeys(new File(testAppPath).getAbsolutePath());
 
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
         String submit = "//*[@type='submit']";
         driver.findElement(By.xpath(submit)).click();
@@ -286,12 +285,12 @@ public class SeleniumHelper {
     }
 
     public void perish() {
-        Utilities.log(baseRunnerThread, "killing the selenium driver");
+        Utilities.log(runner, "killing the selenium driver");
         driver.quit();
     }
 
     public boolean runTestPlanFromUI(TestPlan testPlan) {
-        Utilities.log(baseRunnerThread, "run test plan from UI");
+        Utilities.log(runner, "run test plan from UI");
         login();
         navigateToTestPlansPage();
         List<WebElement> testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
@@ -299,7 +298,7 @@ public class SeleniumHelper {
         try {
             testPlanElem = testPlans.stream().filter(p -> p.getText().startsWith(testPlan.getTestPlanName())).collect(Collectors.toList()).get(0);
         } catch (Exception e) {
-            Utilities.log(baseRunnerThread, "could not find test plan to run from api, testPlan " + testPlan.getTestPlanName());
+            Utilities.log(runner, "could not find test plan to run from api, testPlan " + testPlan.getTestPlanName());
             return false;
         }
         testPlanElem.click();
@@ -312,7 +311,7 @@ public class SeleniumHelper {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
         //re - click the test plan element
         String runningTest = "//*[@st-select-row='test']";
@@ -330,18 +329,18 @@ public class SeleniumHelper {
     }
 
     private boolean verifyTestPlanStillRunning(TestPlan testPlan) {
-        Utilities.log(baseRunnerThread, "verify test plan is still running");
+        Utilities.log(runner, "verify test plan is still running");
         String runningTest = "//*[@st-select-row='test']";
         WebElement runningTestElem = driver.findElement(By.xpath(runningTest));
         long currTime = System.currentTimeMillis();
         long startTime = System.currentTimeMillis();
         while (runningTestElem.getText().contains("Running") && (startTime + 4 * 60 * 60 * 1000) > currTime) {
             try {
-                Utilities.log(baseRunnerThread, testPlan.getTestPlanName() + " is still running.");
+                Utilities.log(runner, testPlan.getTestPlanName() + " is still running.");
                 Thread.sleep(15000);
                 runningTestElem = driver.findElement(By.xpath(runningTest));
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Utilities.log(e);
             }
 
         }
@@ -350,7 +349,7 @@ public class SeleniumHelper {
 
 
     public boolean deleteTestPlan(TestPlan testPlantoDelete) {
-        Utilities.log(baseRunnerThread, "delete test plan from UI");
+        Utilities.log(runner, "delete test plan from UI");
         login();
         navigateToTestPlansPage();
         List<WebElement> testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
@@ -358,7 +357,7 @@ public class SeleniumHelper {
         try {
             testPlanElem = testPlans.stream().filter(p -> p.getText().startsWith(testPlantoDelete.getTestPlanName())).collect(Collectors.toList()).get(0);
         } catch (Exception e) {
-            Utilities.log(baseRunnerThread, "could not find test plan to run from api, testPlan " + testPlantoDelete.getTestPlanName());
+            Utilities.log(runner, "could not find test plan to run from api, testPlan " + testPlantoDelete.getTestPlanName());
             return false;
         }
         testPlanElem.click();
@@ -366,7 +365,7 @@ public class SeleniumHelper {
         String deleteButton = "//*[@aria-label='Delete']";
         String executeDelete = "//*[@name='delete-plan-ok']";
 
-        Utilities.log(baseRunnerThread, "execute delete");
+        Utilities.log(runner, "execute delete");
         driver.findElement(By.xpath(deleteButton)).click();
         driver.findElement(By.xpath(executeDelete)).click();
 

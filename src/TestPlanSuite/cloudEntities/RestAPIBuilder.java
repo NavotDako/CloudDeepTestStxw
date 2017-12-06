@@ -77,7 +77,7 @@ public final class RestAPIBuilder {
     public synchronized static void printGet(URL url, HttpURLConnection httpURLConnection, String result) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
         Utilities.log("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+        Utilities.log("Response Code : " + responseCode);
     }
 
     /**
@@ -136,15 +136,16 @@ public final class RestAPIBuilder {
         in.close();
 
         //print result
-        System.out.println(responseBuffer.toString());
+        Utilities.log(responseBuffer.toString());
         boolean isResponseValid = httpURLConnection.getResponseCode() < 300;
         Assert.assertTrue("Did not get a valid response", isResponseValid);
         return responseBuffer.toString();
     }
+
     public synchronized static void printPost(URL url, HttpURLConnection httpURLConnection, String query) throws IOException {
         int responseCode = httpURLConnection.getResponseCode();
-        System.out.println("Sending 'POST' request to URL : " + url);
-        System.out.println("Sending Query : " + query);
+        Utilities.log("Sending 'POST' request to URL : " + url);
+        Utilities.log("Sending Query : " + query);
         Utilities.log("Response Code : " + responseCode);
     }
 }

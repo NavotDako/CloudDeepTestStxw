@@ -25,16 +25,18 @@ public class ProjectsManager {
         projectsToDeleteOnExit = new ArrayList<Project>();
 
     }
-    public Project getProject(String id){
-        for (Project proj:
-             projects) {
-            if(proj.getProjId().equals(id)){
+
+    public Project getProject(String id) {
+        for (Project proj :
+                projects) {
+            if (proj.getProjId().equals(id)) {
                 return proj;
             }
         }
         Utilities.log("Did not find testPlanProject " + id + "in projMGR");
         return null;
     }
+
     public ArrayList<Project> getProjects() {
         return projects;
     }
@@ -44,16 +46,14 @@ public class ProjectsManager {
 
         obj = new JSONObject(getProjectsByAPI());
         JSONArray arr = obj.getJSONArray("data");
-        for (int i = 0; i < arr.length(); i++)
-        {
+        for (int i = 0; i < arr.length(); i++) {
             String name = arr.getJSONObject(i).getString("name");
             int id = arr.getJSONObject(i).getInt("id");
-            if(name.startsWith("TestPlanProjects")){
+            if (name.startsWith("TestPlanProjects")) {
+                projects.add(new Project(restAPIBuilder.getCloudServerProperties(), name, Integer.toString(id)));
+            } else if (name.equalsIgnoreCase("default")) {
                 projects.add(new Project(restAPIBuilder.getCloudServerProperties(), name, Integer.toString(id)));
             }
-            else if(name.equalsIgnoreCase("default")){
-            projects.add(new Project(restAPIBuilder.getCloudServerProperties(), name, Integer.toString(id)));
-        }
 
         }
     }
@@ -64,8 +64,9 @@ public class ProjectsManager {
             APIResponse = restAPIBuilder.doGet("/projects", restAPIBuilder.getPrefix() + restAPIBuilder.getCloudIP() + ":" + restAPIBuilder.getCloudPort()
                     + "/api/v1", restAPIBuilder.getAuthStringEnc());
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("API FAILED to get projects");
+
+            Utilities.log("API FAILED to get projects");
+            Utilities.log(e);
             throw e;
         }
         return APIResponse;

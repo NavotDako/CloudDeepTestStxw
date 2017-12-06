@@ -37,7 +37,7 @@ public class Project {
         try {
             this.populateProjUsersArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
         this.projectTestPlans = new ArrayList<TestPlan>();
     }

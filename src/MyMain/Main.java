@@ -22,7 +22,7 @@ public class Main {
     public static PrintWriter overallWriter;
     public static PrintWriter summaryWriter;
 
-    private static int numOfThreads = 1;
+    private static int numOfThreads = 2;
     public static String CloudDevicesInfo;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -30,7 +30,7 @@ public class Main {
         suites.put("STXWRunner", true);
         suites.put("AdminRunner", true);
         suites.put("STARunner", false);
-        suites.put("TestPlanRunner", true);
+        suites.put("TestPlanRunner", false);
 
         logsFolder = Utilities.CreateLogsFolderForRun();
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");

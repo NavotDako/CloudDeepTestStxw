@@ -45,4 +45,20 @@ public class BaseRunner extends Thread{
         this.overallWriter = overallWriter;
         this.TYPE = TYPE;
     }
+
+
+    protected void GoToSleep(){
+        try {
+            int sleepTime = rand.nextInt(20);
+            Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
+            for (int i = 0; i < sleepTime; i++) {
+                Thread.sleep(60000);
+                Utilities.log(this,currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
+            }
+        } catch (Exception e) {
+            Utilities.log(this,e);
+        }
+    }
+
+
 }

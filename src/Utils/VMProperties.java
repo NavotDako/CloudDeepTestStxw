@@ -7,10 +7,6 @@ import java.io.*;
  * Created by eyal.neumann on 11/29/2017.
  */
 public class VMProperties {
-    public static void main(String[] args)throws Exception{
-
-        System.out.println(getVMClientsNumber(1));
-    }
 
     public static String getJarName() throws IOException {
         return getVMProperty("jar.name");
