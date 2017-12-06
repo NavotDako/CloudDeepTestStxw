@@ -71,6 +71,7 @@ public class ApplicationAction extends AdminBaseTest {
 		Utilities.sleep(runner, 20000);
 		try
 		{
+			Utilities.sleep(runner, 2000);
 			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'com.experitest.uicatalog')]]")).click();
 			Utilities.log(runner, "Click on uicatalog application");
 		}
