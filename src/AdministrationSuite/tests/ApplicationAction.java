@@ -1,11 +1,15 @@
-package Administration;
+package AdministrationSuite.tests;
 
 import static org.junit.Assert.*;
+
+import java.io.File;
 
 import AdministrationSuite.AdminBaseTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+
+import com.sun.media.sound.SimpleSoundbank;
 
 import Utils.Utilities;
 
@@ -48,7 +52,7 @@ public class ApplicationAction extends AdminBaseTest {
 		Utilities.log(runner, "Click on Upload button");
 		
 		WaitForElement("/html/body/div[1]/div/div/div/form");
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[1]/input")).sendKeys(runner.enums.applicationPath);
+		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[1]/input")).sendKeys(System.getProperty("user.dir") + runner.enums.applicationPath);
 		Utilities.log(runner, "Write " + runner.enums.applicationPath + " in chose application");
 		
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[5]/div/div/span")).click();
@@ -75,7 +79,19 @@ public class ApplicationAction extends AdminBaseTest {
 			Assert.fail("The Upload failed");
 		}
 		
-		WaitForElement("//*[@id='content-after-toolbar']/div[1]/div/div[1]/div/div/md-content/div/div[2]/div");
+		if(!WaitForElement("//*[@id='content-after-toolbar']/div[1]/div/div[1]/div/div/md-content/div/div[2]/div"))
+		{
+			try
+			{
+				driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'com.experitest.uicatalog')]]")).click();
+				Utilities.log(runner, "Click on uicatalog application");
+			}
+			catch(Exception e) 
+			{
+				Assert.fail("The Upload failed");
+			}
+		}
+		
 		try 
 		{
 			Utilities.log(runner, "Valid if the application is found in project");

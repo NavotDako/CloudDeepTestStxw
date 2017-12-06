@@ -44,7 +44,8 @@ public class ProjectAction extends AdminBaseTest {
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete')]")).click();
 		Utilities.log(runner, "Click on Delete button");
 		
-		if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 0 /"))
+		Utilities.sleep(runner, 30000); 
+		if(!(WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 0 /")))
 		{
 			Assert.fail("Delete Action is fail");
 		}
