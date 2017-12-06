@@ -90,7 +90,7 @@ public class Reboot extends STXWBaseTest {
     public JSONObject GetSpecificDevice(String deviceId) {
         JSONObject JSONObject = null;
         String DEVICES_URL = "/devices/";
-        String host = runner.enums.hostName;
+        String host = runner.enums.hostName.replaceAll("/index.html#", "");
         String port = "";
         String webPage = "" + host + "" + port + "/api/v1";
         String authStringEnc;
