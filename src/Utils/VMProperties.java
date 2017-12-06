@@ -6,7 +6,10 @@ import java.io.*;
 /**
  * Created by eyal.neumann on 11/29/2017.
  */
+
 public class VMProperties {
+
+
 
     public static String getJarName() throws IOException {
         return getVMProperty("jar.name");
@@ -40,7 +43,8 @@ public class VMProperties {
     }
 
     private static String getVMProperty(String propertyName) throws IOException {
-        FileReader reader=new FileReader("Utils/vmTest.properties");
+
+        FileReader reader=new FileReader("src/Utils/vmTest.properties");
         Properties p=new Properties();
         p.load(reader);
         return p.getProperty(propertyName);
