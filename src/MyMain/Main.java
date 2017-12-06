@@ -33,7 +33,7 @@ public class Main {
         suites.put("AdminRunner", false);
         suites.put("STARunner", false);
         suites.put("TestPlanRunner", false);
-        suites.put("STGridRunner", true);
+        suites.put("STGridRunner", false);
 
 
         logsFolder = Utilities.CreateLogsFolderForRun();
