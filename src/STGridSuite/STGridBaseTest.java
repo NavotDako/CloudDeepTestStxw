@@ -26,11 +26,11 @@ public abstract class STGridBaseTest extends BaseBaseTest {
     public void SetUp() throws Exception {
         runner = (STGridRunner) Thread.currentThread();
         Utilities.log(runner, "Enter to setUp");
-        grid = new GridClient(runner.user, "Experitest2012", "Default", runner.cs.HOST, runner.cs.PORT, runner.cs.SECURED);
+        grid = new GridClient("ayoubadmindeeptest1"/*runner.user*/, "Experitest2012", "Default", runner.cs.HOST, runner.cs.PORT, runner.cs.SECURED);
         client = grid.lockDeviceForExecution(runner.testName, "@os='" + ((STGridRunner) runner).deviceOS + "'", 5, 30000);
-        client.setReporter("xml", Main.logsFolder.getAbsolutePath() + "/STGridRunner/reports", deviceName + " - " + deviceOS + " - " + runner.testName + "_" + (runner.iteration + 1));
-        deviceOS = ((STGridRunner) runner).deviceOS;
         deviceName = client.getDeviceProperty("device.name");
+        deviceOS = ((STGridRunner) runner).deviceOS;
+        client.setReporter("xml", Main.logsFolder.getAbsolutePath() + "/STGridRunner/reports", deviceName + " - " + deviceOS + " - " + runner.testName + "_" + (runner.iteration + 1));
         chosenDeviceName = deviceName;
         deviceOSVersion = client.getDeviceProperty("device.version");
         deviceSN = client.getDeviceProperty("device.sn");

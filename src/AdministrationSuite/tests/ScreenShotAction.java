@@ -24,7 +24,7 @@ public class ScreenShotAction extends AdminBaseTest {
 		File source = ts.getScreenshotAs(OutputType.FILE);		
 		try
 		{
-			FileUtils.copyFile(source, new File(Main.logsFolder.getPath() + "/screenshot/Grid-" + runner.TestName));
+			FileUtils.copyFile(source, new File(Main.logsFolder.getPath() + "/screenshot/Grid-" + runner.testName));
 		}		
 		catch(Exception e) {}
 	}
