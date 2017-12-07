@@ -1,18 +1,20 @@
 package STXWSuite.tests;
 
+import MyMain.Main;
 import STXWSuite.STXWBaseTest;
 import Utils.Utilities;
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
-
-import org.json.JSONObject;
-import org.junit.*;
 
 public class Reboot extends STXWBaseTest {
 

@@ -1,22 +1,12 @@
 package STXWSuite;
 
-import java.io.PrintWriter;
-
 import MyMain.BaseRunner;
 import MyMain.Main;
-import STXWSuite.tests.ExtendSession;
-import STXWSuite.tests.Install;
-import STXWSuite.tests.Monitors;
-import STXWSuite.tests.OpenLogs;
-import STXWSuite.tests.Reboot;
-import STXWSuite.tests.StartVideo;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
-
 import org.junit.runner.Result;
 
-import com.experitest.selenium.MobileApplication;
-import com.google.common.util.concurrent.Monitor;
+import java.io.PrintWriter;
 
 public class STXWRunner extends BaseRunner {
 
@@ -31,27 +21,14 @@ public class STXWRunner extends BaseRunner {
         while (true) {
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
-            this.User = getUser(rand.nextInt(enums.Users.length));
+            this.user = getUser(rand.nextInt(enums.USERS.length));
             testName = testClass.getSimpleName();
-            this.UserType = getUserType(User);
-
-            Long currTime = System.currentTimeMillis();
-            TestName = testClass.getSimpleName() + " " + currTime;
+            this.userType = getUserType(user);
 
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep();
+            GoToSleep(10);
         }
-    }
-
-    public String properCase(String inputVal) {
-
-        if (inputVal.length() == 0) return "";
-
-        if (inputVal.length() == 1) return inputVal.toLowerCase();
-
-        return inputVal.substring(0, 1).toLowerCase()
-                + inputVal.substring(1).toLowerCase();
     }
 
     public Class getAction(int actionNum) {
@@ -59,7 +36,7 @@ public class STXWRunner extends BaseRunner {
     }
 
     public String getUser(int userNum) {
-        return Main.enums.Users[userNum];
+        return Main.enums.USERS[userNum];
     }
 
     public String getUserType(String UserName) {
