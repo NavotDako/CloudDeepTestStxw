@@ -61,10 +61,20 @@ public class BaseBaseTest {
                 } catch (Exception e1) {
                     Utilities.log(runner, "UNABLE TO GET PAGE SOURCE");
                 }
+                try {
+                    driver.quit();
+                    Utilities.log(runner, "driver.quit");
+                } catch (Exception e1) {
+                    Utilities.log(runner, "Failed to driver.quit");
+                    Utilities.log(runner, e1);
+                }
             }
-            driver.quit();
-            Utilities.log(runner, "driver.quit");
-            Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
+
+            if(e.getMessage()!=null){
+                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
+            }else{
+                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t");
+            }
 
         }
 
