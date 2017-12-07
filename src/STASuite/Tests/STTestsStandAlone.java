@@ -93,6 +93,7 @@ public class STTestsStandAlone {
         client.setLogger(new MyILogger(runner));
         setReporter = client.setReporter("xml", runner.jarRemoteFolderPath + "/reports", testName);
         client.waitForDevice(query, 300000);
+        client.deviceAction("Unlock");
         return client;
     }
 
