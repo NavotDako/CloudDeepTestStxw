@@ -13,7 +13,7 @@ import java.net.URLConnection;
 public class CloudServer {
     public static String webPage;
     public static String authStringEnc;
-    public static String DEVICES_URL = "/devices";
+    public static String DEVICES_URL = "/api/v1/devices";
     public static String URL_ADDRESS = null;
     public static String HOST;
     public static int PORT;
@@ -129,7 +129,7 @@ public class CloudServer {
 
         String authString = USER + ":" + PASSWORD;
         authStringEnc = java.util.Base64.getEncoder().encodeToString(authString.getBytes());
-        URL url = new URL(DEVICES_URL);
+        URL url = new URL(URL_ADDRESS+DEVICES_URL);
         URLConnection urlConnection = url.openConnection();
         urlConnection.setRequestProperty("Authorization", "Basic " + authStringEnc);
         InputStream is = urlConnection.getInputStream();
