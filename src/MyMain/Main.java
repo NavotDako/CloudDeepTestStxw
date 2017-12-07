@@ -4,9 +4,7 @@ import AdministrationSuite.AdminRunner;
 import STASuite.STARunner;
 import STGridSuite.STGridRunner;
 import STXWSuite.STXWRunner;
-import TestPlanSuite.CloudServer;
 import TestPlanSuite.TestPlanRunner;
-import Utils.CloudApiShit;
 import Utils.Utilities;
 
 import java.io.File;
@@ -23,8 +21,8 @@ public class Main {
     public static Map<String, Boolean> suites = new HashMap<>();
     public static PrintWriter overallWriter;
     public static PrintWriter summaryWriter;
-
-    private static int numOfThreads = 6;
+    public static CloudServer cs;
+    private static int numOfThreads = 4;
     public static String CloudDevicesInfo;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -33,14 +31,17 @@ public class Main {
         suites.put("AdminRunner", false);
         suites.put("STARunner", false);
         suites.put("TestPlanRunner", false);
-        suites.put("STGridRunner", false);
+        suites.put("STGridRunner", true);
 
+        cs = new CloudServer(CloudServer.CloudServerName.RELEASE);
 
         logsFolder = Utilities.CreateLogsFolderForRun();
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
         summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
-        CloudDevicesInfo = CloudApiShit.doGet("devices");
+
+        CloudDevicesInfo = cs.doGet("devices");
         Utilities.log(CloudDevicesInfo);
+
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 
         if (suites.get("TestPlanRunner")) {

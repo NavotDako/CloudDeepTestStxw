@@ -43,7 +43,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             Assert.fail("Can't find any device on the cloud");
         }
 
-        driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
+        driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
         chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
         Utilities.log(runner, "choosing device by xpath :" + chosenDeviceName);
 
@@ -122,7 +122,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     private void OpenSTA() {
         Utilities.log(runner, "OPENING AUTOMATION");
         runner.STXWType = "automation";
-        driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).click();
+        driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).click();
         Utilities.log(runner, "click on Automation Button");
 
     }
@@ -130,14 +130,14 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     private void OpenSTM() {
         Utilities.log(runner, "OPENING MANUAL");
         runner.STXWType = "manual";
-        driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/button[" + manualIndex + "]")).click();
+        driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).click();
         Utilities.log(runner, "click on Manual Button");
     }
 
     private int GetDeviceListSize() {
         int index = 0;
         try {
-            driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[3]/span"));
+            driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[3]/span"));
             index = 3;
         } catch (Exception e) {
             index = 2;
@@ -147,7 +147,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         boolean needToWait = true;
         while (needToWait && timeOutCounter < 10) {
             try {
-                needToWait = driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0") || driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("");
+                needToWait = driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[" + index + "]/span")).getText().contains("0 / 0") || driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[" + index + "]/span")).getText().equals("");
             } catch (Exception e) {
                 Utilities.log(runner, "Waiting For Devices To Update");
                 Utilities.sleep(runner, 500);
@@ -156,7 +156,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         }
 
         try {
-            devicesInfo = (driver.findElement(By.xpath("//*[@id=\"full-page-container\"]/div[1]/div/div/div/div[" + index + "]/span")).getText());
+            devicesInfo = (driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[" + index + "]/span")).getText());
             Utilities.log(runner, "get information about number available devices");
         } catch (Exception e1) {
             throw e1;
@@ -179,14 +179,14 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     }
 
     private void NavigateToAvailableDevicesView() throws Exception {
-        driver.get(runner.enums.hostName + "/devices");
-        Utilities.log(runner, "go to the devices - " + runner.enums.hostName.replace("login", "devices"));
+        driver.get(Main.cs.HOST + "/devices");
+        Utilities.log(runner, "go to the devices - " + Main.cs.HOST.replace("login", "devices"));
 
         boolean needToWaitForPageLoad = true;
 
         try {
             Utilities.log(runner, "Checking if we are on launchPad");
-            driver.findElement(By.xpath("//*[@id=\"content\"]/md-content/md-toolbar/div/div/a")).click();
+            driver.findElement(By.xpath("//*[@id='content']/md-content/md-toolbar/div/div/a")).click();
             Utilities.log(runner, "We Clicked to move to devices page from launchPad");
         } catch (Exception e) {
             Utilities.log(runner, "On Devices Page");
@@ -194,7 +194,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         long startWaitTime = System.currentTimeMillis();
         while (needToWaitForPageLoad && (System.currentTimeMillis() - startWaitTime) < 120000) {
             try {
-                driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]"));
+                driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]"));
                 needToWaitForPageLoad = false;
             } catch (Exception e) {
                 Utilities.log(runner, "waiting for devices page to load");
@@ -206,7 +206,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             Assert.fail("Devices Page Did Not Load!");
         }
         Utilities.sleep(runner, 2000);
-        driver.findElement(By.xpath("//*[@id=\"content-after-toolbar\"]/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]")).click();
+        driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]")).click();
         Utilities.log(runner, "click on status");
         Utilities.sleep(runner, 2000);
         Utilities.log(runner, "trying to click on clear ");
@@ -216,30 +216,19 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
         Utilities.sleep(runner, 2000);
         driver.navigate().back();
-        driver.get(runner.enums.hostName.replace("login", "devices"));
+        driver.get(Main.cs.HOST.replace("login", "devices"));
 
     }
 
     private void LoginInToCloud() {
-        driver.get(runner.enums.hostName);
+        driver.get(Main.cs.URL_ADDRESS);
 
-        Utilities.log(runner, "go to " + runner.enums.hostName);
+        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS);
         waitForElement("//*[@name='username']");
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
-        Utilities.log(runner, "Write username (" + runner.user + ")");
-
         driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
-        Utilities.log(runner, "write the password ");
-
         driver.findElement(By.name("login")).click();
-        Utilities.log(runner, "click on login");
-
-//        try {
-//            driver.findElement(By.xpath("/html/body/md-backdrop")).click();
-//            Utilities.log(runner, "click on place in page");
-//        } catch (Exception e) {
-//            writeFailedLineInLog(e.toString());
-//        }
+        Utilities.log(runner, "clicked on login");
 
     }
 
@@ -340,7 +329,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
             } else {
 
-                if (!OsValid("//*[@id=\"content-after-toolbar\"]/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + Choosedevice + "]/td[5]/div")) {
+                if (!OsValid("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + Choosedevice + "]/td[5]/div")) {
                     arrayValidDevices[Choosedevice] = 0;
                 } else {
                     return (Choosedevice);

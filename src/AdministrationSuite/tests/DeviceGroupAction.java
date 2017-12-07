@@ -1,13 +1,11 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-
-import Utils.Utilities;
 
 public class DeviceGroupAction extends AdminBaseTest {
 	
@@ -16,8 +14,8 @@ public class DeviceGroupAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		
-		driver.get(runner.enums.hostName + "/device-groups");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/device-groups");
+		driver.get(Main.cs.HOST + "/device-groups");
+		Utilities.log(runner, "Go to " + Main.cs.HOST + "/device-groups");
 		
 		DeviceGroupName = "DemoDeviceGroup" + System.currentTimeMillis();
 		CreateGroupDevice();
@@ -29,7 +27,7 @@ public class DeviceGroupAction extends AdminBaseTest {
 	
 	private void DeleteDeviceGroup() 
 	{
-		driver.get(runner.enums.hostName + "/device-groups");
+		driver.get(Main.cs.HOST + "/device-groups");
 		Utilities.sleep(runner, 3000);
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input")).sendKeys(DeviceGroupName);
@@ -55,8 +53,8 @@ public class DeviceGroupAction extends AdminBaseTest {
 	}
 	private void AssignDeviceGroupToProject() 
 	{
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.HOST + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.HOST + "/projects");
 		
 		Utilities.sleep(runner, 3000);
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys("ayoubProjectDeepTest0");
@@ -88,7 +86,7 @@ public class DeviceGroupAction extends AdminBaseTest {
 		Utilities.log(runner, "Click on save button");
 		
 		Utilities.sleep(runner, 5000);
-		driver.get(runner.enums.hostName + "/projects");
+		driver.get(Main.cs.HOST + "/projects");
 		WaitForElement("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[td[contains(text(),'ayoubProjectDeepTest0')]]/td[3]");
 		if(!driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[td[contains(text(),'ayoubProjectDeepTest0')]]/td[3]")).getText().contains(DeviceGroupName)) 
 		{

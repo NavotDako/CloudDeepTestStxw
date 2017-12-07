@@ -5,7 +5,7 @@ import STGridSuite.STGridBaseTest;
 /**
  * Created by navot.dako on 12/6/2017.
  */
-public class GridiOSTests extends STGridBaseTest {
+public class GridiOSEribankTest extends STGridBaseTest {
 
 
     @Override

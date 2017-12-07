@@ -1,14 +1,12 @@
 package AdministrationSuite;
 
-import java.io.PrintWriter;
-
 import AdministrationSuite.tests.*;
 import MyMain.BaseRunner;
-import STGridSuite.tests.GridAndroidTests;
-import STGridSuite.tests.GridiOSTests;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
+
+import java.io.PrintWriter;
 
 public class AdminRunner extends BaseRunner {
 
