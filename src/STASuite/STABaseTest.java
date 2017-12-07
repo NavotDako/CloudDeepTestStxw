@@ -13,13 +13,17 @@ import java.util.Date;
 
 public class STABaseTest extends BaseBaseTest{
 
-    protected STTestsStandAlone STA = new STTestsStandAlone((STARunner) runner);
+    protected STTestsStandAlone STA;// = new STTestsStandAlone((STARunner) runner);
 
     @Before
     public void SetUp() throws Exception {
         runner = (STARunner) Thread.currentThread();
+        STA = new STTestsStandAlone((STARunner) runner);
+        Utilities.log(runner, "Runner name is "+runner.getName());
 
-        String cloudUser = "testPlanUser"+ runner.iteration;
+
+
+        // String cloudUser = "testPlanUser"+ runner.iteration;
 
     }
     @After
