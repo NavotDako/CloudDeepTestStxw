@@ -1,13 +1,17 @@
 package AdministrationSuite.tests;
 
+import static org.junit.Assert.*;
+
+import java.util.Random;
+
 import AdministrationSuite.AdminBaseTest;
 import MyMain.Main;
-import Utils.Utilities;
-import junit.framework.Assert;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import java.util.Random;
+import Utils.Utilities;
+import junit.framework.Assert;
 
 public class DHMAction extends AdminBaseTest {
 	
@@ -17,8 +21,8 @@ public class DHMAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		
-		driver.get(Main.cs.getServerHostName() + "/hostmachines/devicehostmachines");
-		Utilities.log(runner, "Go to " + Main.cs.getServerHostName() + "/hostmachines/devicehostmachines");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/hostmachines/devicehostmachines");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/hostmachines/devicehostmachines");
 		
 		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/button[contains(@aria-label,'Add')]");
 		CreateDHM();   

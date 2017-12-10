@@ -1,19 +1,27 @@
 package AdministrationSuite.tests;
 
+import static org.junit.Assert.*;
+
+import java.io.File;
+
 import AdministrationSuite.AdminBaseTest;
 import MyMain.Main;
-import Utils.Utilities;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+
+import com.sun.media.sound.SimpleSoundbank;
+
+import Utils.Utilities;
 
 public class ApplicationAction extends AdminBaseTest {
 
 	@Test
 	public void test() {
 		
-		driver.get(Main.cs.getServerHostName() + "/applications");
-		Utilities.log(runner, "Go to " + Main.cs.getServerHostName() + "/applications");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
 		UploadAndAssignApplication();
 		DeleteApplication();
 		
