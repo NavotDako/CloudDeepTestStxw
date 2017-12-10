@@ -1,19 +1,25 @@
 package AdministrationSuite.tests;
 
+import static org.junit.Assert.*;
+
+import java.io.File;
+
 import AdministrationSuite.AdminBaseTest;
-import MyMain.Main;
-import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+
+import com.sun.media.sound.SimpleSoundbank;
+
+import Utils.Utilities;
 
 public class ApplicationAction extends AdminBaseTest {
 
 	@Test
 	public void test() {
 		
-		driver.get(Main.cs.HOST + "/applications");
-		Utilities.log(runner, "Go to " + Main.cs.HOST + "/applications");
+		driver.get(runner.enums.hostName + "/applications");
+		Utilities.log(runner, "Go to " + runner.enums.hostName + "/applications");
 		UploadAndAssignApplication();
 		DeleteApplication();
 		
@@ -49,6 +55,7 @@ public class ApplicationAction extends AdminBaseTest {
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[1]/input")).sendKeys(System.getProperty("user.dir") + runner.enums.applicationPath);
 		Utilities.log(runner, "Write " + runner.enums.applicationPath + " in chose application");
 		
+		Utilities.sleep(runner, 2000);
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[5]/div/div/span")).click();
 		Utilities.log(runner, "Click on project TextView");
 		

@@ -1,12 +1,14 @@
 package AdministrationSuite;
 
+import java.io.PrintWriter;
+
 import AdministrationSuite.tests.*;
 import MyMain.BaseRunner;
+import STGridSuite.tests.GridAndroidTests;
+import STGridSuite.tests.GridiOSTests;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
-
-import java.io.PrintWriter;
 
 public class AdminRunner extends BaseRunner {
 
@@ -20,8 +22,9 @@ public class AdminRunner extends BaseRunner {
     public void run() {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
-        while (true) {
-            testClass = SelectTestToRun(5);
+        while (true) {        	
+        	testClass = SelectTestToRun(1);
+//            testClass = SelectTestToRun(rand.nextInt(6));
             testName = testClass.getSimpleName();
             Result r = JUnitCore.runClasses(testClass);
             GoToSleep(10);

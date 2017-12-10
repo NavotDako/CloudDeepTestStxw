@@ -1,13 +1,15 @@
 package AdministrationSuite;
 
 
+import AdministrationSuite.AdminRunner;
 import MyMain.BaseBaseTest;
-import MyMain.Main;
-import Utils.Utilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+
+
+import Utils.Utilities;
 
 public abstract class AdminBaseTest extends BaseBaseTest {
 
@@ -29,17 +31,26 @@ public abstract class AdminBaseTest extends BaseBaseTest {
         Utilities.log(runner, "Finishing");
         Utilities.log(runner, "Quit driver");
         driver.quit();
+        
+
     }
 
 
     private void LoginInToCloud() {
     	
-        driver.get(Main.cs.HOST + "/index.html#/login");
-        Utilities.log(runner, "go to " + Main.cs.HOST + "/index.html#/login");
+        driver.get(runner.enums.hostName + "/login");
+        Utilities.log(runner, "go to " + runner.enums.hostName + "/login");
         driver.findElement(By.name("username")).sendKeys("ayouba");
+        Utilities.log(runner, "Write username (ayouba)");
+
         driver.findElement(By.name("password")).sendKeys("Experitest2012");
+        Utilities.log(runner, "write the password ");
+        
+        Utilities.sleep(runner, 2000);
         driver.findElement(By.name("login")).click();
         Utilities.log(runner, "click on login");
+        
+        Utilities.sleep(runner, 2000);
 
     }
 
