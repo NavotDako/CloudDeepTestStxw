@@ -62,7 +62,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
                 break;
         }
 
-
+        Utilities.sleep(runner, 2000);
         Utilities.log(runner, "manualIndex :" + manualIndex);
         if (rand.nextInt(2) == 0) {
             Utilities.log(runner, "choosing MANUAL");
@@ -106,7 +106,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             try {
                 driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).isEnabled();
                 needToWaitToLoadFlag = false;
-                waitForPageToLoad(driver);
+//                waitForPageToLoad(driver);
+                Utilities.sleep(runner, 5000);
             } catch (Exception e) {
                 Utilities.log(runner, "waiting for tab to load");
                 Thread.sleep(1000);
@@ -178,9 +179,9 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         return devicesListSize;
     }
 
-    private void NavigateToAvailableDevicesView() throws Exception {
-        driver.get(Main.cs.HOST + "/devices");
-        Utilities.log(runner, "go to the devices - " + Main.cs.HOST.replace("login", "devices"));
+    private void NavigateToAvailableDevicesView() {
+        driver.get(runner.enums.hostName + "/devices");
+        Utilities.log(runner, "go to the devices - " + runner.enums.hostName + "/devices");
 
         boolean needToWaitForPageLoad = true;
 
@@ -216,19 +217,30 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
         Utilities.sleep(runner, 2000);
         driver.navigate().back();
-        driver.get(Main.cs.HOST.replace("login", "devices"));
+        driver.get(runner.enums.hostName + "/devices");
 
     }
 
     private void LoginInToCloud() {
-        driver.get(Main.cs.URL_ADDRESS);
+        driver.get(runner.enums.hostName);
 
-        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS);
+        Utilities.log(runner, "go to " + runner.enums.hostName);
         waitForElement("//*[@name='username']");
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
+        Utilities.log(runner, "Write username (" + runner.user + ")");
+
         driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
+        Utilities.log(runner, "write the password ");
+
         driver.findElement(By.name("login")).click();
-        Utilities.log(runner, "clicked on login");
+        Utilities.log(runner, "click on login");
+
+//        try {
+//            driver.findElement(By.xpath("/html/body/md-backdrop")).click();
+//            Utilities.log(runner, "click on place in page");
+//        } catch (Exception e) {
+//            writeFailedLineInLog(e.toString());
+//        }
 
     }
 
@@ -267,7 +279,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         Date CurrentTime = new Date();
 
-        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.user, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), Main.logsFolder + "\\" + runner.testName);
+        String line = String.format("%-30s%-30s%-30s%-30s%-5s", CurrentTime, runner.user, runner.testClass.getName(), (((double) (CurrentTime.getTime() - startTime.getTime())) / 60000), "C:\\Users\\ayoub.abuliel\\eclipse-workspace\\CloudDeepTestStxw\\" + Main.logsFolder.getName() + "\\" + runner.testName);
         runner.overallWriter.println(line);
         runner.overallWriter.flush();
 
@@ -373,10 +385,10 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         return jsondevcieObject;
     }
 
-    void waitForPageToLoad(WebDriver driver) {
-        new WebDriverWait(driver, 30).until(wd ->
-                ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
-    }
+//    void waitForPageToLoad(WebDriver driver) {
+//        new WebDriverWait(driver, 30).until(wd ->
+//                ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
+//    }
 
     public boolean waitForElement(String xpath) {
 

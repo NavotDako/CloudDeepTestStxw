@@ -120,6 +120,28 @@ public class BaseBaseTest {
         return !needToWaitToElement;
 
     }
+    
+        public boolean WaitForDisappearedElement(String xPath) 
+    { 	
+    	boolean needToWaitToElement = true;
+    	long startWaitTime = System.currentTimeMillis();
+    	while(needToWaitToElement && (System.currentTimeMillis() - startWaitTime) < 60000) 
+    	{
+    		try
+    		{
+    			driver.findElement(By.xpath(xPath));
+    			Utilities.log(runner, "waiting for Element - " + xPath);
+                Utilities.sleep(runner, 1000);
+    		}
+    		catch(Exception e) 
+    		{
+    			needToWaitToElement = false;
+    		}
+    		
+    	}
+    	return !needToWaitToElement;
+    	
+    }
 
     public boolean WaitForText(String xPath, String Text) {
         boolean needToWaitToText = true;
