@@ -1,20 +1,19 @@
 package STXWSuite;
 
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import MyMain.BaseBaseTest;
-import MyMain.Main;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.openqa.selenium.By;
+import org.junit.*;
+import org.openqa.selenium.*;
 
-import java.util.ArrayList;
-import java.util.Date;
+import MyMain.Main;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public abstract class STXWBaseTest extends BaseBaseTest{
@@ -45,6 +44,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         }
 
         driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
+        waitUntilElementMarked("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]");
         chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
         Utilities.log(runner, "choosing device by xpath :" + chosenDeviceName);
 
@@ -84,7 +84,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     private void switchToTab() throws InterruptedException {
         boolean needToWaitFlag = true;
         long startWaitTime = System.currentTimeMillis();
-        while (needToWaitFlag && (System.currentTimeMillis() - startWaitTime) < 120000) {
+        while (needToWaitFlag && (System.currentTimeMillis() - startWaitTime) < 150000) {
             try {
                 ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
                 driver.switchTo().window(newTab.get(1));
@@ -181,8 +181,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     }
 
     private void NavigateToAvailableDevicesView() {
-        driver.get(Main.cs.getServerHostName() + "/devices");
-        Utilities.log(runner, "go to the devices - " + Main.cs.getServerHostName() + "/devices");
+        driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/devices");
+        Utilities.log(runner, "go to the devices - " + Main.cs.URL_ADDRESS + "/index.html#" + "/devices");
 
         boolean needToWaitForPageLoad = true;
 
@@ -218,14 +218,14 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
         Utilities.sleep(runner, 2000);
         driver.navigate().back();
-        driver.get(Main.cs.getServerHostName() + "/devices");
-
+        driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/devices");
+        
     }
-
+    
     private void LoginInToCloud() {
-        driver.get(Main.cs.getServerHostName());
+        driver.get(Main.cs.URL_ADDRESS + "/index.html#");
 
-        Utilities.log(runner, "go to " + Main.cs.getServerHostName());
+        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#");
         waitForElement("//*[@name='username']");
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
         Utilities.log(runner, "Write username (" + runner.user + ")");
@@ -408,6 +408,28 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         }
         return !needToWaitToElement;
 
+    }
+    
+    protected boolean waitUntilElementMarked(String markedXPath) 
+    {
+    	int count = 0;
+    	boolean needToWait = true;
+    	while( needToWait && count<100)  
+    	{    		
+    		try
+    		{
+    			if(driver.findElement(By.xpath(markedXPath)).getAttribute("class").contains("st-selected")) 
+    			{
+    				needToWait = false;
+    			}
+    			else 
+    			{
+    				driver.findElement(By.xpath(markedXPath)).click();
+    			}
+    		}catch(Exception e) {}
+    		Utilities.sleep(runner, 500);
+    	}
+    	return !needToWait;    	
     }
 
 
