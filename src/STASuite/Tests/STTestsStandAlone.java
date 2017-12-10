@@ -4,7 +4,6 @@ import STASuite.STARunner;
 import Utils.MyILogger;
 import Utils.Utilities;
 import com.experitest.client.Client;
-import org.testng.asserts.Assertion;
 
 import static org.junit.Assert.fail;
 
@@ -14,13 +13,16 @@ public class STTestsStandAlone {
     private String setReporter;
     private boolean successFlag=true;
     private Exception exception=null;
+    private String testName="";
+    private boolean setReporterFlag=true;
 
     public STTestsStandAlone(STARunner runner) {
         this.runner = runner;
     }
 
     public void androidEriBankTestInstrumented() {
-        Client client = getClient("@os='android'", "Android EriBank Test Instrumented");
+        testName="Android EriBank Test Instrumented";
+        Client client = getClient("@os='android'");
 
         try {
             //client.startStepsGroup("Android EriBank Test Instrumented");
@@ -56,49 +58,67 @@ public class STTestsStandAlone {
     private void onFailure(Client client, Exception e) {
         successFlag=false;
         exception=e;
+        Utilities.log(runner,"Failure on Test : "+testName);
+
         Utilities.log(runner,e);
-        try{
-            String deviceName=client.getDeviceProperty("device.name");
-            String sessionID = client.getSessionID();
-            String supportDataPath=setReporter+"//SupportDataRun.zip";
-            client.collectSupportData(supportDataPath,"",deviceName,"Running Session "+sessionID,"Should Pass","Failed",true,true);
-            Utilities.log(runner,"Support Data Path : "+supportDataPath);
-        }catch (Exception e2){
-            Utilities.log(runner,"Failed To generate Support Data");
-            Utilities.log(runner,e2);
+        if (isSetReporterFlag()) {
+            try{
+                String deviceName=client.getDeviceProperty("device.name");
+                String sessionID = client.getSessionID();
+                String supportDataPath=setReporter+"//SupportDataRun.zip";
+                client.collectSupportData(supportDataPath,"",deviceName,"Running Session "+sessionID,"Should Pass","Failed",true,true);
+                Utilities.log(runner,"Support Data Path : "+supportDataPath);
+            }catch (Exception e2){
+                Utilities.log(runner,"Failed To generate Support Data");
+                Utilities.log(runner,e2);
+            }
         }
     }
 
     private void finish(Client client) {
-        Utilities.log(runner, "Starting Finish");
-        String deviceName = client.getDeviceProperty("device.name");
-        client.generateReport(false);
-        client.releaseDevice(deviceName, false, false, true);
-        client.releaseClient();
+        Utilities.log(runner,"["+testName+"] : Starting Finish");
+        String deviceName="";
+
+        try {
+            deviceName = client.getDeviceProperty("device.name");
+            if (isSetReporterFlag()) {
+                client.generateReport(false);
+            }
+            client.releaseDevice(deviceName, false, false, true);
+            client.releaseClient();
+        } catch (Exception e) {
+            Utilities.log(runner,"["+testName+"] Failed To Finish Test ");
+            Utilities.log(runner,e);
+        }
         Utilities.log(runner, "Client Released");
         if(!successFlag){
             if(exception!=null) {
-                fail(exception.getMessage());
+                String message = "[" + testName +": "+deviceName+ " ] " + exception.getMessage();
+
+                fail(message);
             }
             else{
-                fail("No Exception Found");
+                fail("[" + testName +": "+deviceName+ " ] "+"No Exception Found");
             }
         }
     }
 
-    private Client getClient(String query, String testName) {
+    private Client getClient(String query) {
         successFlag=true;
         Utilities.log(runner, "Getting Client");
         Client client = new Client(runner.VMAddress, 8889, true);
         client.setLogger(new MyILogger(runner));
-        setReporter = client.setReporter("xml", runner.jarRemoteFolderPath + "/reports", testName);
+        if (isSetReporterFlag()) {
+            setReporter = client.setReporter("xml", runner.jarRemoteFolderPath + "/reports", testName);
+        }
         client.waitForDevice(query, 300000);
         client.deviceAction("Unlock");
         return client;
     }
 
     public void androidEriBankTestNonInstrumented() {
-        Client client = getClient("@os='android'", "Android EriBank Test Non Instrumented");
+        testName="Android EriBank Test Non Instrumented";
+        Client client = getClient("@os='android'");
 
         //client.startStepsGroup("Android EriBank Test Non Instrumented");
 
@@ -132,7 +152,8 @@ public class STTestsStandAlone {
     }
 
     public void androidSimulateCaptureTest() {
-        Client client = getClient("@os='android'", "Android Simulate Capture Test");
+        testName="Android Simulate Capture Test";
+        Client client = getClient("@os='android'");
 
 
         //client.startStepsGroup("Android Simulate Capture Test");
@@ -159,7 +180,8 @@ public class STTestsStandAlone {
     }
 
     public void webAutomationSiteTest(String query) {
-        Client client = getClient(query, "Web Automation Site Test");
+        testName= "Web Automation Site Test";
+        Client client = getClient(query);
 
         //client.startStepsGroup("Web Automation Site Test");
         try {
@@ -193,7 +215,8 @@ public class STTestsStandAlone {
     }
 
     public void iOSEriBankTestInstrumented() {
-        Client client = getClient("@os='ios'", "IOS EriBank Test Instrumented");
+        testName= "IOS EriBank Test Instrumented";
+        Client client = getClient("@os='ios'");
 
         //client.startStepsGroup("IOS EriBank Test Instrumented");
 
@@ -227,7 +250,8 @@ public class STTestsStandAlone {
     }
 
     public void iOSEriBankTestNonInstrumented() {
-        Client client = getClient("@os='ios'", "IOS EriBank Test Non Instrumented");
+        testName="IOS EriBank Test Non Instrumented";
+        Client client = getClient("@os='ios'");
 
 //		client.startStepsGroup("IOS EriBank Test Non Instrumented");
         try {
@@ -256,7 +280,8 @@ public class STTestsStandAlone {
     }
 
     public void iOSMobileTimerTest() {
-        Client client = getClient("@os='ios'", "IOS Mobile Timer Test");
+        testName= "IOS Mobile Timer Test";
+        Client client = getClient("@os='ios'");
 
 //		client.startStepsGroup("IOS Mobile Timer Test ");
         try {
@@ -294,7 +319,8 @@ public class STTestsStandAlone {
     }
 
     public void webWikipediaTest(String query) {
-        Client client = getClient(query, "Wikipedia Test");
+        testName= "Wikipedia Test";
+        Client client = getClient(query);
 
 
         try {
@@ -320,4 +346,11 @@ public class STTestsStandAlone {
 
     }
 
+    public boolean isSetReporterFlag() {
+        return setReporterFlag;
+    }
+
+    public void setSetReporterFlag(boolean setReporterFlag) {
+        this.setReporterFlag = setReporterFlag;
+    }
 }
