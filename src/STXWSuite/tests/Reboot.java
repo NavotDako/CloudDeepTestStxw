@@ -1,20 +1,20 @@
 package STXWSuite.tests;
 
-import MyMain.Main;
 import STXWSuite.STXWBaseTest;
 import Utils.Utilities;
-import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import MyMain.Main;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Base64;
+
+import org.json.JSONObject;
+import org.junit.*;
 
 public class Reboot extends STXWBaseTest {
 
@@ -65,15 +65,15 @@ public class Reboot extends STXWBaseTest {
             }
             Utilities.log(runner, GetSpecificDevice(getStringFromJson(deviceJson, "id")).toString());
             if (!(getStringFromJson(GetSpecificDevice(getStringFromJson(deviceJson, "id")), "currentStatus").equals("online"))) {
-                Utilities.log(runner, "the device doesn't goes to online");
+                Utilities.log(runner, "the device doesn't goes to online case");
                 Utilities.log(runner, "The displayStatus " + getStringFromJson(deviceInfo, "currentStatus"));
-                Assert.fail("The device doesn't go to online");
+                Assert.fail("The device doesn't go to online case");
             } else {
                 Utilities.log(runner, "the device's currentStatus is online");
             }
         } else {
-            Utilities.log(runner, "the device doesn't go to offline");
-            Assert.fail("the device doesn't go to offline");
+            Utilities.log(runner, "the device doesn't go to offline case");
+            Assert.fail("the device doesn't go to offline case");
         }
 
     }
@@ -92,7 +92,7 @@ public class Reboot extends STXWBaseTest {
     public JSONObject GetSpecificDevice(String deviceId) {
         JSONObject JSONObject = null;
         String DEVICES_URL = "/devices/";
-        String host = Main.cs.getServerHostName();
+        String host = Main.cs.URL_ADDRESS;
         String port = "";
         String webPage = "" + host + "" + port + "/api/v1";
         String authStringEnc;
