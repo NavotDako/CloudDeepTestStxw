@@ -1,15 +1,11 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
-import org.apache.tools.ant.taskdefs.WaitFor;
-
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-
-import Utils.Utilities;
 
 public class DeviceGroupAction extends AdminBaseTest {
 	
@@ -18,8 +14,8 @@ public class DeviceGroupAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		
-		driver.get(runner.enums.hostName + "/device-groups");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/device-groups");
+		driver.get(Main.cs.getServerHostName() + "/device-groups");
+		Utilities.log(runner, "Go to " + Main.cs.getServerHostName() + "/device-groups");
 		
 		DeviceGroupName = "DemoDeviceGroup" + System.currentTimeMillis();
 		CreateGroupDevice();
@@ -31,7 +27,7 @@ public class DeviceGroupAction extends AdminBaseTest {
 	
 	private void DeleteDeviceGroup() 
 	{
-		driver.get(runner.enums.hostName + "/device-groups");
+		driver.get(Main.cs.getServerHostName() + "/device-groups");
 		Utilities.sleep(runner, 3000);
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input")).sendKeys(DeviceGroupName);
@@ -59,8 +55,8 @@ public class DeviceGroupAction extends AdminBaseTest {
 	}
 	private void AssignDeviceGroupToProject() 
 	{
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.getServerHostName() + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.getServerHostName() + "/projects");
 		
 		/*******************************************************************************/
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[span[contains(text(),'Add')]]")).click();

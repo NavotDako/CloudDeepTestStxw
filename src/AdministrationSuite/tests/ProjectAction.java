@@ -1,13 +1,11 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-
-import Utils.Utilities;
 
 public class ProjectAction extends AdminBaseTest {
 
@@ -16,8 +14,8 @@ public class ProjectAction extends AdminBaseTest {
 	public void test() {
 		
 		Utilities.log(runner, "enter ProjectTest class");
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.getServerHostName() + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.getServerHostName() + "/projects");
 		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects:");
 		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[contains(@aria-label,'Add')]");
 		CreateProject();
@@ -26,8 +24,8 @@ public class ProjectAction extends AdminBaseTest {
 	}
 	private void DeleteProject() 
 	{
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.getServerHostName() + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.getServerHostName() + "/projects");
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys(projectName);
 		Utilities.log(runner, "Write " + projectName + " in Search button" );

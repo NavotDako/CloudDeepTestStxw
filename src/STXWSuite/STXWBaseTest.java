@@ -1,19 +1,20 @@
 package STXWSuite;
 
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import MyMain.BaseBaseTest;
+import MyMain.Main;
 import Utils.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.*;
-import org.openqa.selenium.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
 
-import MyMain.Main;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.ArrayList;
+import java.util.Date;
 
 
 public abstract class STXWBaseTest extends BaseBaseTest{
@@ -180,8 +181,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     }
 
     private void NavigateToAvailableDevicesView() {
-        driver.get(runner.enums.hostName + "/devices");
-        Utilities.log(runner, "go to the devices - " + runner.enums.hostName + "/devices");
+        driver.get(Main.cs.getServerHostName() + "/devices");
+        Utilities.log(runner, "go to the devices - " + Main.cs.getServerHostName() + "/devices");
 
         boolean needToWaitForPageLoad = true;
 
@@ -217,14 +218,14 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
         Utilities.sleep(runner, 2000);
         driver.navigate().back();
-        driver.get(runner.enums.hostName + "/devices");
+        driver.get(Main.cs.getServerHostName() + "/devices");
 
     }
 
     private void LoginInToCloud() {
-        driver.get(runner.enums.hostName);
+        driver.get(Main.cs.getServerHostName());
 
-        Utilities.log(runner, "go to " + runner.enums.hostName);
+        Utilities.log(runner, "go to " + Main.cs.getServerHostName());
         waitForElement("//*[@name='username']");
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
         Utilities.log(runner, "Write username (" + runner.user + ")");
