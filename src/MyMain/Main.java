@@ -22,8 +22,9 @@ public class Main {
     public static PrintWriter overallWriter;
     public static PrintWriter summaryWriter;
     public static CloudServer cs;
-    private static int numOfThreads = 4;
     public static String CloudDevicesInfo;
+
+    private static int numOfThreads = 10;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 

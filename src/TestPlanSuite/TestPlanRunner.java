@@ -2,6 +2,9 @@ package TestPlanSuite;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
+import TestPlanSuite.cloudEntities.Project;
+import TestPlanSuite.cloudEntities.ProjectsManager;
+import TestPlanSuite.cloudEntities.User;
 import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.runner.JUnitCore;
@@ -11,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-import TestPlanSuite.cloudEntities.*;
 
 public class TestPlanRunner extends BaseRunner {
 
@@ -26,7 +28,7 @@ public class TestPlanRunner extends BaseRunner {
     @Override
     public void run() {
         pw = Utilities.CreateReportFile(this, iteration);
-        Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
+        Utilities.log(this,"Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         setupRun();
         while (true) {
             this.testClass = getTestPlanAction(rand.nextInt(enums.TestPlanActions.length));

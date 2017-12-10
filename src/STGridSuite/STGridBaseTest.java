@@ -48,7 +48,7 @@ public abstract class STGridBaseTest extends BaseBaseTest {
             client.releaseClient();
         } catch (Exception e) {
             Utilities.log(runner, "Failed to releaseClient()!!!! - " + deviceSN);
-            Utilities.log(e);
+            Utilities.log(runner, e);
         }
         Utilities.log(runner, "Ending test - " + runner.testName + " For Device - " + deviceSN);
     }
