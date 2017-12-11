@@ -355,7 +355,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
     public int getNextValid(int[] arrayValidDevices, int Choosedevice) {
         for (int i = Choosedevice; i < arrayValidDevices.length; i++) {
-            if (arrayValidDevices[Choosedevice] == 1) {
+            if (arrayValidDevices[i] == 1) {
                 return i;
             }
         }
