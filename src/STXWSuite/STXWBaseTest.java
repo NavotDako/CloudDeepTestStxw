@@ -40,7 +40,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         }
         if (ChosenDevice == -2) {
             Utilities.log(runner, "doesn't found any device !!");
-            Assert.fail("Can't find any device on the cloud");
+            Assert.fail("Can't find any device in the cloud");
         }
 
         driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
