@@ -98,6 +98,10 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         }
         if (needToWaitFlag) {
+        	if(waitForElement("/html/body/div[1]/div/div/div/div[1]/h4[contains(text(),'Could not open device')]"))
+        	{
+        		Assert.fail("Tab Didn't Loaded!! because : "+ driver.findElement(By.xpath("/html/body/div[1]/div/div/div[div[h4[contains(text(),'Could not open device')]]]/div[2]")).getText());
+        	}
             Assert.fail("Tab Didn't Opened!");
         }
 
@@ -139,6 +143,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     private int GetDeviceListSize() {
         int index = 0;
         try {
+        	waitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div[3]/span");
             driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[3]/span"));
             index = 3;
         } catch (Exception e) {
@@ -224,8 +229,8 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     
     private void LoginInToCloud() {
         driver.get(Main.cs.URL_ADDRESS + "/index.html#");
-
         Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#");
+        
         waitForElement("//*[@name='username']");
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
         Utilities.log(runner, "Write username (" + runner.user + ")");
@@ -235,13 +240,43 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         driver.findElement(By.name("login")).click();
         Utilities.log(runner, "click on login");
+        
+        if(!WaitForElement("//*[@id='side-menu']/li[a/span[contains(text(),'Devices')]]")) 
+        {
+        	if(waitForElement("/html/body/div[2]/div[1]/div/form/div[label[contains(text(),'Select Project')]]/select"))
+        	{
+        		switch(runner.userType)
+        		{
+        		case "Admin" :
+        			driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/form/div[label[contains(text(),'Select Project')]]/select")).sendKeys("Dafault");
+        			break;
+        		case "ProjectAdmin":
+        			if(runner.user.contains("1")) 
+        			{
+        				driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/form/div[label[contains(text(),'Select Project')]]/select")).sendKeys("ayoubProjectDeepTest1");
+        			}
+        			else 
+        			{
+        				driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/form/div[label[contains(text(),'Select Project')]]/select")).sendKeys("ayoubProjectDeepTest2");
+        			}
+        			break;
+        		case "User":
+        			if(runner.user.contains("2")) 
+        			{
+        				driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/form/div[label[contains(text(),'Select Project')]]/select")).sendKeys("ayoubProjectDeepTest2");
+        			}
+        			else 
+        			{
+        				driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/form/div[label[contains(text(),'Select Project')]]/select")).sendKeys("ayoubProjectDeepTest1");
+        			}
+        			break;
+        		}
+        		driver.findElement(By.xpath("/html/body/div[2]/div[1]/div/form/button[1]")).click();
+        		Utilities.sleep(runner, 3000);
+        	}
+        	
+        }
 
-//        try {
-//            driver.findElement(By.xpath("/html/body/md-backdrop")).click();
-//            Utilities.log(runner, "click on place in page");
-//        } catch (Exception e) {
-//            writeFailedLineInLog(e.toString());
-//        }
 
     }
 
