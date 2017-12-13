@@ -50,6 +50,7 @@ public class Reboot extends STXWBaseTest {
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(0));
         Utilities.log(runner, "Go To devices tab");
+        Utilities.sleep(runner, 3000);
         
         waitForElement("//*[@id='content-after-toolbar']/div/md-content[2]/div/div/div[1]/md-input-container[label[contains(text(),'Search')]]/input");
         driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-content[2]/div/div/div[3]/md-menu/md-input-container[label[contains(text(),'Status')]]/div[textarea]/textarea")).click();
