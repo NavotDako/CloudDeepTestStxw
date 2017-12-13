@@ -27,13 +27,12 @@ public abstract class STGridBaseTest extends BaseBaseTest {
     public void SetUp() throws Exception {
         runner = (STGridRunner) Thread.currentThread();
         Utilities.log(runner, "Enter to setUp");
-        try{
-
-        grid = new GridClient("ayoubadmindeeptest1"/*runner.user*/, "Experitest2012", "Default", Main.cs.HOST, Main.cs.PORT, Main.cs.SECURED);
-        client = grid.lockDeviceForExecution(runner.testName, "@os='" + ((STGridRunner) runner).deviceOS + "'", 5, 30000);
-        }catch (Exception e){
+        try {
+            grid = new GridClient("ayoubadmindeeptest1"/*runner.user*/, "Experitest2012", "Default", Main.cs.HOST, Main.cs.PORT, Main.cs.SECURED);
+            client = grid.lockDeviceForExecution(runner.testName, "@os='" + ((STGridRunner) runner).deviceOS + "'", 5, 30000);
+        } catch (Exception e) {
             Utilities.log(runner, "Can't create a grid client!!!");
-            Utilities.log(runner,e);
+            Utilities.log(runner, e);
             Assert.fail(e.getMessage());
         }
 
@@ -44,6 +43,9 @@ public abstract class STGridBaseTest extends BaseBaseTest {
         deviceOSVersion = client.getDeviceProperty("device.version");
         deviceSN = client.getDeviceProperty("device.sn");
         client.deviceAction("unlock");
+        Utilities.log(runner, "Finished setUp with device - " + deviceName);
+        Utilities.log(runner, "Starting test - " + runner.testName);
+
     }
 
     @Test
@@ -53,10 +55,11 @@ public abstract class STGridBaseTest extends BaseBaseTest {
     public void finish() {
 
         try {
-            client.generateReport(false);
+            Utilities.log(runner, "generateReport" + client.generateReport(false));
             client.releaseClient();
+            Utilities.log(runner, "Client was released");
         } catch (Exception e) {
-            Utilities.log(runner, "Failed to releaseClient()!!!! - " + deviceSN);
+            Utilities.log(runner, "Failed to releaseClient!!!! - " + deviceSN);
             Utilities.log(runner, e);
         }
         Utilities.log(runner, "Ending test - " + runner.testName + " For Device - " + deviceSN);
