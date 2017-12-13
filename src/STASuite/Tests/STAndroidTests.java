@@ -16,6 +16,12 @@ public class STAndroidTests extends STABaseTest {
     @Test
     public void test() {
 
+        if(this.runner==null){
+            System.out.println("Runner Is Null!, Find out why.");
+        }
+
+
+
         STA.androidEriBankTestInstrumented();
         STA.androidEriBankTestNonInstrumented();
         STA.androidSimulateCaptureTest();

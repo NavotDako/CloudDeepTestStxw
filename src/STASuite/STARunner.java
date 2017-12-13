@@ -38,6 +38,9 @@ public class STARunner extends BaseRunner {
         Utilities.log(this, "Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
 
         try {
+            //line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.user, runner.testName, command);
+            TYPE="STA";
+            testName="STA Test";
             VMUser = VMProperties.getVMUser(this.iteration);
             VMAddress = VMProperties.getVMAddress(this.iteration);
             VMPassword = VMProperties.getVMPassword(this.iteration);
@@ -59,19 +62,28 @@ public class STARunner extends BaseRunner {
         try {
             Utilities.RemoteCopy(this.VMAddress, this.VMUser, this.VMPassword, srcPath, dstPath);
         } catch (Exception e) {
+            Utilities.log(this,e);
             Assert.fail(e.getMessage());
         }
 
-        String result = Utilities.RemoteJarLaunchServer(this, VMAddress, jarRemoteFolderPath, jarName, "" + UserIndex, VMSTAVersion);
+        String result = "";
+        try {
+            result = Utilities.RemoteJarLaunchServer(this, VMAddress, jarRemoteFolderPath, jarName, "" + UserIndex, VMSTAVersion);
+        } catch (Exception e) {
+            Utilities.log(this,e);
+            Assert.fail(e.getMessage());
 
+        }
         if (result.equals("")) {
             Assert.fail("No result Returned ");
+        }else{
+            Utilities.log(this, "Finished Launching SeeTest On " + VMAddress +" :\n"+result+"\n********************************************************" );
         }
 
-        Utilities.log(this, "Finished Launching SeeTest On " + VMAddress);
+        //Utilities.log(this, "Finished Launching SeeTest On " + VMAddress);
 
         while (true) {
-
+            //this.testClass = SelectTestsToRun(0);
             this.testClass = SelectTestsToRun(rand.nextInt(3));
             //       this.testClass = getAction(rand.nextInt(enums.Actions.length));
 

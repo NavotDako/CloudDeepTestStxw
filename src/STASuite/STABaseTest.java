@@ -19,6 +19,7 @@ public class STABaseTest extends BaseBaseTest{
     public void SetUp() throws Exception {
         runner = (STARunner) Thread.currentThread();
         STA = new STTestsStandAlone((STARunner) runner);
+        STA.setSetReporterFlag(true);
         Utilities.log(runner, "Runner name is "+runner.getName());
 
 
