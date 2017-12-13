@@ -43,6 +43,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             Assert.fail("Can't find any device in the cloud");
         }
 
+        
         driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
         waitUntilElementMarked("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]");
         chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
@@ -120,6 +121,10 @@ public abstract class STXWBaseTest extends BaseBaseTest{
 
         }
         if (needToWaitToLoadFlag) {
+        	if(waitForElement("/html/body/div[2]/div/md-card"))
+        	{
+        		Assert.fail(driver.findElement(By.xpath("/html/body/div[2]/div/md-card/md-card-title/md-card-title-text/span")).getText() + "\n" + driver.findElement(By.xpath("/html/body/div[2]/div/md-card/md-card-content/p[1]")).getText());
+        	}
             Assert.fail("Tab Didn't Loaded!!");
         }
 
@@ -130,6 +135,18 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         runner.STXWType = "automation";
         driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).click();
         Utilities.log(runner, "click on Automation Button");
+        Utilities.sleep(runner, 3000);
+        try {
+	        if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).getAttribute("disabled").contains("true")) 
+	        {
+	        	Utilities.log(runner, "didn't clicked on  autaomation button ");
+	        }
+        }
+        catch(Exception e) 
+        {
+        	driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).click();
+            Utilities.log(runner, "click on Manual Button");
+        }
 
     }
 
@@ -138,6 +155,18 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         runner.STXWType = "manual";
         driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).click();
         Utilities.log(runner, "click on Manual Button");
+        Utilities.sleep(runner, 3000);
+        try {
+	        if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).getAttribute("disabled").contains("true")) 
+	        {
+	        	Utilities.log(runner, "didn't clicked on  Manual button ");
+	        }
+        }
+        catch(Exception e) 
+        {
+        	driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).click();
+            Utilities.log(runner, "click on Manual Button");
+        }
     }
 
     private int GetDeviceListSize() {
@@ -213,11 +242,13 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             Assert.fail("Devices Page Did Not Load!");
         }
         Utilities.sleep(runner, 2000);
+        waitUntilVisible("//*[@id='content-after-toolbar']/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]");
         driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-content[2]/div/div/div[3]/md-menu/md-input-container/div[1]")).click();
         Utilities.log(runner, "click on status");
         Utilities.sleep(runner, 2000);
+        waitForElement("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/section/button[2]");
         Utilities.log(runner, "trying to click on clear ");
-        driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/section/button[2] ")).click();
+        driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/section/button[2]")).click();
         Utilities.sleep(runner, 2000);
         Utilities.log(runner, "trying to click on Available");
         driver.findElement(By.xpath("//*[(contains(@id,'menu_container') and @aria-hidden='false')]/md-menu-content/md-menu-item[1]/md-checkbox")).click();
@@ -232,8 +263,24 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#");
         
         waitForElement("//*[@name='username']");
+        Utilities.sleep(runner, 2000);        
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
         Utilities.log(runner, "Write username (" + runner.user + ")");
+        int counter = 0;
+        Utilities.sleep(runner, 2000);
+        waitForElement("//*[@name='username' and contains(@class,'ng-not-empty')]");
+        while(driver.findElement(By.xpath("//*[@name='username']")).getAttribute("class").contains("ng-empty") && counter < 20) 
+        {
+        	try{
+        		driver.findElement(By.xpath("//*[@name='username']")).clear();
+        		Utilities.log(runner, "Clear the userName input");
+        		
+        	}catch(Exception e) {}
+        	driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
+            Utilities.log(runner, "Write username (" + runner.user + ")");
+            Utilities.sleep(runner, 1000);
+            counter++;
+        }
 
         driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
         Utilities.log(runner, "write the password ");
@@ -329,6 +376,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         boolean Valid = true;
         double Version;
         try {
+        	waitForElement(Xpath);
             Os = driver.findElement(By.xpath(Xpath)).getText();
         } catch (Exception e) {
             Utilities.log(e);
@@ -447,6 +495,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     
     protected boolean waitUntilElementMarked(String markedXPath) 
     {
+    	Utilities.sleep(runner, 3000);
     	int count = 0;
     	boolean needToWait = true;
     	while( needToWait && count<100)  
@@ -467,6 +516,25 @@ public abstract class STXWBaseTest extends BaseBaseTest{
     	return !needToWait;    	
     }
 
+    protected boolean waitUntilVisible(String XPath) 
+    {
+    	int counter = 0;
+    	boolean needToWait = true;
+    	while( needToWait && counter<100)  
+    	{
+    		if(driver.findElement(By.xpath(XPath)).isDisplayed()) 
+    		{
+    			needToWait = false;
+    			Utilities.log(runner, "Element is Visible");
+    		}
+    		else 
+    		{
+    			counter++;
+    		}
+    	}
+    	
+    	return !needToWait;
+    }
 
 
 
