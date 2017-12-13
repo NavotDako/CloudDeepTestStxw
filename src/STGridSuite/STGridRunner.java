@@ -42,7 +42,7 @@ public class STGridRunner extends BaseRunner {
             Utilities.log(this,"selected TEST - "+testName);
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep(3);
+            GoToSleep(2);
         }
     }
 

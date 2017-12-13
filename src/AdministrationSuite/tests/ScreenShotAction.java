@@ -18,7 +18,7 @@ public class ScreenShotAction extends AdminBaseTest {
 	
 	@Test
 	public void test() {
-		driver.get(runner.enums.hostName + "/testrequestspad");
+		driver.get(Main.cs.HOST + "/index.html#" + "/testrequestspad");
 		Utilities.sleep(runner, 6000);
 		TakesScreenshot ts =  (TakesScreenshot)driver;
 		File source = ts.getScreenshotAs(OutputType.FILE);		

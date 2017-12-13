@@ -27,9 +27,9 @@ public class STXWRunner extends BaseRunner {
     @Override
     public void run() {
         pw = Utilities.CreateReportFile(this, iteration);
-        Utilities.log(this, "Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
+        Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
-//        	this.testClass = ExtendSession.class;
+//        	this.testClass = Reboot.class;
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
             this.user = getUser(rand.nextInt(enums.USERS.length));

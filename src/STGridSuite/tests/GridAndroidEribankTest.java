@@ -7,7 +7,7 @@ import STGridSuite.STGridBaseTest;
 public class GridAndroidEribankTest extends STGridBaseTest {
     final String searchBox = "//*[(@id='kw' and @name='_nkw') or @id='gh-ac-box2']";
     final String searchButton = "//*[@id='searchTxtBtn' or @id='gh-btn' or @id='ghs-submit']";
-    final String tabElement = "//*[@class='srp-item__title' or @class='grVwBg' or @class='s-item']";
+    final String tabElement = "//*[@class='srp-item__title' or @class='grVwBg' or @class='s-item' or @class='sresult lvresult clearfix li shic']";
 
     @Override
     public void test() {

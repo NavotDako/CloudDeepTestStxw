@@ -3,6 +3,8 @@ package AdministrationSuite;
 
 import AdministrationSuite.AdminRunner;
 import MyMain.BaseBaseTest;
+import MyMain.Main;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,8 +40,8 @@ public abstract class AdminBaseTest extends BaseBaseTest {
 
     private void LoginInToCloud() {
     	
-        driver.get(runner.enums.hostName + "/login");
-        Utilities.log(runner, "go to " + runner.enums.hostName + "/login");
+        driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/login");
+        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/login");
         driver.findElement(By.name("username")).sendKeys("ayouba");
         Utilities.log(runner, "Write username (ayouba)");
 
@@ -52,6 +54,68 @@ public abstract class AdminBaseTest extends BaseBaseTest {
         
         Utilities.sleep(runner, 2000);
 
+    }
+    
+    protected boolean waitUntilElementMarked(String markedXPath) 
+    {
+    	int count = 0;
+    	boolean needToWait = true;
+    	while( needToWait && count<100)  
+    	{    		
+    		try
+    		{
+    			if(driver.findElement(By.xpath(markedXPath)).getAttribute("class").contains("st-selected")) 
+    			{
+    				needToWait = false;
+    			}
+    			else 
+    			{
+    				driver.findElement(By.xpath(markedXPath)).click();
+    			}
+    		}catch(Exception e) {}
+    		Utilities.sleep(runner, 500);
+    	}
+    	return !needToWait;    	
+    }
+    
+    protected boolean waitForEnableButton(String markedXPath, String buttonXPath, String markedXPathName) 
+    {
+		int count = 0;
+		boolean needToWait = true;
+		while( needToWait && count<20) 
+		{
+			try 
+			{
+				if(driver.findElement(By.xpath(buttonXPath)).getAttribute("disabled").contains("true") || driver.findElement(By.xpath(buttonXPath)).getAttribute("disabled").contains("disabled") ) 
+				{					
+					driver.findElement(By.xpath(markedXPath)).click();
+					Utilities.log(runner, "Click on " + markedXPathName);
+				}
+				else 
+				{					
+					needToWait = false;
+				}
+
+			}
+			catch(Exception e)
+			{				
+				try 
+				{
+					if(driver.findElement(By.xpath(markedXPath)).getAttribute("class").contains("st-selected")) 
+					{
+						needToWait = false;
+						Utilities.sleep(runner, 800);
+					}
+				}
+				catch(Exception e1) 
+				{
+					
+				}
+			}
+			count++;
+			
+		}
+		return !needToWait;
     }
 
 

@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Random;
 
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -24,7 +26,7 @@ public class UserAction extends AdminBaseTest {
 //		Utilities.sleep(runner, 2000);
 //		driver.findElement(By.xpath("//*[@id='side-menu']/li/a[span[contains(text(),'More')]]")).click();
 //		Utilities.sleep(runner, 2000);
-		driver.get(runner.enums.hostName + "/users");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/users");
 		Utilities.sleep(runner, 10000);
 		CreateUser();		
 		if(!WaitForElement("/html/body/div[1]/div/div/div/div[1]")) 
@@ -62,8 +64,8 @@ public class UserAction extends AdminBaseTest {
 		
 		Utilities.sleep(runner, 3000);
 		NewLogin("ayouba", "Experitest2012");
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go To " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
+		Utilities.log(runner, "Go To " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		
 		Utilities.sleep(runner, 3000);
 		if(!userName.contains("Admin")) 
@@ -77,8 +79,8 @@ public class UserAction extends AdminBaseTest {
 	
 	private void DeleteUser() 
 	{
-		driver.get(runner.enums.hostName + "/users");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/users");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/users");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/users");
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[2]/input")).click();
 		Utilities.log(runner, "Click on Search button");
 		

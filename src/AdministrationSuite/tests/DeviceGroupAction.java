@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.apache.tools.ant.taskdefs.WaitFor;
 
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -18,8 +20,8 @@ public class DeviceGroupAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		
-		driver.get(runner.enums.hostName + "/device-groups");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/device-groups");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
 		
 		DeviceGroupName = "DemoDeviceGroup" + System.currentTimeMillis();
 		CreateGroupDevice();
@@ -31,7 +33,7 @@ public class DeviceGroupAction extends AdminBaseTest {
 	
 	private void DeleteDeviceGroup() 
 	{
-		driver.get(runner.enums.hostName + "/device-groups");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
 		Utilities.sleep(runner, 3000);
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input")).sendKeys(DeviceGroupName);
@@ -42,11 +44,19 @@ public class DeviceGroupAction extends AdminBaseTest {
 		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
 		Utilities.log(runner , "Click on GroupDevice line in table");
 		
+		waitUntilElementMarked("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr");
+		
 		Utilities.sleep(runner, 2000);
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Delete')]")).click();
 		Utilities.log(runner, "Click on Delete button");
 		
-		WaitForElement("//*[contains(@id,'dialogContent')]/div/form/button[span[contains(text(),'Delete')]]");
+		if(!WaitForElement("//*[contains(@id,'dialogContent')]/div/form/button[span[contains(text(),'Delete')]]")) 
+		{
+			waitUntilElementMarked("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr");
+			Utilities.sleep(runner, 500);
+			driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Delete')]")).click();
+			Utilities.log(runner, "Click on Delete button");
+		}
 		driver.findElement(By.xpath("//*[contains(@id,'dialogContent')]/div/form/button[span[contains(text(),'Delete')]]")).click();
 		Utilities.log(runner, "Click on Delete button");
 		
@@ -59,10 +69,10 @@ public class DeviceGroupAction extends AdminBaseTest {
 	}
 	private void AssignDeviceGroupToProject() 
 	{
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		
-		/*******************************************************************************/
+		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[span[contains(text(),'Add')]]")).click();
 		Utilities.log(runner, "Click on Add button");
 		
@@ -99,6 +109,7 @@ public class DeviceGroupAction extends AdminBaseTest {
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[span[contains(text(),'Delete')]]")).click();
 		Utilities.log(runner, "Click on Delete button");
 		
+		WaitForElement("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete')]");
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete')]")).click();
 		Utilities.log(runner, "Click on another Delete");
 		
@@ -117,105 +128,40 @@ public class DeviceGroupAction extends AdminBaseTest {
 		}
 		
 		
-		
-		
-		/*******************************************************************************/
-//		Utilities.sleep(runner, 3000);
-//		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys("ayoubProjectDeepTest0");
-//		Utilities.log(runner, "Write ayoubProjectDeepTest0 in search input");
-//		
-//		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 / ");
-//		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[td[contains(text(),'ayoubProjectDeepTest0')]]")).click();
-//		Utilities.log(runner, "Click on ayoubProjectDeepTest0 project line in table");
-//		
-//		Utilities.sleep(runner, 2000);
-//		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[contains(@aria-label,'Manage')]")).click();
-//		Utilities.log(runner, "Click on Manage button");
-//		
-//		Utilities.sleep(runner, 2000);
-//		driver.findElement(By.xpath("//*[@id='full-page-container']/md-nav-bar/div/nav/ul/li[contains(@aria-label,'Devices')]/a")).click();
-//		Utilities.log(runner, "Click on Device button");
-//		
-//		Utilities.sleep(runner, 2000);
-//		driver.findElement(By.xpath("//*[@id='full-page-container']/ui-view/div/div/div[1]/md-card/md-card-title/div/div/div/span")).click();
-//		Utilities.log(runner, "Click on deviceGroup selector");
-//		
-//		driver.findElement(By.xpath("//*[@id='full-page-container']/ui-view/div/div/div[1]/md-card/md-card-title/div/div/input[1]")).sendKeys(DeviceGroupName);
-//		Utilities.log(runner, "Write " + DeviceGroupName + " in deviceGroup input");
-//		
-//		driver.findElement(By.xpath("//*[contains(@id,'ui-select-choices-row')]/a")).click();
-//		Utilities.log(runner, "Click on deviceGroup line in selector");
-//		
-//		driver.findElement(By.xpath("//*[@id='full-page-container']/ui-view/div/div/div[1]/md-card/md-card-actions/button")).click();
-//		Utilities.log(runner, "Click on save button");
-//		
-//		Utilities.sleep(runner, 5000);
-//		driver.get(runner.enums.hostName + "/projects");
-//		Utilities.log(runner, "Go To " + runner.enums.hostName + "/projects");
-//		
-//		WaitForElement("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[td[contains(text(),'ayoubProjectDeepTest0')]]/td[3]");
-//		WaitForText("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[td[contains(text(),'ayoubProjectDeepTest0')]]/td[3]", DeviceGroupName);
-//		if(!driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[td[contains(text(),'ayoubProjectDeepTest0')]]/td[3]")).getText().contains(DeviceGroupName)) 
-//		{
-//			Assert.fail("Assign the DeviceGroup to the project failed");
-//		}
-//		
-		
-		
-		
 	}
 	
 	private void AssignDeviceToGroupDevice() 
 	{
-		Utilities.sleep(runner, 6000);
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
+		
+		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input");
+		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input")).sendKeys(DeviceGroupName);
+		Utilities.log(runner, "Write " + DeviceGroupName + " in search input");
+				
+		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[2]/span", "Groups: 1 /");
 		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
 		Utilities.log(runner, "Click on deviceGroup line in the table");
-		int count = 0;
-		boolean needToWait = true;
-		while( needToWait && count<6) 
-		{
-			try 
-			{
-				if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Manage')]")).getAttribute("disabled").contains("true")) 
-				{					
-					driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
-					Utilities.log(runner, "Click on deviceGroup line in the table");
-				}
-				else 
-				{					
-					needToWait = false;
-				}
+//		boolean tt = waitForEnableButton("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr/td[2]", "//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Manage')]", "deviceGroup line in the table" );
+//		Utilities.sleep(runner, 500);
+//		if(!tt) 
+//		{
+//			System.out.println();
+//		}
+//		try 
+//		{
+//			if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Manage')]")).getAttribute("disable").contains("true"))
+//			{
+//				driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr/td[2]")).click();
+//				Utilities.log(runner, "Click on GroupDevice in table");				
+//			}
+//		}
+//		catch(Exception e) 
+//		{
+//			System.err.println();
+//		}
 
-			}
-			catch(Exception e)
-			{				
-				needToWait = false;
-				Utilities.sleep(runner, 2000);
-			}
-			count++;
-			
-		}
-//		try 
-//		{
-//			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr[contains(@class,'st-selected')]"));
-//		}
-//		catch(Exception e)
-//		{
-//			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
-//			Utilities.log(runner, "Click on deviceGroup line in the table");
-//		}
-//			
-//		try 
-//		{
-//			driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Manage')  and (contains(@disabled,'disabled'))]"));
-//		}
-//		catch(Exception e)
-//		{
-//			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
-//			Utilities.log(runner, "Click on deviceGroup line in the table");
-//		}
-		
-		Utilities.sleep(runner, 2000);
+		waitUntilElementMarked("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr");
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Manage')]")).click();
 		Utilities.log(runner, "Click on Manage button");
 		
@@ -237,12 +183,19 @@ public class DeviceGroupAction extends AdminBaseTest {
 		Utilities.log(runner, "Click on Assign button");
 		
 		Utilities.sleep(runner, 4000);
-		if(!driver.findElement(By.xpath("//*[@id='content']/div/div[2]/md-virtual-repeat-container/div/div[2]/div/md-content/div/table/tbody/tr[1]/td[7]/span")).getText().contains("Yes")) 
+		
+		if(!WaitForText("//*[@id='content']/div/div[2]/md-virtual-repeat-container/div/div[2]/div/md-content/div/table/tbody/tr[1]/td[7]/span", "Yes")) 
 		{
-			Assert.fail("Assign device doesn't succeed");
+			driver.get(driver.getCurrentUrl());
+			Utilities.sleep(runner, 5000);
+			WaitForElement("//*[@id='content']/div/div[2]/md-virtual-repeat-container/div/div[2]/div/md-content/div/table/tbody/tr/td[7]/span[contains(text(),'Yes')]");
+			if(!WaitForText("//*[@id='content']/div/div[2]/md-virtual-repeat-container/div/div[2]/div/md-content/div/table/tbody/tr[1]/td[7]/span", "Yes"))
+			{
+				Assert.fail("Assign device doesn't succeed");
+			}
 		}
 		
-	}
+	} 
 	
 	private void CreateGroupDevice() 
 	{
@@ -263,7 +216,21 @@ public class DeviceGroupAction extends AdminBaseTest {
 		
 		if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[2]/span", "Groups: 1 / ")) 
 		{
-			Assert.fail("Device Group doesn't create");
+			driver.get(driver.getCurrentUrl());
+			Utilities.sleep(runner, 3000);
+			driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input")).sendKeys(DeviceGroupName);
+			Utilities.log(runner, "Write " + DeviceGroupName  + "in Search input ");
+			if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[2]/span", "Groups: 1 / ")) 
+			{
+				driver.get(driver.getCurrentUrl());
+				driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input")).sendKeys(DeviceGroupName);
+				Utilities.log(runner, "Write " + DeviceGroupName  + "in Search input "); 
+				if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[2]/span", "Groups: 1 / ")) 
+				{ 
+					Assert.fail("Device Group doesn't create");
+				}
+			}
+			
 		}
 		
 	}

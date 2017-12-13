@@ -10,7 +10,6 @@ public class GridAndroidWebTest extends STGridBaseTest {
     @Override
     public void test() {
 
-
         client.install("http://192.168.2.72:8181/AndroidApps/eribank.apk", true, false);
         client.launch("com.experitest.ExperiBank/.LoginActivity", true, true);
         client.syncElements(3000, 15000);

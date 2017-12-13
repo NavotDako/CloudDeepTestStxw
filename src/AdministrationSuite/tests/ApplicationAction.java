@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -18,8 +20,8 @@ public class ApplicationAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		
-		driver.get(runner.enums.hostName + "/applications");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/applications");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
 		UploadAndAssignApplication();
 		DeleteApplication();
 		
