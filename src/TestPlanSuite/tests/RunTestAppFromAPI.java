@@ -19,12 +19,12 @@ import java.util.List;
  */
 public class RunTestAppFromAPI extends TestPlanBaseTest {
 
-//    public RunTestAppFromAPI(Project proj, User testPlanUser) {
+//    public RunTestAppFromAPI(PROJECTS proj, user testPlanUser) {
 //        super(proj, testPlanUser);
 //    }
     @Test
     public void run() {
-        System.out.println(this.getClass() + "-- started Running");
+        Utilities.log(runner,this.getClass() + "-- started Running");
         Utilities.log(runner, "RunTestAppFromAPI Test Starts");
 
         if (!this.isThereTestPlanInProject()) {
@@ -51,7 +51,7 @@ public class RunTestAppFromAPI extends TestPlanBaseTest {
                     Assert.fail("RunTestAppFromAPI - Test has Failed");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                Utilities.log(e);
 
                 Utilities.log(runner, "RunTestAppFromAPI - Test has Failed");
                 Assert.fail("RunTestAppFromAPI - Test has Failed");
@@ -123,7 +123,7 @@ public class RunTestAppFromAPI extends TestPlanBaseTest {
                     f.getName()
             );
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Utilities.log(e);
             Utilities.log(runner,"RunTestAppFromAPI - could not find file");
             Assert.fail("RunTestAppFromAPI - could not find file");
         }
@@ -136,7 +136,7 @@ public class RunTestAppFromAPI extends TestPlanBaseTest {
                     testApp.getName()
             );
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Utilities.log(e);
             Utilities.log(runner,"RunTestAppFromAPI - could not find file");
             Assert.fail("RunTestAppFromAPI - could not find file");
         }

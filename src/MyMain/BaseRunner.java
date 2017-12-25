@@ -1,43 +1,36 @@
 package MyMain;
 
+import TestPlanSuite.cloudEntities.Project;
+import TestPlanSuite.cloudEntities.User;
 import Utils.Utilities;
-import org.boon.Str;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import TestPlanSuite.cloudEntities.*;
+
 import java.io.PrintWriter;
 import java.util.Random;
 
 
-public class BaseRunner extends Thread{
-
+public class BaseRunner extends Thread {
     public String TYPE;
     public int iteration;
+    public Random rand = new Random();
+    public Enums enums = new Enums();
+
     public Class testClass;
     public String testName = "";
-    public String User = "";
-    public String TestName = "";
-    public String UserType = "";
-    public String STXWType;
-    public PrintWriter pw = null;
-    public Enums enums = new Enums();
+    public String user = "";
+    public String userType = "";
+
     public String CloudDevicesInfo = Main.CloudDevicesInfo;
     public JSONObject jsonDeviceInfo = null;
-    public JSONArray jsonArrayDeviceReservation = null;
-    public Random rand = new Random();
-
-    public String VMAddress = "";
-    public int VMClientNumber = 1;
-    public String VMPassword;
-    public int UserIndex;
-    public String VMUser;
-    public String VMSTAVersion;
+    public String STXWType;
 
     public User testPlanUser;
     public Project project;
 
+    public PrintWriter pw = null;
     public PrintWriter overallWriter;
     public PrintWriter overallSummaryWriter;
+
 
     public BaseRunner(String TYPE, int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         iteration = i;
@@ -45,4 +38,22 @@ public class BaseRunner extends Thread{
         this.overallWriter = overallWriter;
         this.TYPE = TYPE;
     }
+
+    protected void GoToSleep(int maxTime) {
+        try {
+            int sleepTime = rand.nextInt(maxTime);
+            Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
+            for (int i = 0; i < sleepTime; i++) {
+                Thread.sleep(60000);
+                Utilities.log(this, currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
+            }
+        } catch (Exception e) {
+            Utilities.log(this, e);
+        }
+    }
+
+    public String GetUser(int userNum) {
+        return Main.enums.USERS[userNum];
+    }
+
 }

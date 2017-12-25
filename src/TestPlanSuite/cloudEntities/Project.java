@@ -1,8 +1,8 @@
 package TestPlanSuite.cloudEntities;
 
+import MyMain.CloudServer;
 import MyMain.Enums;
 import MyMain.Main;
-import TestPlanSuite.CloudServer;
 import Utils.Utilities;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONArray;
@@ -37,7 +37,7 @@ public class Project {
         try {
             this.populateProjUsersArray();
         } catch (Exception e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
         this.projectTestPlans = new ArrayList<TestPlan>();
     }

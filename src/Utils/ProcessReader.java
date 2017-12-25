@@ -17,7 +17,7 @@ public class ProcessReader implements Runnable {
         try {
             process.getOutputStream().close();
         } catch (IOException e) {
-            //e.printStackTrace();
+            //Utilities.log(e);
             Utilities.log(e);
         }
 
@@ -30,7 +30,7 @@ public class ProcessReader implements Runnable {
             }
         }
         catch (Exception e){
-            //e.printStackTrace();
+            //Utilities.log(e);
             Utilities.log(e);
 
         }

@@ -23,7 +23,7 @@ public class Utilities {
         String line;
         currentTime.getTime();
 
-        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.User, runner.testName, command);
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.user, runner.testName, command);
 
         System.out.println(line);
         runner.overallWriter.println(line);
@@ -58,7 +58,7 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.User, runner.testName, e.getMessage().replace("\n", "\t"));
+        line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.user, runner.testName, e.getMessage().replace("\n", "\t"));
         System.out.println(line);
         e.printStackTrace();
         runner.overallWriter.println(line);
@@ -158,7 +158,7 @@ public class Utilities {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-25s%-15s%-15s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE, runner.getName(), runner.User, runner.testName, chosenDeviceName, status);
+        line = String.format("%-30s%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.user, runner.testName, chosenDeviceName, status);
         System.out.println(line);
         runner.overallSummaryWriter.println(line);
         runner.overallSummaryWriter.flush();

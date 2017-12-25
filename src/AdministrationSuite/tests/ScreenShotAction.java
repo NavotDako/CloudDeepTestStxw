@@ -18,13 +18,13 @@ public class ScreenShotAction extends AdminBaseTest {
 	
 	@Test
 	public void test() {
-		driver.get(runner.enums.hostName + "/testrequestspad");
+		driver.get(Main.cs.HOST + "/index.html#" + "/testrequestspad");
 		Utilities.sleep(runner, 6000);
 		TakesScreenshot ts =  (TakesScreenshot)driver;
 		File source = ts.getScreenshotAs(OutputType.FILE);		
 		try
 		{
-			FileUtils.copyFile(source, new File(Main.logsFolder.getPath() + "/screenshot/Grid-" + runner.TestName));
+			FileUtils.copyFile(source, new File(Main.logsFolder.getPath() + "/screenshot/Grid-" + runner.testName));
 		}		
 		catch(Exception e) {}
 	}

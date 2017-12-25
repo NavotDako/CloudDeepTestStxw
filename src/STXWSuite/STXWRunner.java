@@ -4,10 +4,19 @@ import java.io.PrintWriter;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
+import STXWSuite.tests.ExtendSession;
+import STXWSuite.tests.Install;
+import STXWSuite.tests.Monitors;
+import STXWSuite.tests.OpenLogs;
+import STXWSuite.tests.Reboot;
+import STXWSuite.tests.StartVideo;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 
 import org.junit.runner.Result;
+
+import com.experitest.selenium.MobileApplication;
+import com.google.common.util.concurrent.Monitor;
 
 public class STXWRunner extends BaseRunner {
 
@@ -20,27 +29,19 @@ public class STXWRunner extends BaseRunner {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
+//        	this.testClass = Reboot.class;
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
-            this.User = getUser(rand.nextInt(enums.Users.length));
+            this.user = getUser(rand.nextInt(enums.USERS.length));
             testName = testClass.getSimpleName();
-            this.UserType = getUserType(User);
+            this.userType = getUserType(user);
 
             Long currTime = System.currentTimeMillis();
-            TestName = testClass.getSimpleName() + " " + currTime;
+            testName = testClass.getSimpleName() + " " + currTime;
 
             Result r = JUnitCore.runClasses(testClass);
 
-            try {
-                int sleepTime = rand.nextInt(20);
-                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
-                for (int i = 0; i < sleepTime; i++) {
-                    Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
-                }
-            } catch (Exception e) {
-                Utilities.log(this, e);
-            }
+            GoToSleep(10);
         }
     }
 
@@ -59,7 +60,7 @@ public class STXWRunner extends BaseRunner {
     }
 
     public String getUser(int userNum) {
-        return Main.enums.Users[userNum];
+        return Main.enums.USERS[userNum];
     }
 
     public String getUserType(String UserName) {

@@ -2,7 +2,7 @@ package AdministrationSuite;
 
 import java.io.PrintWriter;
 
-import AdministrationSuite.tests.UserAction;
+import AdministrationSuite.tests.*;
 import MyMain.BaseRunner;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
@@ -20,26 +20,33 @@ public class AdminRunner extends BaseRunner {
     public void run() {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
-        while (true) {
-            this.testClass = UserAction.class;
-
-            testName = testClass.getName().substring(12, testClass.getName().length());
-            Long currTime = System.currentTimeMillis();
-            TestName = testClass.getName().substring(12, testClass.getName().length()) + " " + currTime;
-
+        while (true) {        	
+        	testClass = SelectTestToRun(1);
+//            testClass = SelectTestToRun(rand.nextInt(6));
+            testName = testClass.getSimpleName();
             Result r = JUnitCore.runClasses(testClass);
-
-            try {
-                int sleepTime = rand.nextInt(20);
-                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
-                for (int i = 0; i < sleepTime; i++) {
-                    Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
-                }
-            } catch (Exception e) {
-                Utilities.log(e);
-            }
+            GoToSleep(10);
         }
+    }
+
+    private Class SelectTestToRun(int i) {
+
+            switch (i){
+                case  0:
+                    return ApplicationAction.class;
+                case  1:
+                    return DeviceGroupAction.class;
+                case  2:
+                    return DHMAction.class;
+                case  3:
+                    return ProjectAction.class;
+                case  4:
+                    return ScreenShotAction.class;
+                case  5:
+                    return UserAction.class;
+            }
+            return null;
+
     }
 
 }

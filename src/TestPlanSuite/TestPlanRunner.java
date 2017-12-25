@@ -2,6 +2,9 @@ package TestPlanSuite;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
+import TestPlanSuite.cloudEntities.Project;
+import TestPlanSuite.cloudEntities.ProjectsManager;
+import TestPlanSuite.cloudEntities.User;
 import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.runner.JUnitCore;
@@ -11,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-import TestPlanSuite.cloudEntities.*;
 
 public class TestPlanRunner extends BaseRunner {
 
@@ -26,7 +28,7 @@ public class TestPlanRunner extends BaseRunner {
     @Override
     public void run() {
         pw = Utilities.CreateReportFile(this, iteration);
-        Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
+        Utilities.log(this,"Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         setupRun();
         while (true) {
             this.testClass = getTestPlanAction(rand.nextInt(enums.TestPlanActions.length));
@@ -34,24 +36,15 @@ public class TestPlanRunner extends BaseRunner {
 
             testName = testClass.getSimpleName();
             testPlanUser = getRandomUser();
-            System.out.println(testPlanUser);
+            Utilities.log(this, testPlanUser.toString());
             project = getRunningCandidates().get(testPlanUser);
 
             Long currTime = System.currentTimeMillis();
-            TestName = testName + " " + currTime;
+            testName = testName + " " + currTime;
 
             Result r = JUnitCore.runClasses(testClass);
 
-            try {
-                int sleepTime = rand.nextInt(20);
-                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
-                for (int i = 0; i < sleepTime; i++) {
-                    Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
-                }
-            } catch (Exception e) {
-                Utilities.log(this, e);
-            }
+            GoToSleep(20);
         }
     }
 
@@ -60,12 +53,11 @@ public class TestPlanRunner extends BaseRunner {
     }
 
 
-
     public Map<User, Project> getRunningCandidates() {
         return runningCandidates;
     }
 
-       public void setupRun() {
+    public void setupRun() {
         Assert.assertTrue(createProjectsInstance());
         Utilities.log(currentThread().getName() + " Completed createProjectsInstace method");
         Assert.assertTrue(pickRunningCandidates());
@@ -74,11 +66,7 @@ public class TestPlanRunner extends BaseRunner {
     }
 
 
-    /**
-     * Randomly chooses a set of 5 users to run the suites, those users may be from different projects
-     *
-     * @return
-     */
+
     private boolean pickRunningCandidates() {
         User currUser;
         runningCandidates = new HashMap<>();
@@ -87,7 +75,7 @@ public class TestPlanRunner extends BaseRunner {
         try {
             runningCandidates.put(new User(Main.cloudServer, "khaleda", "15", "2"), projectsMGR.getProject("2"));
         } catch (IOException e) {
-            e.printStackTrace();
+            Utilities.log(e);
         }
 
         while (runningCandidates.size() < 5 && iter < 5000) {
@@ -105,19 +93,14 @@ public class TestPlanRunner extends BaseRunner {
         return true;
     }
 
-    /**
-     * get all projects in cloud
-     *
-     * @return
-     */
     private boolean createProjectsInstance() {
         try {
             projectsMGR = new ProjectsManager(Main.cloudServer);
 //            projectsMGR.createProjectByAPI();
 
         } catch (Exception e) {
-            System.out.println("Had an issue while creating the projectsMGR");
-            e.printStackTrace();
+            Utilities.log(this, "Had an issue while creating the projectsMGR");
+            Utilities.log(e);
             return false;
         }
         return true;

@@ -19,7 +19,7 @@ public class RemoteRoboCopy implements Closeable {
 //            remoteMachine.reverserobocopy(srcPath, dstPath, remoteAddress);
 //        } catch (IOException e) {
 //            // TODO Auto-generated catch block
-//            //e.printStackTrace();
+//            //Utilities.log(e);
 //            Utilities.log(e);
 //
 //        }

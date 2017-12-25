@@ -20,12 +20,12 @@ import java.io.InputStreamReader;
 /**
  * Created by khaled.abbas on 11/27/2017.
  */
-public abstract class TestPlanBaseTest extends BaseBaseTest{
+public abstract class TestPlanBaseTest extends BaseBaseTest {
 
     protected RestAPIBuilder restAPIBuilder;
 
     protected TestPlan testPlanToRun;
-    protected  boolean changeQueries;
+    protected boolean changeQueries;
 
     protected String url;
     protected CloseableHttpClient httpClient;
@@ -36,7 +36,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
     protected User user;
 
     @Before
-    public  void setup(){
+    public void setup() {
         runner = (TestPlanRunner) Thread.currentThread();
 
 
@@ -48,7 +48,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
 //        this.runTestPlanFromUI = fromAPI;
 
 
-        Utilities.log(runner,"building rest api request");
+        Utilities.log(runner, "building rest api request");
         restAPIBuilder = new RestAPIBuilder(Main.cloudServer);
         url = restAPIBuilder.getPrefix() + restAPIBuilder.getCloudIP() + ":" + restAPIBuilder.getCloudPort() + "/api/v1/execution-plan/execute-test-plan";
         httpClient = HttpClients.createDefault();
@@ -65,8 +65,8 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
         try {
             response = httpClient.execute(uploadFile);
         } catch (IOException e) {
-            Utilities.log(runner,"got exception while executing API CMD");
-            e.printStackTrace();
+            Utilities.log(runner, "got exception while executing API CMD");
+            Utilities.log(e);
             throw e;
         }
         HttpEntity responseEntity = response.getEntity();
@@ -74,8 +74,8 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
         try {
             stream = responseEntity.getContent();
         } catch (IOException e) {
-            Utilities.log(runner,"got exception while reading from response entity resources");
-            e.printStackTrace();
+            Utilities.log(runner, "got exception while reading from response entity resources");
+            Utilities.log(e);
         }
         BufferedReader in = new BufferedReader(new InputStreamReader(stream));
         String inputLine;
@@ -85,27 +85,27 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
                 responseBuffer.append(inputLine);
             }
         } catch (IOException e) {
-            Utilities.log(runner,"got exception while reading from input");
-            e.printStackTrace();
+            Utilities.log(runner, "got exception while reading from input");
+            Utilities.log(e);
             throw e;
         }
         try {
             in.close();
         } catch (IOException e) {
-            Utilities.log(runner,"got exception while closing resources");
-            e.printStackTrace();
+            Utilities.log(runner, "got exception while closing resources");
+            Utilities.log(e);
             throw e;
         }
         String finalString = responseBuffer.toString();
-        System.out.println(finalString);
+        Utilities.log(runner, finalString);
 
-        System.out.println(String.format("Got response buffer: %s", responseBuffer.toString()));
+        Utilities.log(runner, String.format("Got response buffer: %s", responseBuffer.toString()));
         Assert.assertTrue("Did not get Success Status", responseBuffer.toString().contains("\"status\":\"SUCCESS\""));
         return finalString;
     }
 
 
-    protected void createTestRequest(){
+    protected void createTestRequest() {
         this.testPlanProject.createTestPlansForProject(this.user, this.seleniumHelper);
     }
 
@@ -114,15 +114,17 @@ public abstract class TestPlanBaseTest extends BaseBaseTest{
      * This function will verify the project has a test plan with the correct os, Other wise it will create one
      */
 
-    protected boolean isThereTestPlanInProject(){
+    protected boolean isThereTestPlanInProject() {
         return this.testPlanProject.doesProjectHaveTestPlans(this.user, this.seleniumHelper);
     }
 
     public void setTestPlanToRun(TestPlan testPlan) {
         this.testPlanToRun = testPlan;
     }
+
     @After
-    public void tearDown(){
+    public void tearDown() {
+        Utilities.log(runner, "Finishing");
         this.seleniumHelper.perish();
     }
 }

@@ -4,6 +4,7 @@ import Utils.Utilities;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -29,7 +30,6 @@ public class BaseBaseTest {
     private String watchedLog;
 
 
-
     protected WebDriver createDriver() throws MalformedURLException {
         Utilities.log(runner, "Creating Driver");
         DesiredCapabilities dc = new DesiredCapabilities().chrome();
@@ -37,7 +37,7 @@ public class BaseBaseTest {
         ChromeOptions chromeOption = new ChromeOptions();
         chromeOption.addArguments("--start-maximized");
         dc.setCapability(ChromeOptions.CAPABILITY, chromeOption);
-
+        needToQuitDriverOnFinish = true;
         return new ChromeDriver(dc);
     }
 
@@ -48,23 +48,33 @@ public class BaseBaseTest {
             watchedLog = description + "";
             Utilities.log(runner, Thread.currentThread().getName() + " FAILED !!! - " + watchedLog);
             Utilities.log(runner, "TEST HAS FAILED!!!");
-            if (e instanceof Exception){
+            if (e instanceof Exception) {
                 Utilities.log(runner, (Exception) e);
-            }else{
-                Utilities.log(runner,e.getMessage());
+            } else {
+                Utilities.log(runner, e.getMessage());
             }
-
 
 //            takeScreenShot();
             if (needToQuitDriverOnFinish) {
                 try {
                     Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
-
                 } catch (Exception e1) {
                     Utilities.log(runner, "UNABLE TO GET PAGE SOURCE");
                 }
+                try {
+                    driver.quit();
+                    Utilities.log(runner, "driver.quit");
+                } catch (Exception e1) {
+                    Utilities.log(runner, "Failed to driver.quit");
+                    Utilities.log(runner, e1);
+                }
             }
-            Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
+
+            if(e.getMessage()!=null){
+                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
+            }else{
+                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t");
+            }
 
         }
 
@@ -73,6 +83,10 @@ public class BaseBaseTest {
             watchedLog = description + " " + "success!\n";
             Utilities.log(runner, Thread.currentThread().getName() + " PASSED!!!" + watchedLog);
             Utilities.log(runner, "TEST HAS PASSED!!!");
+            if (needToQuitDriverOnFinish) {
+                driver.quit();
+                Utilities.log(runner, "driver.quit");
+            }
             Utilities.writeToSummary(runner, chosenDeviceName, "passed");
         }
     };
@@ -86,5 +100,63 @@ public class BaseBaseTest {
 //                e1.printStackTrace();
 //            }
 //            scrFile.delete();
+    }
+
+    public boolean WaitForElement(String xPath) {
+
+        boolean needToWaitToElement = true;
+        long startWaitTime = System.currentTimeMillis();
+
+        while (needToWaitToElement && (System.currentTimeMillis() - startWaitTime) < 60000) {
+            try {
+                driver.findElement(By.xpath(xPath));
+                needToWaitToElement = false;
+            } catch (Exception e) {
+                Utilities.log(runner, "waiting for Element - " + xPath);
+                Utilities.sleep(runner, 1000);
+            }
+
+        }
+        return !needToWaitToElement;
+
+    }
+    
+        public boolean WaitForDisappearedElement(String xPath) 
+    { 	
+    	boolean needToWaitToElement = true;
+    	long startWaitTime = System.currentTimeMillis();
+    	while(needToWaitToElement && (System.currentTimeMillis() - startWaitTime) < 60000) 
+    	{
+    		try
+    		{
+    			driver.findElement(By.xpath(xPath));
+    			Utilities.log(runner, "waiting for Element - " + xPath);
+                Utilities.sleep(runner, 1000);
+    		}
+    		catch(Exception e) 
+    		{
+    			needToWaitToElement = false;
+    		}
+    		
+    	}
+    	return !needToWaitToElement;
+    	
+    }
+
+    public boolean WaitForText(String xPath, String Text) {
+        boolean needToWaitToText = true;
+        long startWaitTime = System.currentTimeMillis();
+
+        while (needToWaitToText && (System.currentTimeMillis() - startWaitTime) < 60000) {
+            try {
+                if (driver.findElement(By.xpath(xPath)).getText().contains(Text))
+                    needToWaitToText = false;
+            } catch (Exception e) {
+                Utilities.log(runner, "waiting for Text - " + Text);
+                Utilities.sleep(runner, 1000);
+            }
+
+        }
+        return !needToWaitToText;
     }
 }

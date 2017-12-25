@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Random;
 
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -19,11 +21,12 @@ public class DHMAction extends AdminBaseTest {
 	@Test
 	public void test() {
 		
-		driver.get(runner.enums.hostName + "/hostmachines/devicehostmachines");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/hostmachines/devicehostmachines");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/hostmachines/devicehostmachines");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/hostmachines/devicehostmachines");
 		
 		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/button[contains(@aria-label,'Add')]");
-		CreateDHM() ;   
+		CreateDHM();   
+		WaitForDisappearedElement("/html/body/div[1]/div/div/div/form/div[3]/button[text()='Create']");
 		WaitForElement("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/table/tbody/tr[td[contains(text(),'" + DHMIP + "')]]");
 		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/table/tbody/tr[td[contains(text(),'" + DHMIP + "')]]")).click();
 		Utilities.log(runner, "Click on DHM line in the table");
@@ -73,6 +76,7 @@ public class DHMAction extends AdminBaseTest {
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[3]/button[contains(text(),'Save')]")).click();
 		Utilities.log(runner, "Click on Save button");
 		
+		Utilities.sleep(runner, 2000);
 		if(!WaitForElement("//*[@id='content-after-toolbar']/div[1]/div/div[1]/div/div/md-content/div/table/tbody/tr[td[text()='" + DHMName + "']]")) 
 		{
 			Assert.fail("Edit DHM failed");
@@ -105,6 +109,7 @@ public class DHMAction extends AdminBaseTest {
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[3]/button[text()='Create']")).click();
 		Utilities.log(runner, "Click on Create button");
 		
+		Utilities.sleep(runner, 2000);
 		if(!WaitForElement("//*[@id='content-after-toolbar']/div[1]/div/div[1]/div/div/md-content/div/table/tbody/tr[td[text()='" + DHMName + "']]")) 
 		{
 			Assert.fail("Create DHM failed");

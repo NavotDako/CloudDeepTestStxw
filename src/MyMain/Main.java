@@ -1,10 +1,10 @@
 package MyMain;
 
 import AdministrationSuite.AdminRunner;
+import STASuite.STARunner;
+import STGridSuite.STGridRunner;
 import STXWSuite.STXWRunner;
-import TestPlanSuite.CloudServer;
 import TestPlanSuite.TestPlanRunner;
-import Utils.CloudApiShit;
 import Utils.Utilities;
 
 import java.io.File;
@@ -21,22 +21,28 @@ public class Main {
     public static Map<String, Boolean> suites = new HashMap<>();
     public static PrintWriter overallWriter;
     public static PrintWriter summaryWriter;
-
-    private static int numOfThreads = 1;
+    public static CloudServer cs;
     public static String CloudDevicesInfo;
+
+    private static int numOfThreads = 5;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", true);
-        suites.put("AdminRunner", true);
+        suites.put("STXWRunner", false);
+        suites.put("AdminRunner", false);
         suites.put("STARunner", false);
-        suites.put("TestPlanRunner", true);
+        suites.put("TestPlanRunner", false);
+        suites.put("STGridRunner", true);
+
+        cs = new CloudServer(CloudServer.CloudServerName.RELEASE);
 
         logsFolder = Utilities.CreateLogsFolderForRun();
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
         summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
-        CloudDevicesInfo = CloudApiShit.doGet("devices");
-        System.out.println(CloudDevicesInfo);
+
+        CloudDevicesInfo = cs.doGet("devices");
+        Utilities.log(CloudDevicesInfo);
+
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 
         if (suites.get("TestPlanRunner")) {
@@ -75,13 +81,25 @@ public class Main {
         }
 
         if (suites.get("STARunner")) {
-            AdminRunner[] adminThreadArray = new AdminRunner[numOfThreads];
-            PrintWriter AdminRunnerOverallWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "OverallReport");
-            PrintWriter AdminRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "AdminRunner", "Summary");
+            STARunner[] STAThreadArray = new STARunner[numOfThreads];
+            PrintWriter STARunnerOverallWriter = Utilities.createReportFile(logsFolder, "STARunner", "OverallReport");
+            PrintWriter STARunnerSummaryWriter = Utilities.createReportFile(logsFolder, "STARunner", "Summary");
 
             for (int i = 0; i < numOfThreads; i++) {
-                adminThreadArray[i] = new AdminRunner(i, AdminRunnerSummaryWriter, AdminRunnerOverallWriter);
-                adminThreadArray[i].start();
+                STAThreadArray[i] = new STARunner(i, STARunnerSummaryWriter, STARunnerOverallWriter);
+                STAThreadArray[i].start();
+                Thread.sleep(10000);
+            }
+        }
+
+        if (suites.get("STGridRunner")) {
+            STGridRunner[] STGridRunnerArray = new STGridRunner[numOfThreads];
+            PrintWriter STGridRunnerOverallWriter = Utilities.createReportFile(logsFolder, "STGridRunner", "OverallReport");
+            PrintWriter STGridRunnerSummaryWriter = Utilities.createReportFile(logsFolder, "STGridRunner", "Summary");
+
+            for (int i = 0; i < numOfThreads; i++) {
+                STGridRunnerArray[i] = new STGridRunner(i, STGridRunnerSummaryWriter, STGridRunnerOverallWriter);
+                STGridRunnerArray[i].start();
                 Thread.sleep(10000);
             }
         }

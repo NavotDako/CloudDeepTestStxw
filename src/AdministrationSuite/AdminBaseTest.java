@@ -1,23 +1,15 @@
 package AdministrationSuite;
 
-import java.net.MalformedURLException;
 
 import AdministrationSuite.AdminRunner;
 import MyMain.BaseBaseTest;
+import MyMain.Main;
+
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 import Utils.Utilities;
 
@@ -27,18 +19,9 @@ public abstract class AdminBaseTest extends BaseBaseTest {
     @Before
     public void setUp() throws Exception {
         runner = (AdminRunner) Thread.currentThread();
-        System.out.println("-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
-        try {
+        Utilities.log(runner,"-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
             driver = createDriver();
-            needToQuitDriverOnFinish = true;
             LoginInToCloud();
-
-        } catch (Exception e) {
-            Utilities.log(runner, e);
-            Utilities.log(runner, "SETUP FOR - " + Thread.currentThread().getName() + " HAS FAILED!!!");
-            throw e;
-        }
-
     }
 
 
@@ -47,66 +30,96 @@ public abstract class AdminBaseTest extends BaseBaseTest {
 
     @After
     public void finish() {
-        Utilities.log(runner, "finish");
+        Utilities.log(runner, "Finishing");
+        Utilities.log(runner, "Quit driver");
         driver.quit();
-        Utilities.log(runner, "driver.quit");
+        
+
     }
 
 
     private void LoginInToCloud() {
-
-        driver.get(runner.enums.hostName + "/index.html#/login");
-        Utilities.log(runner, "go to " + runner.enums.hostName + "/index.html#/login");
+    	
+        driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/login");
+        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/login");
         driver.findElement(By.name("username")).sendKeys("ayouba");
         Utilities.log(runner, "Write username (ayouba)");
 
         driver.findElement(By.name("password")).sendKeys("Experitest2012");
         Utilities.log(runner, "write the password ");
-
+        
+        Utilities.sleep(runner, 2000);
         driver.findElement(By.name("login")).click();
         Utilities.log(runner, "click on login");
+        
+        Utilities.sleep(runner, 2000);
 
     }
+    
+    protected boolean waitUntilElementMarked(String markedXPath) 
+    {
+    	int count = 0;
+    	boolean needToWait = true;
+    	while( needToWait && count<100)  
+    	{    		
+    		try
+    		{
+    			if(driver.findElement(By.xpath(markedXPath)).getAttribute("class").contains("st-selected")) 
+    			{
+    				needToWait = false;
+    			}
+    			else 
+    			{
+    				driver.findElement(By.xpath(markedXPath)).click();
+    			}
+    		}catch(Exception e) {}
+    		Utilities.sleep(runner, 500);
+    	}
+    	return !needToWait;    	
+    }
+    
+    protected boolean waitForEnableButton(String markedXPath, String buttonXPath, String markedXPathName) 
+    {
+		int count = 0;
+		boolean needToWait = true;
+		while( needToWait && count<20) 
+		{
+			try 
+			{
+				if(driver.findElement(By.xpath(buttonXPath)).getAttribute("disabled").contains("true") || driver.findElement(By.xpath(buttonXPath)).getAttribute("disabled").contains("disabled") ) 
+				{					
+					driver.findElement(By.xpath(markedXPath)).click();
+					Utilities.log(runner, "Click on " + markedXPathName);
+				}
+				else 
+				{					
+					needToWait = false;
+				}
 
-    public boolean WaitForElement(String xPath) {
-
-        boolean needToWaitToElement = true;
-        long startWaitTime = System.currentTimeMillis();
-
-        while (needToWaitToElement && (System.currentTimeMillis() - startWaitTime) < 60000) {
-            try {
-                driver.findElement(By.xpath(xPath));
-                needToWaitToElement = false;
-            } catch (Exception e) {
-                Utilities.log(runner, "waiting for Element - " + xPath);
-                Utilities.sleep(runner, 1000);
-            }
-
-        }
-        return !needToWaitToElement;
-
+			}
+			catch(Exception e)
+			{				
+				try 
+				{
+					if(driver.findElement(By.xpath(markedXPath)).getAttribute("class").contains("st-selected")) 
+					{
+						needToWait = false;
+						Utilities.sleep(runner, 800);
+					}
+				}
+				catch(Exception e1) 
+				{
+					
+				}
+			}
+			count++;
+			
+		}
+		return !needToWait;
     }
 
-    void waitForLoad(WebDriver driver) {
-        new WebDriverWait(driver, 30).until(wd ->
-                ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
-    }
 
-    public boolean WaitForText(String xPath, String Text) {
-        boolean needToWaitToText = true;
-        long startWaitTime = System.currentTimeMillis();
 
-        while (needToWaitToText && (System.currentTimeMillis() - startWaitTime) < 60000) {
-            try {
-                if (driver.findElement(By.xpath(xPath)).getText().contains(Text))
-                    needToWaitToText = false;
-            } catch (Exception e) {
-                Utilities.log(runner, "waiting for Text - " + Text);
-                Utilities.sleep(runner, 1000);
-            }
 
-        }
-        return !needToWaitToText;
-    }
 
 }

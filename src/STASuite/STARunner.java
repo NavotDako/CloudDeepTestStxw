@@ -19,6 +19,13 @@ public class STARunner extends BaseRunner {
     String dstPath;
     public String jarRemoteFolderPath;
     String jarName;
+    public String VMAddress = "";
+    public int VMClientNumber = 1;
+    public String VMPassword;
+    public int UserIndex;
+    public String VMUser;
+    public String VMSTAVersion;
+
 
     public STARunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         super("STARunner", i, overallSummaryWriter, overallWriter);
@@ -28,9 +35,12 @@ public class STARunner extends BaseRunner {
     @Override
     public void run() {
         pw = Utilities.CreateReportFile(this, iteration);
-        Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
+        Utilities.log(this, "Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
 
         try {
+            //line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.user, runner.testName, command);
+            TYPE="STA";
+            testName="STA Test";
             VMUser = VMProperties.getVMUser(this.iteration);
             VMAddress = VMProperties.getVMAddress(this.iteration);
             VMPassword = VMProperties.getVMPassword(this.iteration);
@@ -45,52 +55,52 @@ public class STARunner extends BaseRunner {
         }
 
         UserIndex = iteration;
-        User = "testPlanUser" + iteration;
-        UserType = "Admin";
+        user = "testPlanUser" + iteration;
+        userType = "Admin";
 
         Utilities.log(this, "On VM at " + VMAddress + "Installing And Launching STA version " + VMSTAVersion + " Login to Cloud as User " + UserIndex);
         try {
             Utilities.RemoteCopy(this.VMAddress, this.VMUser, this.VMPassword, srcPath, dstPath);
         } catch (Exception e) {
+            Utilities.log(this,e);
             Assert.fail(e.getMessage());
         }
 
-        String result = Utilities.RemoteJarLaunchServer(this, VMAddress, jarRemoteFolderPath, jarName, "" + UserIndex, VMSTAVersion);
+        String result = "";
+        try {
+            result = Utilities.RemoteJarLaunchServer(this, VMAddress, jarRemoteFolderPath, jarName, "" + UserIndex, VMSTAVersion);
+        } catch (Exception e) {
+            Utilities.log(this,e);
+            Assert.fail(e.getMessage());
 
+        }
         if (result.equals("")) {
             Assert.fail("No result Returned ");
+        }else{
+            Utilities.log(this, "Finished Launching SeeTest On " + VMAddress +" :\n"+result+"\n********************************************************" );
         }
 
-        Utilities.log(this, "Finished Launching SeeTest On " + VMAddress);
+        //Utilities.log(this, "Finished Launching SeeTest On " + VMAddress);
 
         while (true) {
-
+            //this.testClass = SelectTestsToRun(0);
             this.testClass = SelectTestsToRun(rand.nextInt(3));
             //       this.testClass = getAction(rand.nextInt(enums.Actions.length));
 
             Long currTime = System.currentTimeMillis();
-            TestName = testClass.getName().substring(12, testClass.getName().length()) + "[" + this.VMAddress + "]" + " " + currTime;
+            testName = testClass.getSimpleName() + "[" + this.VMAddress + "]" + " " + currTime;
 
             Result r = JUnitCore.runClasses(testClass);
 
-            try {
-                int sleepTime = rand.nextInt(20);
-                Utilities.log(this, Thread.currentThread().getName() + " is Going to sleep for - " + sleepTime + " minutes");
-                for (int i = 0; i < sleepTime; i++) {
-                    Thread.sleep(60000);
-                    Utilities.log(currentThread().getName() + " Is Sleeping - " + (sleepTime - i) + " minutes remaining ");
-                }
-            } catch (Exception e) {
-                Utilities.log(this,e);
-            }
+            GoToSleep(10);
         }
     }
 
     private Class SelectTestsToRun(int i) {
         switch (i){
-            case  0: return AndroidTests.class;
-            case  1: return iOSTests.class;
-            case  2: return BothOSTests.class;
+            case  0: return STAndroidTests.class;
+            case  1: return STiOSTests.class;
+            case  2: return STBothOSTests.class;
 
         }
         return null;

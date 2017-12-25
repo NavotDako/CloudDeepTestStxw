@@ -3,6 +3,8 @@ package AdministrationSuite.tests;
 import static org.junit.Assert.*;
 
 import AdministrationSuite.AdminBaseTest;
+import MyMain.Main;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -16,17 +18,18 @@ public class ProjectAction extends AdminBaseTest {
 	public void test() {
 		
 		Utilities.log(runner, "enter ProjectTest class");
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects:");
+		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[contains(@aria-label,'Add')]");
 		CreateProject();
 		AssignProject();
 		DeleteProject();
 	}
 	private void DeleteProject() 
 	{
-		driver.get(runner.enums.hostName + "/projects");
-		Utilities.log(runner, "Go to " + runner.enums.hostName + "/projects");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys(projectName);
 		Utilities.log(runner, "Write " + projectName + " in Search button" );
@@ -44,7 +47,8 @@ public class ProjectAction extends AdminBaseTest {
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete')]")).click();
 		Utilities.log(runner, "Click on Delete button");
 		
-		if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 0 /")); 
+		Utilities.sleep(runner, 30000); 
+		if(!(WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 0 /")))
 		{
 			Assert.fail("Delete Action is fail");
 		}
