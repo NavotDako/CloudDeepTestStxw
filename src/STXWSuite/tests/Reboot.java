@@ -144,6 +144,7 @@ public class Reboot extends STXWBaseTest {
     	Utilities.sleep(runner, 5000);
     	while((!WaitForText("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr/td[3]/div", "In Use")) || count < 8) 
     	{
+		Utilities.log(runner, "device current status: " + driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr/td[3]/div")).getText());
     		count++;
     	}
         return driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr/td[3]/div")).getText();
