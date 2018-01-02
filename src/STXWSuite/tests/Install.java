@@ -57,7 +57,7 @@ public class Install extends STXWBaseTest {
 
             waitForElement("/html/body/div[2]/div/div[2]/div/div/div[5]/div/div/install-progress-panel/div/code");
             WaitForText("/html/body/div[2]/div/div[2]/div/div/div[5]/div/div/install-progress-panel/div/code", "Successfully");            
-            text = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[5]/div/div/install-progress-panel/div/code")).getText();
+            text = driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div/div/div[5]/div/div//div/code")).getText();
            
             Utilities.log(runner, "get the Text in application manager (" + text + ")");
             if (!(text.contains("Successfully") && text.contains("Starting"))) 
