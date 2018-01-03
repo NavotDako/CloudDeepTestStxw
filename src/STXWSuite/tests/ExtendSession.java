@@ -23,8 +23,12 @@ public class ExtendSession extends STXWBaseTest {
         String reservationString;
         do {
             reservationString = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText();
-            Utilities.log(runner,reservationString);
-            Utilities.sleep(runner,1000);
+            try 
+            {
+	            Utilities.log(runner,reservationString);
+	            Utilities.sleep(runner,1000);
+            }
+            catch(Exception e) {}
         } while (reservationString.contains("00:00:00"));
 
         reservation = toTime(reservationString);
