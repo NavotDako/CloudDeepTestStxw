@@ -43,7 +43,7 @@ public class ExtendSession extends STXWBaseTest {
         }
 
         Utilities.log(runner, "Clicked on Extend Session Button");
-        Utilities.sleep(runner, 4000);
+        Utilities.sleep(runner, 7000);
 
 
         reservationEnd = toTime(driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText());
