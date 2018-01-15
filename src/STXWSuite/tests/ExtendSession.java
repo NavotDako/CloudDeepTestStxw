@@ -39,11 +39,11 @@ public class ExtendSession extends STXWBaseTest {
         if (waitForElement("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button/md-icon")) {
             driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button/md-icon")).click();
         } else {
-            Assert.fail("The Extend Session element was not found");
+            Assert.fail("The Extend Session element is not found");
         }
 
         Utilities.log(runner, "Clicked on Extend Session Button");
-        Utilities.sleep(runner, 7000);
+        Utilities.sleep(runner, 10000);
 
 
         reservationEnd = toTime(driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText());
@@ -58,6 +58,7 @@ public class ExtendSession extends STXWBaseTest {
 
 
         if (!extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) {
+        	Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
           Assert.fail("The extended time is not in the range 28-30 minutes");
         }
 
