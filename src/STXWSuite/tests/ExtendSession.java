@@ -57,9 +57,13 @@ public class ExtendSession extends STXWBaseTest {
         Utilities.log(runner, "extend Time End : " + extendTime);
 
 
-        if (!extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) {
+        if (!(extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) && runner.STXWType.equals("manual")) {
         	Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
           Assert.fail("The extended time is not in the range 28-30 minutes");
+        }
+        if (!(extendTime.after(new Time(1, 58, 0)) && extendTime.before(new Time(2, 00, 0))) && runner.STXWType.equals("automation")) {
+        	Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
+          Assert.fail("The extended time is not in the range 1:58 to 2:00 hours");
         }
 
     }

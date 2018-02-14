@@ -26,7 +26,14 @@ public class Reboot extends STXWBaseTest {
 
         Utilities.log(runner, "Enter to Reboot testClass");
         Utilities.sleep(runner, 2000);
-        driver.findElement(By.xpath("//*[( contains(@id,'accordiongroup-') and contains(@id,'-panel'))]/div/md-list/md-list-item[2]/div/button[contains(@aria-label,'Reboot')]")).click();
+        try
+        {
+        	driver.findElement(By.xpath("//*[( contains(@id,'accordiongroup-') and contains(@id,'-panel'))]/div/md-list/md-list-item[2]/div/button[contains(@aria-label,'Reboot')]")).click();
+        }
+        catch(Exception e)
+        {
+        	driver.findElement(By.xpath("//*[@id='qReboot']/div/button")).click();
+        }
         Utilities.log(runner, "click on reboot button");
         Utilities.sleep(runner, 2000);
         driver.findElement(By.xpath("/html/body/div[1]/div/div/reboot-confirm-dialog/div/div[3]/button[2]")).click();
