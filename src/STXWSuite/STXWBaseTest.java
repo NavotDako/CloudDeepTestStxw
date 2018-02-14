@@ -1,16 +1,20 @@
 package STXWSuite;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
 import MyMain.BaseBaseTest;
 import Utils.Utilities;
+
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.*;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 
 import MyMain.Main;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -43,7 +47,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             Assert.fail("Can't find any device in the cloud");
         }
 
-        
+        waitForElement("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div");
         driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]/div")).click();
         waitUntilElementMarked("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]");
         chosenDeviceName = driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/md-virtual-repeat-container/div/div[2]/div/md-content/table/tbody/tr[" + ChosenDevice + "]/td[4]")).getText();
@@ -73,6 +77,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             Utilities.log(runner, "choosing AUTOMATION");
             OpenSTA();
         }
+    
 
         switchToTab();
 
@@ -123,6 +128,23 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         if (needToWaitToLoadFlag) {
         	if(waitForElement("/html/body/div[2]/div/md-card"))
         	{
+        		try 
+        		{
+	        		if((driver.findElement(By.xpath("/html/body/div[2]/div/md-card/md-card-content/p[1]")).getText()).contains("The token you're using is not valid.")) 
+	        		{
+	        			 Actions action = new Actions(driver);
+	        			 action.sendKeys(Keys.F12);
+	        			 Utilities.sleep(runner, 4000);
+	        				TakesScreenshot ts =  (TakesScreenshot)driver;
+	        				File source = ts.getScreenshotAs(OutputType.FILE);		
+	        				try
+	        				{
+	        					FileUtils.copyFile(source, new File(Main.logsFolder.getPath() + "/screenshot" + runner.testName));
+	        				}		
+	        				catch(Exception e) {}
+	        		}
+        		}catch(Exception e) {}
+        		/**/
         		Assert.fail(driver.findElement(By.xpath("/html/body/div[2]/div/md-card/md-card-title/md-card-title-text/span")).getText() + "\n" + driver.findElement(By.xpath("/html/body/div[2]/div/md-card/md-card-content/p[1]")).getText());
         	}
             Assert.fail("Tab Didn't Loaded!!");
@@ -136,11 +158,9 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).click();
         Utilities.log(runner, "click on Automation Button");
         Utilities.sleep(runner, 3000);
-        try {
-	        if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).getAttribute("disabled").contains("true")) 
-	        {
-	        	Utilities.log(runner, "didn't clicked on  autaomation button ");
-	        }
+        try 
+        {
+	        if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + (manualIndex + 1) + "]")).getAttribute("disabled").contains("true")) {}
         }
         catch(Exception e) 
         {
@@ -156,11 +176,9 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).click();
         Utilities.log(runner, "click on Manual Button");
         Utilities.sleep(runner, 3000);
-        try {
-	        if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).getAttribute("disabled").contains("true")) 
-	        {
-	        	Utilities.log(runner, "didn't clicked on  Manual button ");
-	        }
+        try 
+        {	
+	        if(driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[" + manualIndex + "]")).getAttribute("disabled").contains("true")) {} 	        
         }
         catch(Exception e) 
         {
@@ -263,11 +281,11 @@ public abstract class STXWBaseTest extends BaseBaseTest{
         Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#");
         
         waitForElement("//*[@name='username']");
-        Utilities.sleep(runner, 2000);        
+        Utilities.sleep(runner, 5000);        
         driver.findElement(By.xpath("//*[@name='username']")).sendKeys(runner.user);
         Utilities.log(runner, "Write username (" + runner.user + ")");
         int counter = 0;
-        Utilities.sleep(runner, 2000);
+        Utilities.sleep(runner, 5000);
         waitForElement("//*[@name='username' and contains(@class,'ng-not-empty')]");
         while(driver.findElement(By.xpath("//*[@name='username']")).getAttribute("class").contains("ng-empty") && counter < 20) 
         {
@@ -282,6 +300,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             counter++;
         }
 
+        Utilities.sleep(runner, 3000);
         driver.findElement(By.name("password")).sendKeys(runner.enums.STXWPassword);
         Utilities.log(runner, "write the password ");
 
@@ -459,8 +478,7 @@ public abstract class STXWBaseTest extends BaseBaseTest{
             if (jsonArray.get(i) instanceof JSONObject) {
                 jsondevcieObject = ((JSONObject) jsonArray.get(i));
                 if (jsondevcieObject.getString("deviceName").contains(deviceName) || (jsondevcieObject.getString("deviceName").contains("hadar.zarihan") && deviceName.contains("hadar.zarihan")) ||
-                        ((jsondevcieObject.getString("deviceName").contains("navot D’s iPad")) && (deviceName.contains("navot D’s iPad")))) {
-                    Utilities.log(runner, "DATA has arrived in !!");
+                        ((jsondevcieObject.getString("deviceName").contains("navot D’s iPad")) && (deviceName.contains("navot D’s iPad")))) {                
                     runner.jsonDeviceInfo = jsondevcieObject;
                     return jsondevcieObject;
                 }
