@@ -4,19 +4,14 @@ import java.io.PrintWriter;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
-import STXWSuite.tests.ExtendSession;
-import STXWSuite.tests.Install;
-import STXWSuite.tests.Monitors;
-import STXWSuite.tests.OpenLogs;
 import STXWSuite.tests.Reboot;
-import STXWSuite.tests.StartVideo;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 
 import org.junit.runner.Result;
 
-import com.experitest.selenium.MobileApplication;
-import com.google.common.util.concurrent.Monitor;
+//import com.experitest.selenium.MobileApplication;
+//import com.google.common.util.concurrent.Monitor;
 
 public class STXWRunner extends BaseRunner {
 
@@ -29,7 +24,7 @@ public class STXWRunner extends BaseRunner {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log("Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
-//        	this.testClass = ExtendSession.class;
+//        	this.testClass = Reboot.class;
             this.testClass = getAction(rand.nextInt(enums.Actions.length));
             Utilities.log(this, testClass.getName());
             this.user = getUser(rand.nextInt(enums.USERS.length));
