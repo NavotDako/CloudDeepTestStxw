@@ -3,16 +3,20 @@ package TestPlanSuite.cloudEntities;
 import MyMain.BaseRunner;
 import MyMain.Enums;
 import MyMain.Main;
-
 import Utils.Utilities;
 import org.junit.Assert;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +32,24 @@ public class SeleniumHelper {
     private BaseRunner runner;
 
     public SeleniumHelper(User user, Project project, BaseRunner thread) {
-        driver = new ChromeDriver();
+
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setCapability("platformName", "chrome");
+        dc.setCapability("username", Main.cloudServer.getUser());
+        dc.setCapability("password", Main.cloudServer.getPass());
+//        dc.setCapability("projectName", Main.cloudServer.getProject()); //only required if your user has several projects assigned to it. Otherwise, exclude this capability.
+        dc.setCapability("generateReport", true);
+        dc.setCapability("testName", thread.getName());
+        dc.setCapability("newSessionWaitTimeout", 90);
+        dc.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
+        dc.setCapability("newCommandTimeout", 120);
+
+        try {
+            driver = new RemoteWebDriver(new URL("http://" + Main.cloudServer.getServerHostName() + ":" + Main.cloudServer.getPort() + "/wd/hub/"), dc);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+//        driver = new ChromeDriver();
         this.project = project;
         this.user = user;
         this.runner = thread;
@@ -38,7 +59,7 @@ public class SeleniumHelper {
         if (this.loggedIn) {
             return true;
         }
-        driver.get("http://" + Main.cloudServer.getServerHostName() + ":" + Main.cloudServer.getPORT());
+        driver.get("http://" + Main.cloudServer.getServerHostName() + ":" + Main.cloudServer.getPort());
 
         //needs login
         try {
@@ -94,10 +115,19 @@ public class SeleniumHelper {
         } catch (InterruptedException e) {
             Utilities.log(e);
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<WebElement> TestPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
-
+        for(WebElement testToPrint: TestPlans){
+            Utilities.log(runner,"-----test plan ---- " + testToPrint.getText());
+        }
         for (int i = 0; i < TestPlans.size(); i++) {
+
             try {
+                Utilities.log(runner, "parsing the test plan " + TestPlans.get(i).getText());
                 String[] currTestPlan = TestPlans.get(i).getText().trim().replaceAll(" +", " ").split(" ");
                 testPlanName = currTestPlan[0];
                 int currIDX = 1;
@@ -107,11 +137,17 @@ public class SeleniumHelper {
                     testPlanName += " " + currString;
                     currString = currTestPlan[++currIDX];
                 }
+
                 os = currString.equalsIgnoreCase("ios") ? Enums.OS.IOS : Enums.OS.ANDROID;
 //                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", TestPlans.get(i));
 
                 TestPlans.get(i).click();
             } catch (StaleElementReferenceException e) {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
                 TestPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
                 i = i - 1;
                 continue;
@@ -122,9 +158,9 @@ public class SeleniumHelper {
             ArrayList<String> deviceQueries = new ArrayList<>();
 
             List<WebElement> deviceWebElements = driver.findElements(By.xpath("//*[@ng-repeat='row in executionPlansCtrl.selectedRow.deviceQueries']"));
-            for (int j = 0; i < deviceWebElements.size(); i++) {
+            for (int j = 0; j < deviceWebElements.size(); j++) {
                 try {
-                    deviceQueries.add(deviceWebElements.get(i).getText());
+                    deviceQueries.add(deviceWebElements.get(j).getText());
                 } catch (StaleElementReferenceException e) {
                     j = j - 1;
                 }
@@ -146,6 +182,11 @@ public class SeleniumHelper {
             Utilities.log(runner, "navigate to testPlanProject test plans");
             // navigate to test plans page
             navigateToTestPlansPage();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@st-select-row='plan']")));
             List<TestPlan> testPlanList = getProjectTestPlans();
             boolean hasAndroid = testPlanList.stream().filter(p -> p.getOS().equals(Enums.OS.ANDROID)).collect(Collectors.toList()).size() > 0;
@@ -213,6 +254,11 @@ public class SeleniumHelper {
 //        driver.manage().window().fullscreen();
 
         try {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             driver.findElement(By.xpath("//*[@st-select-row='plan']"));
             Utilities.log(runner, "already in testPlansPage");
             return;
@@ -293,6 +339,11 @@ public class SeleniumHelper {
         Utilities.log(runner, "run test plan from UI");
         login();
         navigateToTestPlansPage();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         List<WebElement> testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
         WebElement testPlanElem;
         try {
@@ -301,10 +352,21 @@ public class SeleniumHelper {
             Utilities.log(runner, "could not find test plan to run from api, testPlan " + testPlan.getTestPlanName());
             return false;
         }
-        testPlanElem.click();
+        try {
+            testPlanElem.click();
+        }
+        catch (Exception e){
+            driver.manage().window().fullscreen();
+            testPlanElem.click();
+        }
         String runTestPlanElem = "//*[@aria-label='Run']";
         driver.findElement(By.xpath(runTestPlanElem)).click();
 
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         String executeRun = "//*[@name='run-plan-ok']";
         driver.findElement(By.xpath(executeRun)).click();
 //        navigateToTestPlansPage();
@@ -314,11 +376,21 @@ public class SeleniumHelper {
             Utilities.log(e);
         }
         //re - click the test plan element
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         String runningTest = "//*[@st-select-row='test']";
         WebElement runningTestElem;
         try {
             runningTestElem = driver.findElement(By.xpath(runningTest));
         } catch (Exception e) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             driver.findElements(By.xpath("//*[@st-select-row='plan']")).stream().filter(p -> p.getText().startsWith(testPlan.getTestPlanName())).collect(Collectors.toList()).get(0).click();
             runningTestElem = driver.findElement(By.xpath(runningTest));
         }
@@ -329,6 +401,12 @@ public class SeleniumHelper {
     }
 
     private boolean verifyTestPlanStillRunning(TestPlan testPlan) {
+        Utilities.log(runner, "verify test plan is still running");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
         Utilities.log(runner, "verify test plan is still running");
         String runningTest = "//*[@st-select-row='test']";
         WebElement runningTestElem = driver.findElement(By.xpath(runningTest));
@@ -352,23 +430,71 @@ public class SeleniumHelper {
         Utilities.log(runner, "delete test plan from UI");
         login();
         navigateToTestPlansPage();
-        List<WebElement> testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
-        WebElement testPlanElem;
         try {
-            testPlanElem = testPlans.stream().filter(p -> p.getText().startsWith(testPlantoDelete.getTestPlanName())).collect(Collectors.toList()).get(0);
+            Thread.sleep(3000);
+            List<WebElement> testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
+            WebElement testPlanElem = null;
+            for(int i = 0; i < testPlans.size(); i++){
+                try {
+                    WebElement testPlan = testPlans.get(i);
+                    if(testPlan.getText().contains(testPlantoDelete.getTestPlanName())){
+                        testPlanElem = testPlan;
+                        break;
+                    }
+                }catch (StaleElementReferenceException e){
+                    testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
+                }
+            }
+            testPlanElem.click();
+
+            String deleteButton = "//*[@aria-label='Delete']";
+            String executeDelete = "//*[@name='delete-plan-ok']";
+
+            Utilities.log(runner, "execute delete");
+            Thread.sleep(2000);
+            driver.findElement(By.xpath(deleteButton)).click();
+            (new WebDriverWait(driver, 10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(executeDelete)));
+            driver.findElement(By.xpath(executeDelete)).click();
         } catch (Exception e) {
             Utilities.log(runner, "could not find test plan to run from api, testPlan " + testPlantoDelete.getTestPlanName());
             return false;
         }
-        testPlanElem.click();
 
-        String deleteButton = "//*[@aria-label='Delete']";
-        String executeDelete = "//*[@name='delete-plan-ok']";
+        return true;
+    }
+    public boolean deleteSomeTestPlan() {
+        Utilities.log(runner, "delete test plan from UI");
+        login();
+        navigateToTestPlansPage();
+        try {
+            Thread.sleep(3000);
+            WebElement testPlanElem = null;
+            String runningTest = "//*[@st-select-row='test']";
+            List<WebElement> testPlans = driver.findElements(By.xpath("//*[@st-select-row='plan']"));
+            for(WebElement currTestPlan: testPlans) {
+                currTestPlan.click();
+                try {
+                    driver.findElement(By.xpath(runningTest));
+                    testPlanElem = currTestPlan;
+                } catch (Exception e) {
+                    testPlanElem = currTestPlan;
+                    break;
+                }
+            }
 
-        Utilities.log(runner, "execute delete");
-        driver.findElement(By.xpath(deleteButton)).click();
-        driver.findElement(By.xpath(executeDelete)).click();
+            testPlanElem.click();
 
+            String deleteButton = "//*[@aria-label='Delete']";
+            String executeDelete = "//*[@name='delete-plan-ok']";
+
+            Utilities.log(runner, "execute delete");
+            Thread.sleep(2000);
+            driver.findElement(By.xpath(deleteButton)).click();
+            Thread.sleep(2000);
+            driver.findElement(By.xpath(executeDelete)).click();
+        } catch (Exception e) {
+//            e.printStackTrace();
+        }
         return true;
     }
 

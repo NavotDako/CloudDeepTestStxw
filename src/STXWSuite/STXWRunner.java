@@ -1,20 +1,18 @@
 package STXWSuite;
 
-import java.io.PrintWriter;
-
 import MyMain.BaseRunner;
 import MyMain.Main;
-import STXWSuite.tests.Reboot;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
-
 import org.junit.runner.Result;
 
-//import com.experitest.selenium.MobileApplication;
-//import com.google.common.util.concurrent.Monitor;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class STXWRunner extends BaseRunner {
 
+    public static Map<String, Boolean>  usedDevices = new HashMap<>();
     public STXWRunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         super("STXWRunner", i, overallSummaryWriter, overallWriter);
     }
@@ -36,7 +34,7 @@ public class STXWRunner extends BaseRunner {
 
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep(3);
+            GoToSleep(10);
         }
     }
 

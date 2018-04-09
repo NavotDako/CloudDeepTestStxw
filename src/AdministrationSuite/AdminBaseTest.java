@@ -1,17 +1,13 @@
 package AdministrationSuite;
 
 
-import AdministrationSuite.AdminRunner;
 import MyMain.BaseBaseTest;
 import MyMain.Main;
-
+import Utils.Utilities;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-
-
-import Utils.Utilities;
 
 public abstract class AdminBaseTest extends BaseBaseTest {
 
@@ -20,7 +16,7 @@ public abstract class AdminBaseTest extends BaseBaseTest {
     public void setUp() throws Exception {
         runner = (AdminRunner) Thread.currentThread();
         Utilities.log(runner,"-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
-            driver = createDriver();
+            driver = createDriver(runner.testName);
             LoginInToCloud();
     }
 

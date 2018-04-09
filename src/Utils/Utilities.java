@@ -149,16 +149,17 @@ public class Utilities {
         try {
             log(runner, "starting to wait - " + time + " milliseconds");
             Thread.sleep(time);
+            log(runner, "Finished waiting - " + time + " milliseconds");
         } catch (Exception e) {
             log(runner, e);
         }
     }
 
-    public static void writeToSummary(BaseRunner runner, String chosenDeviceName, String status) {
+    public static void writeToSummary(BaseRunner runner, String chosenDeviceName, String status, String reportURL) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.user, runner.testName, chosenDeviceName, status);
+        line = String.format("%-30s%-30s%-30s%-30s%-30s%-20s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.user, runner.testName, chosenDeviceName, status,reportURL );
         System.out.println(line);
         runner.overallSummaryWriter.println(line);
         runner.overallSummaryWriter.flush();

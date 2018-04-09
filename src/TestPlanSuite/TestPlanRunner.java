@@ -10,10 +10,8 @@ import org.junit.Assert;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-
 
 public class TestPlanRunner extends BaseRunner {
 
@@ -23,6 +21,7 @@ public class TestPlanRunner extends BaseRunner {
     public TestPlanRunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
 
         super("TestPlanRunner", i, overallSummaryWriter, overallWriter);
+
     }
 
     @Override
@@ -53,34 +52,44 @@ public class TestPlanRunner extends BaseRunner {
     }
 
 
+
     public Map<User, Project> getRunningCandidates() {
         return runningCandidates;
     }
 
-    public void setupRun() {
+       public void setupRun() {
+
         Assert.assertTrue(createProjectsInstance());
         Utilities.log(currentThread().getName() + " Completed createProjectsInstace method");
         Assert.assertTrue(pickRunningCandidates());
         Utilities.log(currentThread().getName() + "Completed picking the candidates");
+
+
 //        runTests();
     }
 
-
-
+    /**
+     * Randomly chooses a set of 5 users to run the suites, those users may be from different projects
+     *
+     * @return
+     */
     private boolean pickRunningCandidates() {
         User currUser;
         runningCandidates = new HashMap<>();
         ArrayList<Project> projects = projectsMGR.getProjects();
         int iter = 0;
-        try {
-            runningCandidates.put(new User(Main.cloudServer, "khaleda", "15", "2"), projectsMGR.getProject("2"));
-        } catch (IOException e) {
-            Utilities.log(e);
-        }
+//        try {
+//            runningCandidates.put(new User(Main.cloudServer, "khaleda", "15", "2"), projectsMGR.getProject("2"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         while (runningCandidates.size() < 5 && iter < 5000) {
             Project prj = projects.get((int) (Math.random() * projects.size()));
             if (prj.getProjId().equals("2")) {
+                continue;
+            }
+            if(runningCandidates.values().contains(prj.getProjId())){
                 continue;
             }
             ArrayList<User> users = prj.getProjUsers();
@@ -93,6 +102,11 @@ public class TestPlanRunner extends BaseRunner {
         return true;
     }
 
+    /**
+     * get all projects in cloud
+     *
+     * @return
+     */
     private boolean createProjectsInstance() {
         try {
             projectsMGR = new ProjectsManager(Main.cloudServer);

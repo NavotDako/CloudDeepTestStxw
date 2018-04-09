@@ -1,9 +1,8 @@
 package TestPlanSuite.tests;
 
-import MyMain.BaseRunner;
 import TestPlanSuite.TestPlanBaseTest;
+import TestPlanSuite.cloudEntities.TestPlan;
 import Utils.Utilities;
-import TestPlanSuite.cloudEntities.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -30,7 +29,8 @@ public class RunTestPlanFromUI extends TestPlanBaseTest {
             Utilities.log(runner,"login and run test from UI");
             Assert.assertTrue("Run test plan from UI", this.seleniumHelper.runTestPlanFromUI(this.testPlanToRun));
             Utilities.log(runner, "RunTestAppFromUI - Testplan " + testPlanToRun.getTestPlanName() + ", for testPlanUser, " + this.user.getUserName() + " - Test has passed");
-
+            this.seleniumHelper.deleteTestPlan(testPlanToRun);
+            this.seleniumHelper.deleteSomeTestPlan();
 
         }catch (Exception e){
             Utilities.log(runner,e.getMessage());

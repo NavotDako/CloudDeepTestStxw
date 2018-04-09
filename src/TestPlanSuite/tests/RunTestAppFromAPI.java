@@ -1,10 +1,9 @@
 package TestPlanSuite.tests;
 
-import MyMain.BaseRunner;
 import MyMain.Enums;
 import TestPlanSuite.TestPlanBaseTest;
+import TestPlanSuite.cloudEntities.TestPlan;
 import Utils.Utilities;
-import TestPlanSuite.cloudEntities.*;
 import org.apache.http.entity.ContentType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +31,8 @@ public class RunTestAppFromAPI extends TestPlanBaseTest {
                 this.createTestRequest();
             }
         Utilities.log(runner, "get test plans");
-            List<TestPlan> testPlans = this.testPlanProject.getTestPlanByOS(Math.random() > Math.random() ? Enums.OS.IOS : Enums.OS.ANDROID);
+
+            List<TestPlan> testPlans = this.seleniumHelper.getProjectTestPlans();
             this.setTestPlanToRun(testPlans.get((int) Math.random() * testPlans.size()));
             this.changeQueries = Math.random() > Math.random();
         Utilities.log(runner,"running test application " + this.testPlanToRun.getTestPlanName() + " for testPlanUser " + user.getUserName() + " in testPlanProject " + this.testPlanProject.getProjName());
@@ -56,6 +56,8 @@ public class RunTestAppFromAPI extends TestPlanBaseTest {
                 Utilities.log(runner, "RunTestAppFromAPI - Test has Failed");
                 Assert.fail("RunTestAppFromAPI - Test has Failed");
             }
+        this.seleniumHelper.deleteTestPlan(testPlanToRun);
+        this.seleniumHelper.deleteSomeTestPlan();
     }
 
     private boolean parseResponse(String response){

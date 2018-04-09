@@ -5,19 +5,20 @@ import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.Random;
 
 
 public class BaseBaseTest {
-    protected WebDriver driver;
+    protected RemoteWebDriver driver;
     protected BaseRunner runner;
     protected String devicesInfo = "";
     protected int devicesListSize = 0;
@@ -28,17 +29,31 @@ public class BaseBaseTest {
     protected boolean needToQuitDriverOnFinish = false;
     public String chosenDeviceName = "";
     private String watchedLog;
+    private String reportURL;
 
-
-    protected WebDriver createDriver() throws MalformedURLException {
+    protected RemoteWebDriver createDriver(String testName) throws MalformedURLException {
         Utilities.log(runner, "Creating Driver");
         DesiredCapabilities dc = new DesiredCapabilities().chrome();
         dc.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         ChromeOptions chromeOption = new ChromeOptions();
         chromeOption.addArguments("--start-maximized");
+        dc.setCapability("platformName", "chrome");
+        dc.setCapability("username", Main.cloudServer.getUser());
+        dc.setCapability("password", Main.cloudServer.getPass());
+//        dc.setCapability("projectName", Main.cloudServer.getProject()); //only required if your user has several projects assigned to it. Otherwise, exclude this capability.
+        dc.setCapability("generateReport", true);
+        dc.setCapability("testName", testName);
+        dc.setCapability("newSessionWaitTimeout", 90);
+        dc.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
+        dc.setCapability("newCommandTimeout", 120);
         dc.setCapability(ChromeOptions.CAPABILITY, chromeOption);
         needToQuitDriverOnFinish = true;
-        return new ChromeDriver(dc);
+        String cloudURL = (Main.cloudServer.getIsSecured()? "https://" : "http://") + Main.cloudServer.getServerHostName() + ":" + Main.cloudServer.getPort() + "/wd/hub/";
+        Utilities.log(runner, "Connecting to RWD with URL " + cloudURL);
+        Utilities.log(runner, "got the url in reporter is " + reportURL);
+        RemoteWebDriver driver = new RemoteWebDriver(new URL(cloudURL), dc);
+        reportURL = (String) driver.getCapabilities().getCapability("reportUrl");
+        return driver;
     }
 
     @Rule
@@ -71,9 +86,9 @@ public class BaseBaseTest {
             }
 
             if(e.getMessage()!=null){
-                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"));
+                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t" + e.getMessage().replace("\n", "\t"), reportURL);
             }else{
-                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t");
+                Utilities.writeToSummary(runner, chosenDeviceName, "--FAILED--\t", reportURL);
             }
 
         }
@@ -87,7 +102,7 @@ public class BaseBaseTest {
                 driver.quit();
                 Utilities.log(runner, "driver.quit");
             }
-            Utilities.writeToSummary(runner, chosenDeviceName, "passed");
+            Utilities.writeToSummary(runner, chosenDeviceName, "passed", reportURL);
         }
     };
 

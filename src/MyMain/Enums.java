@@ -16,6 +16,7 @@ public class Enums {
     public Class[] Actions = {Install.class, Reboot.class, ExtendSession.class, OpenLogs.class, StartVideo.class, Monitors.class};
     public String STXWPassword = "Experitest2012";
     public Class[] TestPlanActions = {CreateTestPlans.class, RunTestPlanFromUI.class, RunTestAppFromAPI.class, DeleteTestPlan.class};
+//public Class[] TestPlanActions = {CreateTestPlans.class};
     public enum OS{
         ANDROID, IOS
     }

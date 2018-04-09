@@ -6,6 +6,8 @@ import STGridSuite.STGridRunner;
 import STXWSuite.STXWRunner;
 import TestPlanSuite.TestPlanRunner;
 import Utils.Utilities;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.Map;
 
 
 public class Main {
-    public static CloudServer cloudServer = new CloudServer(CloudServer.CloudServerName.RELEASE);
+    public static CloudServer cloudServer = new CloudServer(CloudServer.CloudServerName.DEEP_TESTING_SECURED);
     public static Enums enums = new Enums();
     public static File logsFolder;
     public static Map<String, Boolean> suites = new HashMap<>();
@@ -24,17 +26,17 @@ public class Main {
     public static CloudServer cs;
     public static String CloudDevicesInfo;
 
-    private static int numOfThreads = 5;
+    private static int numOfThreads = 4;
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", false);
+        suites.put("STXWRunner", true);
         suites.put("AdminRunner", false);
         suites.put("STARunner", false);
         suites.put("TestPlanRunner", false);
-        suites.put("STGridRunner", true);
+        suites.put("STGridRunner", false);
 
-        cs = new CloudServer(CloudServer.CloudServerName.RELEASE);
+        cs = new CloudServer(CloudServer.CloudServerName.DEEP_TESTING_SECURED);
 
         logsFolder = Utilities.CreateLogsFolderForRun();
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
@@ -42,7 +44,6 @@ public class Main {
 
         CloudDevicesInfo = cs.doGet("devices");
         Utilities.log(CloudDevicesInfo);
-
         System.setProperty("webdriver.chrome.driver", "lib/chromedriver.exe");
 
         if (suites.get("TestPlanRunner")) {
@@ -109,4 +110,31 @@ public class Main {
     }
 
 
+
+    public static boolean checkIfDeviceIsReservedForDifferentUser(String device, String user){
+        JSONObject obj;
+        Utilities.log("Looking if device " + device + "is reserved to a different user" );
+        try {
+            obj = new JSONObject(cs.doGet("devices"));
+            JSONArray arr = obj.getJSONArray("data");
+            System.out.println(arr);
+            for (int i = 0; i < arr.length(); i++) {
+                String deviceName = arr.getJSONObject(i).getString("deviceName");
+                String userName = arr.getJSONObject(i).getString("currentUser");
+                Utilities.log(obj.toString());
+                if(userName.equalsIgnoreCase("None") && device.equalsIgnoreCase(deviceName)){
+                    return false;
+                }
+                if (deviceName.equals(device)) {
+                    Utilities.log("got device " + device + "with username " + userName);
+                    return !user.equals(userName);
+                }
+            }
+            Utilities.log("devices arr " + arr);
+
+        } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return false;
+    }
 }

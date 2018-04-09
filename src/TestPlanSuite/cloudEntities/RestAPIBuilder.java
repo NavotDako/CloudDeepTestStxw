@@ -65,10 +65,10 @@ public final class RestAPIBuilder {
         cloudServerProperties = cloudServer;
 
         cloudIP = cloudServerProperties.getServerHostName();
-        cloudPort = cloudServerProperties.getPORT();
-        username = cloudServerProperties.getUSER();
-        password = cloudServerProperties.getPASS();
-        isSecured = cloudServerProperties.getIsSECURED();
+        cloudPort = cloudServerProperties.getPort();
+        username = cloudServerProperties.getUser();
+        password = cloudServerProperties.getPass();
+        isSecured = cloudServerProperties.getIsSecured();
         prefix = isSecured ? "https://" : "http://";
         String authString = username + ":" + password;
         authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());

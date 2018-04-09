@@ -29,7 +29,7 @@ public class CloudServer {
     public CloudServer(CloudServerName cloudName) {
         this.cloudName = cloudName;
         updateCloudDetails();
-        if (SECURED) {
+        if (this.SECURED) {
             URL_ADDRESS = "https://" + HOST + ":" + PORT;
         } else {
             URL_ADDRESS = "http://" + HOST + ":" + PORT;
@@ -37,7 +37,7 @@ public class CloudServer {
         GRID_URL = URL_ADDRESS + "/wd/hub/";
 
         authString = this.USER + ":" + this.PASSWORD;
-        if (SECURED) {
+        if (this.SECURED) {
             webPage = "https://" + this.HOST + ":" + this.PORT + "/api/v1";
         } else {
             webPage = "http://" + this.HOST + ":" + this.PORT + "/api/v1";
@@ -47,19 +47,19 @@ public class CloudServer {
         authStringEnc = new String(authEncBytes);
     }
 
-    public int getPORT() {
+    public int getPort() {
         return PORT;
     }
 
-    public String getUSER() {
+    public String getUser() {
         return USER;
     }
 
-    public String getPASS() {
+    public String getPass() {
         return PASSWORD;
     }
 
-    public boolean getIsSECURED() {
+    public boolean getIsSecured() {
         return SECURED;
     }
 
@@ -68,14 +68,27 @@ public class CloudServer {
     }
 
     public enum CloudServerName {
-        MY, QA, MIRRON, KHALED, MASTER, KHALED_SECURED, RELEASE, ATT
+        MY, QA, MIRRON, KHALED, MASTER, KHALED_SECURED, RELEASE, ATT, DEEP_TESTING, DEEP_TESTING_SECURED;
     }
 
     public void updateCloudDetails() {
         switch (cloudName) {
+            case DEEP_TESTING_SECURED:
+                HOST = "qa-win2016.experitest.com";
+                PORT = 443;
+                USER = "khaleda";
+                PASSWORD = "Experitest2012";
+                SECURED = true;
+                break;
             case MY:
                 HOST = "192.168.2.13";
                 PORT = 80;
+                USER = "admin";
+                PASSWORD = "Experitest2012";
+                break;
+            case DEEP_TESTING:
+                HOST = "qa-win2016.experitest.com";
+                PORT = 443;
                 USER = "admin";
                 PASSWORD = "Experitest2012";
                 break;
