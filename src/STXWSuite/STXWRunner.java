@@ -4,19 +4,14 @@ import java.io.PrintWriter;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
-import STXWSuite.tests.ExtendSession;
-import STXWSuite.tests.Install;
-import STXWSuite.tests.Monitors;
-import STXWSuite.tests.OpenLogs;
 import STXWSuite.tests.Reboot;
-import STXWSuite.tests.StartVideo;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 
 import org.junit.runner.Result;
 
-import com.experitest.selenium.MobileApplication;
-import com.google.common.util.concurrent.Monitor;
+//import com.experitest.selenium.MobileApplication;
+//import com.google.common.util.concurrent.Monitor;
 
 public class STXWRunner extends BaseRunner {
 
@@ -41,7 +36,7 @@ public class STXWRunner extends BaseRunner {
 
             Result r = JUnitCore.runClasses(testClass);
 
-            GoToSleep(10);
+            GoToSleep(3);
         }
     }
 

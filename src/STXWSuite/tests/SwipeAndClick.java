@@ -8,7 +8,7 @@ import org.junit.Test;
 public class SwipeAndClick extends STXWBaseTest {
 
 
-//ayoub aadasdrf
+    //ayoub aadasdrf
     @Test
     public void test() {
         try {

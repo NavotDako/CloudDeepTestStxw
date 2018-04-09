@@ -22,39 +22,49 @@ public class ExtendSession extends STXWBaseTest {
         Utilities.log(runner, "ExtendSession Test Starts");
         String reservationString;
         do {
-            reservationString = driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText();
-            Utilities.log(runner,reservationString);
-            Utilities.sleep(runner,1000);
+            reservationString = driver.findElement(By.xpath("//*[@id='session_time_left']")).getText();
+
+            try
+            {
+                Utilities.log(runner,reservationString);
+                Utilities.sleep(runner,1000);
+            }
+            catch(Exception e) {}
         } while (reservationString.contains("00:00:00"));
 
         reservation = toTime(reservationString);
 
-        Utilities.log(runner, "reservation Time end after : " + reservation + " hours");
+        Utilities.log(runner, "Reservation time ends after : " + reservation + " hours");
         Utilities.sleep(runner, 1000);
 
-        if (waitForElement("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button/md-icon")) {
-            driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/div[2]/div[2]/button/md-icon")).click();
+        if (waitForElement("//*[@id='session_extend']")) {
+            driver.findElement(By.xpath("//*[@id='session_extend']")).click();
         } else {
-            Assert.fail("The Extend Session element was not found");
+            Assert.fail("Extend session element is not found");
         }
 
         Utilities.log(runner, "Clicked on Extend Session Button");
-        Utilities.sleep(runner, 4000);
+        Utilities.sleep(runner, 10000);
 
 
-        reservationEnd = toTime(driver.findElement(By.xpath("/html/body/div[2]/div/div[1]/div/div/device-loupe/div/div/h3/span")).getText());
-        Utilities.log(runner, "The new reservation Time End after : " + reservationEnd + " hours");
+        reservationEnd = toTime(driver.findElement(By.xpath("//*[@id='session_time_left']")).getText());
+        Utilities.log(runner, "The new reservation ends after : " + reservationEnd + " hours");
 
 
         Time extendTime = new Time(0, 0, 0);
         extendTime.setHours(reservationEnd.getHours() - reservation.getHours());
         extendTime.setMinutes(reservationEnd.getMinutes() - reservation.getMinutes());
         extendTime.setSeconds(reservationEnd.getSeconds() - reservation.getSeconds());
-        Utilities.log(runner, "extend Time End : " + extendTime);
+        Utilities.log(runner, "Extend time ends after : " + extendTime);
 
 
-        if (!extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) {
-          Assert.fail("The extended time is not in the range 28-30 minutes");
+        if (!(extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) && runner.STXWType.equals("manual")) {
+            Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
+            Assert.fail("The extended time is not in the range 28-30 minutes");
+        }
+        if (!(extendTime.after(new Time(1, 58, 0)) && extendTime.before(new Time(2, 00, 0))) && runner.STXWType.equals("automation")) {
+            Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
+            Assert.fail("The extended time is not in the range 1:58 to 2:00 hours");
         }
 
     }

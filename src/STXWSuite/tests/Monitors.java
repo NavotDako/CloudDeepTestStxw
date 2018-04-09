@@ -13,35 +13,38 @@ public class Monitors extends STXWBaseTest {
     @Test
     public void test() {
 
-            Utilities.log(runner, "Enter to monitors testClass");
+        Utilities.log(runner, "Enter to monitors testClass");
 
-            Utilities.sleep(runner, 4000);
-            if(runner.STXWType.equals("manual"))
-            {
-	            driver.findElement(By.xpath("//*[( contains(@id,'accordiongroup-') and contains(@id,'-panel'))]/div/md-list/md-list-item[1]/div/button[contains(@aria-label,'Monitors')]")).click();
-	            Utilities.log(runner, "click on monitors Button");
-            }
-            else 
-            {
-            	driver.findElement(By.xpath("//*[( contains(@id,'accordiongroup-') and contains(@id,'-panel'))]/div/md-list/md-list-item[1]/div/button[contains(@aria-label,'Network') or contains(@aria-label,'Monitors')]")).click();
-            	Utilities.log(runner, "click on Network Button");
-            }
-            Utilities.sleep(runner, 3000);
+        Utilities.sleep(runner, 4000);
+        /***********************************************************************/
+        driver.findElement(By.xpath("//md-tab-item[span[contains(text(),'Monitors')]]")).click();
+        Utilities.log(runner,"Click on Monitors button");
 
-           try
-           {
-        	   driver.findElement(By.xpath("/html/body/div[2]/div/div[2]/div"));
-        	   Utilities.log(runner, "test if monitor popUp");
-           }
-           catch(Exception e) 
-           {
-        	   Utilities.log(runner, "monitor window doesn't popUp");
-               Assert.fail("monitor window doesn't popUp");
-           }
-           Utilities.log(runner, "monitor window is popUp");
+        Utilities.sleep(runner,2000);
+        driver.findElement(By.xpath("//monitor-battery-panel//div[contains(@role,'button')]")).click();
+        Utilities.log(runner,"Click on add bettery graph");
 
-       
+        if(!waitForElement("//monitor-battery-panel//canvas[1]"))
+        {
+            Assert.fail("The bettary graph didn't appear");
+        }
+
+        driver.findElement(By.xpath("//monitor-panel/div/div/div[*[contains(text(),'CPU')]]//div[contains(@role,'button')]")).click();
+        Utilities.log(runner,"Click on add CPU graph");
+        if(!waitForElement("//monitor-panel/div/div/div[*[contains(text(),'CPU')]]//canvas[1]"))
+        {
+            Assert.fail("The CPU Graph didn't appear");
+        }
+
+        driver.findElement(By.xpath("//monitor-panel/div/div/div[*[contains(text(),'Memory')]]//div[contains(@role,'button')]")).click();
+        Utilities.log(runner,"Click on add Memory graph");
+        if(!waitForElement("//monitor-panel/div/div/div[*[contains(text(),'Memory')]]//canvas[1]"))
+        {
+            Assert.fail("The Memory Graph didn't appear");
+        }
+
     }
 
 
 }
+
