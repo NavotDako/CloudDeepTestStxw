@@ -1,10 +1,9 @@
-package STGridSuite.tests;
+package STGridSuite.tests.SeeTestTests;
 
-import STGridSuite.STGridBaseTest;
-
-
-
-public class GridAndroidEribankTest extends STGridBaseTest {
+/**
+ * Created by navot.dako on 12/7/2017.
+ */
+public class GridAndroidWebTest extends STGridBaseTest {
     final String searchBox = "//*[(@id='kw' and @name='_nkw') or @id='gh-ac-box2']";
     final String searchButton = "//*[@id='searchTxtBtn' or @id='gh-btn' or @id='ghs-submit']";
     final String tabElement = "//*[@class='srp-item__title' or @class='grVwBg' or @class='s-item' or @class='sresult lvresult clearfix li shic']";
@@ -35,7 +34,7 @@ public class GridAndroidEribankTest extends STGridBaseTest {
         client.click("WEB", searchButton, 0, 1);
         client.waitForElement("WEB", tabElement, 0, 20000);
         client.verifyElementFound("WEB", tabElement, 0);
-
+        testPassed = true;
     }
 
 }

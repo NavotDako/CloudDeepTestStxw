@@ -1,22 +1,18 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
-import java.io.File;
-
 import AdministrationSuite.AdminBaseTest;
 import MyMain.Main;
-
+import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-
-import com.sun.media.sound.SimpleSoundbank;
-
-import Utils.Utilities;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ApplicationAction extends AdminBaseTest {
 
+	//To work, you must add the application SampleRecycle to the selenium agetn and update the app path in
+	String appPath = "/Users/Khaled.abbas/Downloads/sampleApp.apk";
 	@Test
 	public void test() {
 		
@@ -24,40 +20,59 @@ public class ApplicationAction extends AdminBaseTest {
 		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
 		UploadAndAssignApplication();
 		DeleteApplication();
-		
+		verifyAppWasDeleted();
 	}
 	
 	private void DeleteApplication() 
 	{
-		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Delete')]")).click();
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#/devices");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+		WaitForElement("//*[@aria-label='SampleRecyclerView4RnD']");
+		driver.findElement(By.xpath("//*[@aria-label='SampleRecyclerView4RnD']")).click();
+
+		//Click the uploaded app
+		driver.findElement(By.xpath("//*[text()='ayoubProjectDeepTest1']")).click();
+
 		Utilities.log(runner, "Click on Delete button");
-		
-		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Delete')]");
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete Selected Version')]")).click();
+		WaitForElement("//*[@aria-label='Delete']");
+		driver.findElement(By.xpath("//*[@aria-label='Delete']")).click();
 		Utilities.log(runner, "Click on Delete Selected Version button");
-		
-		try 
+		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete Selected Version')]")).click();
+	}
+
+	private void verifyAppWasDeleted(){
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#/devices");
+		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+		driver.findElement(By.xpath("//*[@aria-label='SampleRecyclerView4RnD']")).click();
+		try
 		{
 			Utilities.log(runner, "Valid if the assign application found");
 			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div[1]/div/div[1]/div/div/md-content/div/div[2]/div/div/table/tbody/tr/td[5][contains(text(),'ayoubProjectDeepTest1')]"));
-		}
-		catch(Exception e) 
-		{
 			Assert.fail("Delete application failed");
 		}
+		catch(Exception e)
+		{
+			Utilities.log(runner, "App was deleted");
+		}
 	}
-	
 	private void UploadAndAssignApplication() 
 	{
 		Utilities.sleep(runner, 2000);
-		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Upload')]")).click();
+        new WebDriverWait(driver, 30000).until(
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+        driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[contains(@aria-label,'Upload')]")).click();
 		Utilities.log(runner, "Click on Upload button");
 		
 		WaitForElement("/html/body/div[1]/div/div/div/form");
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[1]/input")).sendKeys(System.getProperty("user.dir") + runner.enums.applicationPath);
+//		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[1]/input")).sendKeys(System.getProperty("user.dir") + runner.enums.applicationPath);
+		//This path is related to the machine running the selenium test
+
+		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[1]/input")).sendKeys(appPath);
 		Utilities.log(runner, "Write " + runner.enums.applicationPath + " in chose application");
 		
-		Utilities.sleep(runner, 2000);
+		Utilities.sleep(runner, 20000);
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[5]/div/div/span")).click();
 		Utilities.log(runner, "Click on project TextView");
 		
@@ -75,8 +90,8 @@ public class ApplicationAction extends AdminBaseTest {
 		try
 		{
 			Utilities.sleep(runner, 2000);
-			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'com.experitest.uicatalog')]]")).click();
-			Utilities.log(runner, "Click on uicatalog application");
+			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'SampleRecyclerView4RnD')]]")).click();
+			Utilities.log(runner, "Click on sample application");
 		}
 		catch(Exception e) 
 		{
@@ -87,8 +102,8 @@ public class ApplicationAction extends AdminBaseTest {
 		{
 			try
 			{
-				driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'com.experitest.uicatalog')]]")).click();
-				Utilities.log(runner, "Click on uicatalog application");
+				driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'SampleRecyclerView4RnD')]]")).click();
+				Utilities.log(runner, "Click on sample application");
 			}
 			catch(Exception e) 
 			{

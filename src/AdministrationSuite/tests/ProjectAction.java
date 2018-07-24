@@ -1,7 +1,5 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
 import AdministrationSuite.AdminBaseTest;
 import MyMain.Main;
 
@@ -20,7 +18,7 @@ public class ProjectAction extends AdminBaseTest {
 		Utilities.log(runner, "enter ProjectTest class");
 		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
-		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects:");
+		waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects:");
 		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[contains(@aria-label,'Add')]");
 		CreateProject();
 		AssignProject();
@@ -34,7 +32,7 @@ public class ProjectAction extends AdminBaseTest {
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys(projectName);
 		Utilities.log(runner, "Write " + projectName + " in Search button" );
 		
-		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 /");
+		waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 /");
 		Utilities.sleep(runner, 2000);
 		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
 		Utilities.log(runner, "Click on " + projectName + " line in the table");
@@ -48,7 +46,7 @@ public class ProjectAction extends AdminBaseTest {
 		Utilities.log(runner, "Click on Delete button");
 		
 		Utilities.sleep(runner, 30000); 
-		if(!(WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 0 /")))
+		if(!(waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 0 /")))
 		{
 			Assert.fail("Delete Action is fail");
 		}
@@ -114,7 +112,7 @@ public class ProjectAction extends AdminBaseTest {
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys(projectName);
 		Utilities.log(runner, "Write " + projectName + " in Search TextVeiw");
 		
-		if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 /"))
+		if(!waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 /"))
 		{
 			Assert.fail(projectName + " doesn't found");
 		}

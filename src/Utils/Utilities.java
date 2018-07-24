@@ -31,7 +31,18 @@ public class Utilities {
         runner.pw.flush();
         runner.overallWriter.flush();
     }
+    public static void logAndDontPrint(BaseRunner runner, String command) {
+        Date currentTime = new Date();
+        String line;
+        currentTime.getTime();
 
+        line = String.format("%-30s%-30s%-30s%-30s%-20s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.user, runner.testName, command);
+
+        runner.overallWriter.println(line);
+        runner.pw.println(line);
+        runner.pw.flush();
+        runner.overallWriter.flush();
+    }
     public static void log(String message) {
         Date currentTime = new Date();
         String line;
@@ -47,8 +58,10 @@ public class Utilities {
         String line;
         currentTime.getTime();
         line = String.format("%-30s%-50s", ft.format(currentTime), e.getMessage().replace("\n", "\t"));
-        System.out.println(line);
-        e.printStackTrace();
+        Main.exceptionWriter.println(currentTime.getTime());
+        Main.exceptionWriter.println(e.getMessage().replace("\n", "\t"));
+        e.printStackTrace(Main.exceptionWriter);
+        Main.exceptionWriter.flush();
         Main.overallWriter.println(line);
         e.printStackTrace(Main.overallWriter);
         Main.overallWriter.flush();
@@ -59,8 +72,10 @@ public class Utilities {
         String line;
         currentTime.getTime();
         line = String.format("%-30s%-30s%-30s%-30s%-50s", ft.format(currentTime), runner.TYPE + "_" + runner.getName(), runner.user, runner.testName, e.getMessage().replace("\n", "\t"));
+
         System.out.println(line);
-        e.printStackTrace();
+        e.printStackTrace(Main.exceptionWriter);
+        Main.exceptionWriter.flush();
         runner.overallWriter.println(line);
         e.printStackTrace(runner.overallWriter);
         runner.overallWriter.flush();
@@ -81,8 +96,14 @@ public class Utilities {
         PrintWriter pw = new PrintWriter(fw);
         return pw;
     }
+    public static File createAttachmentsFolder() {
+        File attachmentsFolder = new File(Main.logsFolder + "/FailedTestsAttachments");
+        if (!attachmentsFolder.exists())
+            attachmentsFolder.mkdir();
 
-    public static File CreateLogsFolderForRun() {
+        return attachmentsFolder;
+    }
+    public static File createLogsFolderForRun() {
         File logs = new File("logs");
         if (!logs.exists())
             logs.mkdir();
@@ -154,12 +175,20 @@ public class Utilities {
             log(runner, e);
         }
     }
+    public static void writeToHealthLog(String message){
 
+        Date currentTime = new Date();
+        String line;
+        currentTime.getTime();
+        line = String.format("%-30s%-30s", ft.format(currentTime), message);
+        Main.cloudHealth.println(line);
+        Main.cloudHealth.flush();
+    }
     public static void writeToSummary(BaseRunner runner, String chosenDeviceName, String status, String reportURL) {
         Date currentTime = new Date();
         String line;
         currentTime.getTime();
-        line = String.format("%-30s%-30s%-30s%-30s%-30s%-20s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.user, runner.testName, chosenDeviceName, status,reportURL );
+        line = String.format("%-30s%-30s%-30s%-30s%-45s%-20s%-20s", ft.format(currentTime), runner.TYPE+"_"+runner.getName(), runner.user, runner.testName, chosenDeviceName, status,reportURL );
         System.out.println(line);
         runner.overallSummaryWriter.println(line);
         runner.overallSummaryWriter.flush();
@@ -205,5 +234,8 @@ public class Utilities {
         return Runtime.getRuntime().exec(command);
     }
 
+    public static void writeToHTMLReport(){
+
+    }
 
 }

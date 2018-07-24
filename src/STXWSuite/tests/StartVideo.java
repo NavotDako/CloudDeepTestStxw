@@ -18,13 +18,13 @@ public class StartVideo extends STXWBaseTest {
         Utilities.log(runner, "click on satrt video Button ");
 
         Utilities.sleep(runner, 2000);
-
-        driver.findElement(By.xpath("//video-recording-panel//button[*[contains(text(),'Start')]]")).click();
+        //Start video
+        driver.findElement(By.xpath("//*[@id='start']")).click();
         Utilities.log(runner, "click on start");
 
         Utilities.sleep(runner, 5000);
 
-        driver.findElement(By.xpath("//video-recording-panel//button[*[contains(text(),'Stop')]]")).click();
+        driver.findElement(By.xpath("//*[@id='stop']")).click();
         Utilities.log(runner, "click on stop");
 
         Utilities.sleep(runner, 3000);

@@ -31,7 +31,7 @@ public class BaseRunner extends Thread {
     public PrintWriter overallWriter;
     public PrintWriter overallSummaryWriter;
 
-
+    public String deviceOS;
     public BaseRunner(String TYPE, int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         iteration = i;
         this.overallSummaryWriter = overallSummaryWriter;
@@ -51,9 +51,22 @@ public class BaseRunner extends Thread {
             Utilities.log(this, e);
         }
     }
-
-    public String GetUser(int userNum) {
+    public String getUser(int userNum) {
         return Main.enums.USERS[userNum];
+    }
+
+    public String getUserType(String UserName) {
+        if (UserName.contains("ProjectAdmin")) {
+            Utilities.log(currentThread().getName() + " - ProjectAdmin");
+            return "ProjectAdmin";
+        } else {
+            if (UserName.contains("Admin")) {
+                Utilities.log(currentThread().getName() + " - Admin");
+                return "Admin";
+            }
+        }
+        Utilities.log(currentThread().getName() + " - User");
+        return "User";
     }
 
 }

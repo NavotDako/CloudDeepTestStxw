@@ -1,17 +1,13 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
-import java.util.Random;
-
 import AdministrationSuite.AdminBaseTest;
 import MyMain.Main;
-
+import Utils.Utilities;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import Utils.Utilities;
-import junit.framework.Assert;
+import java.util.Random;
 
 
 
@@ -40,30 +36,30 @@ public class UserAction extends AdminBaseTest {
 		Utilities.log(runner, "Click on ok");
 		
 		Utilities.sleep(runner, 12000);
-		driver.findElement(By.xpath("//*[@id='page-wrapper']/div[1]/nav/ul[2]/md-menu/button")).click();
+		driver.findElement(By.xpath("//*[@id='nav-bar-current-user']")).click();
 		Utilities.log(runner, "Click on logout Window");
 		Utilities.sleep(runner, 2000);
 		driver.findElement(By.xpath("//*[@id='logout-button']/button")).click();
-		Utilities.log(runner, "Click on Logout");
+		Utilities.log(runner, "Clicked on Logout");
 		NewLogin(userName, initialPassword);		
 		ChangePassword(initialPassword);
 		Utilities.sleep(runner, 5000);
 		if(!WaitForElement("//*[@id='nav-bar-current-user']")) 
 		{
-			Assert.fail("the adminstration doesn't succeed");
+			Assert.fail("the registration didn't succeed");
 		}
 		if(!driver.findElement(By.xpath("//*[@id='nav-bar-current-user']")).getText().equals(userName)) 
 		{
 			Assert.fail("The UserName for current user does't equal to " + userName);
 		}
-		driver.findElement(By.xpath("//*[@id='page-wrapper']/div[1]/nav/ul[2]/md-menu/button")).click();
+		driver.findElement(By.xpath("//*[@id='nav-bar-current-user']")).click();
 		Utilities.log(runner, "Click on logout window");
 		Utilities.sleep(runner, 2000);
 		driver.findElement(By.xpath("//*[@id='logout-button']/button")).click();
 		Utilities.log(runner, "Click on logout button");
 		
 		Utilities.sleep(runner, 3000);
-		NewLogin("ayouba", "Experitest2012");
+		NewLogin("khaleda", "Experitest2012");
 		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		Utilities.log(runner, "Go To " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		
@@ -88,7 +84,7 @@ public class UserAction extends AdminBaseTest {
 		Utilities.log(runner, "Write " + userName + " in search Button");
 		Utilities.sleep(runner, 2000);
 		
-		WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[3]/span", "Users: 1 /");
+		waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[3]/span", "Users: 1 /");
 		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
 		Utilities.log(runner, "Click on " + userName + " line in table");
 		
@@ -111,7 +107,7 @@ public class UserAction extends AdminBaseTest {
 	private void AssignUser() 
 	{
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[1]/input")).sendKeys("ayoubProjectDeepTest1");
-		if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 / ")) 
+		if(!waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 / "))
 		{
 			Assert.fail("The Project doesn't found");
 		}

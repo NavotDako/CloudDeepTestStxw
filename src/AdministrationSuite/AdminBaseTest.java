@@ -2,7 +2,6 @@ package AdministrationSuite;
 
 
 import MyMain.BaseBaseTest;
-import MyMain.Main;
 import Utils.Utilities;
 import org.junit.After;
 import org.junit.Before;
@@ -11,8 +10,12 @@ import org.openqa.selenium.By;
 
 public abstract class AdminBaseTest extends BaseBaseTest {
 
+	@Override
+	protected boolean testingOnADevice() {
+		return false;
+	}
 
-    @Before
+	@Before
     public void setUp() throws Exception {
         runner = (AdminRunner) Thread.currentThread();
         Utilities.log(runner,"-----------------------------" + runner.getName() + " Starting A New Test!-----------------------------");
@@ -34,24 +37,24 @@ public abstract class AdminBaseTest extends BaseBaseTest {
     }
 
 
-    private void LoginInToCloud() {
-    	
-        driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/login");
-        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/login");
-        driver.findElement(By.name("username")).sendKeys("ayouba");
-        Utilities.log(runner, "Write username (ayouba)");
-
-        driver.findElement(By.name("password")).sendKeys("Experitest2012");
-        Utilities.log(runner, "write the password ");
-        
-        Utilities.sleep(runner, 2000);
-        driver.findElement(By.name("login")).click();
-        Utilities.log(runner, "click on login");
-        
-        Utilities.sleep(runner, 2000);
-
-    }
-    
+//    protected void LoginInToCloud() {
+//
+//        driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/login");
+//        Utilities.log(runner, "go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/login");
+//        driver.findElement(By.name("username")).sendKeys("ayouba");
+//        Utilities.log(runner, "Write username (ayouba)");
+//
+//        driver.findElement(By.name("password")).sendKeys("Experitest2012");
+//        Utilities.log(runner, "write the password ");
+//
+//        Utilities.sleep(runner, 2000);
+//        driver.findElement(By.name("login")).click();
+//        Utilities.log(runner, "click on login");
+//
+//        Utilities.sleep(runner, 2000);
+//
+//    }
+//
     protected boolean waitUntilElementMarked(String markedXPath) 
     {
     	int count = 0;

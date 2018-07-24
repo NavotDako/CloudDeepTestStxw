@@ -2,10 +2,6 @@ package STGridSuite;
 
 import MyMain.BaseRunner;
 import MyMain.Main;
-import STGridSuite.tests.GridAndroidEribankTest;
-import STGridSuite.tests.GridAndroidWebTest;
-import STGridSuite.tests.GridiOSEribankTest;
-import STGridSuite.tests.GridiOSWebTest;
 import Utils.Utilities;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
@@ -16,7 +12,7 @@ import java.io.PrintWriter;
 
 public class STGridRunner extends BaseRunner {
 
-    public String deviceOS;
+
 
     public STGridRunner(int i, PrintWriter overallSummaryWriter, PrintWriter overallWriter) {
         super("STGridRunner", i, overallSummaryWriter, overallWriter);
@@ -34,33 +30,23 @@ public class STGridRunner extends BaseRunner {
         pw = Utilities.CreateReportFile(this, iteration);
         Utilities.log(this, "Starting Thread Num - " + iteration + " - Thread Name is - " + Thread.currentThread().getName());
         while (true) {
-
-            this.user = GetUser(rand.nextInt(enums.USERS.length));
-            Utilities.log(this,"selected USER - "+user);
-            this.testClass = SelectTestsToRun(rand.nextInt(2));
+            this.testClass = SelectTestsToRun();
             this.testName = testClass.getSimpleName();
-            Utilities.log(this,"selected TEST - "+testName);
+            Utilities.log(this,"selected TEST - " + testName);
             Result r = JUnitCore.runClasses(testClass);
 
             GoToSleep(2);
         }
     }
 
-    private Class SelectTestsToRun(int i) {
-        switch (i){
-            case  0:
-                deviceOS = "android";
-                return GridAndroidEribankTest.class;
-            case  1:
-                deviceOS = "ios";
-                return GridiOSEribankTest.class;
-            case  2:
-                deviceOS = "android";
-                return GridAndroidWebTest.class;
-            case  3:
-                deviceOS = "ios";
-                return GridiOSWebTest.class;
+    private Class SelectTestsToRun() {
+        if(Main.cs.getNextOS().equalsIgnoreCase("android")){
+            deviceOS = "android";
+            return Main.enums.GridAndroidTests[rand.nextInt(enums.GridAndroidTests.length)];
         }
-        return null;
+        else {
+            deviceOS = "ios";
+            return Main.enums.GridIOSTests[rand.nextInt(enums.GridIOSTests.length)];
+        }
     }
 }

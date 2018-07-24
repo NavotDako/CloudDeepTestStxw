@@ -1,13 +1,13 @@
 package STXWSuite.tests;
 
 
-import java.sql.Time;
-
 import STXWSuite.STXWBaseTest;
 import Utils.Utilities;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+
+import java.sql.Time;
 
 
 
@@ -39,12 +39,16 @@ public class ExtendSession extends STXWBaseTest {
 
         if (waitForElement("//*[@id='session_extend']")) {
             driver.findElement(By.xpath("//*[@id='session_extend']")).click();
+//            driver.findElement(By.xpath("//*[@id='session_extend']")).sendKeys(Keys.ENTER);//workaround for selenium issue with click
+//            driver.findElement(By.xpath("//*[@id='session_extend']")).sendKeys(Keys.RETURN);
+
         } else {
             Assert.fail("Extend session element is not found");
         }
 
+
         Utilities.log(runner, "Clicked on Extend Session Button");
-        Utilities.sleep(runner, 10000);
+        Utilities.sleep(runner, 30000);
 
 
         reservationEnd = toTime(driver.findElement(By.xpath("//*[@id='session_time_left']")).getText());
@@ -58,12 +62,12 @@ public class ExtendSession extends STXWBaseTest {
         Utilities.log(runner, "Extend time ends after : " + extendTime);
 
 
-        if (!(extendTime.after(new Time(0, 28, 0)) && extendTime.before(new Time(0, 30, 0))) && runner.STXWType.equals("manual")) {
-            Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
+        if (!(extendTime.after(new Time(0, 27, 0)) && extendTime.before(new Time(0, 32, 0))) && runner.STXWType.equals("manual")) {
+            Utilities.logAndDontPrint(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
             Assert.fail("The extended time is not in the range 28-30 minutes");
         }
-        if (!(extendTime.after(new Time(1, 58, 0)) && extendTime.before(new Time(2, 00, 0))) && runner.STXWType.equals("automation")) {
-            Utilities.log(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
+        if (!(extendTime.after(new Time(1, 57, 0)) && extendTime.before(new Time(2, 02, 0))) && runner.STXWType.equals("automation")) {
+            Utilities.logAndDontPrint(runner, "getPageSource - " + driver.getPageSource().replace("\n", "\t"));
             Assert.fail("The extended time is not in the range 1:58 to 2:00 hours");
         }
 

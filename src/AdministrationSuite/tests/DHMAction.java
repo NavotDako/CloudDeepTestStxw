@@ -1,17 +1,13 @@
 package AdministrationSuite.tests;
 
-import static org.junit.Assert.*;
-
-import java.util.Random;
-
 import AdministrationSuite.AdminBaseTest;
 import MyMain.Main;
-
+import Utils.Utilities;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
-import Utils.Utilities;
-import junit.framework.Assert;
+import java.util.Random;
 
 public class DHMAction extends AdminBaseTest {
 	
@@ -54,7 +50,7 @@ public class DHMAction extends AdminBaseTest {
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div[contains(@class,'search')]/input")).sendKeys(DHMName);
 		Utilities.log(runner, "Write " + DHMName + " in Search");
 		
-		if(!WaitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[contains(@entity,'Device Host machine')]/span", "Device Host machines: 0 /")) 
+		if(!waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[contains(@entity,'Device Host machine')]/span", "Device Host machines: 0 /"))
 		{
 			Utilities.log(runner, "Delete DHM failed");
 		}
@@ -97,14 +93,14 @@ public class DHMAction extends AdminBaseTest {
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[2]/input[contains(@name,'Ip')]")).sendKeys(DHMIP);
 		Utilities.log(runner, "Write DHMIP in IP Input");
 		
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[contains(text(),'External IP')]]/input")).sendKeys(DHMIP);
-		Utilities.log(runner, "Write " + DHMIP + " in External IP Input");
+//		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[contains(text(),'External IP')]]/input")).sendKeys(DHMIP);
+//		Utilities.log(runner, "Write " + DHMIP + " in External IP Input");
 		
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='Port']]/input")).sendKeys("8080");
 		Utilities.log(runner, "Write 8080 in Port input");
 		
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='External Port (optional)']]/input")).sendKeys("8080");
-		Utilities.log(runner, "Write 8080 in External Port (optional) input");
+//		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='External Port (optional)']]/input")).sendKeys("8080");
+//		Utilities.log(runner, "Write 8080 in External Port (optional) input");
 		
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[3]/button[text()='Create']")).click();
 		Utilities.log(runner, "Click on Create button");
