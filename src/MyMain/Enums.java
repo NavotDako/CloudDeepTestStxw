@@ -3,11 +3,9 @@ package MyMain;
 import AdministrationSuite.tests.*;
 import STGridSuite.tests.AppiumTests.AppiumAndroidEriBankNonInst;
 import STGridSuite.tests.AppiumTests.AppiumAndroidUICatalogInst;
+import STGridSuite.tests.AppiumTests.AppiumIOSEriBankNonInst;
 import STGridSuite.tests.AppiumTests.FindByUIAutomator;
-import STGridSuite.tests.SeeTestTests.GridAndroidEribankNonInst;
-import STGridSuite.tests.SeeTestTests.GridAndroidEribankTest;
-import STGridSuite.tests.SeeTestTests.IOSFingerPrint;
-import STGridSuite.tests.SeeTestTests.IOSFingerPrintFailures;
+import STGridSuite.tests.SeeTestTests.*;
 import STXWSuite.tests.*;
 import TestPlanSuite.tests.CreateTestPlans;
 import TestPlanSuite.tests.DeleteTestPlan;
@@ -32,8 +30,8 @@ public class Enums {
     public Class[] GridAndroidTests = {AppiumAndroidEriBankNonInst.class, GridAndroidEribankNonInst.class, GridAndroidEribankTest.class, FindByUIAutomator.class, AppiumAndroidUICatalogInst.class};//, GridAndroidWebTest.class
 //    public Class[] GridAndroidTests = {GridAndroidEribankNonInst.class, GridAndroidEribankTest.class};//, GridAndroidWebTest.class
 
-//    public Class[] GridIOSTests = {AppiumIOSEriBankNonInst.class, GridiOSWebTest.class, GridiOSEribankTest.class, GridIOSEriBankNonInst.class, IOSFingerPrint.class, IOSFingerPrintFailures.class};
-public Class[] GridIOSTests = {IOSFingerPrint.class, IOSFingerPrintFailures.class};
+    public Class[] GridIOSTests = {AppiumIOSEriBankNonInst.class, GridiOSWebTest.class, GridiOSEribankTest.class, GridIOSEriBankNonInst.class, IOSFingerPrint.class, IOSFingerPrintFailures.class};
+//public Class[] GridIOSTests = {IOSFingerPrint.class, IOSFingerPrintFailures.class};
     public enum OS{
         ANDROID, IOS
     }
