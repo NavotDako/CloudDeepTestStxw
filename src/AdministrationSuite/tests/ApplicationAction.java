@@ -73,22 +73,25 @@ public class ApplicationAction extends AdminBaseTest {
 		Utilities.log(runner, "Write " + runner.enums.applicationPath + " in chose application");
 		
 		Utilities.sleep(runner, 20000);
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[5]/div/div/span")).click();
+		driver.findElement(By.xpath("//*[@aria-label='Select box activate']")).click();
 		Utilities.log(runner, "Click on project TextView");
 		
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[5]/div/input[1]")).sendKeys("ayoubProjectDeepTest1");
+		driver.findElement(By.xpath("//*[@aria-label='Select box']")).sendKeys("ayoubProjectDeepTest1");
 		Utilities.log(runner, "Write ayoubProjectDeepTest1 in project TextView");
 		
 		Utilities.sleep(runner, 1500);
 		driver.findElement(By.xpath("//*[contains(@id,'ui-select-choices-row')]/a[div/span[contains(text(),'ayoubProjectDeepTest1')]]")).click();
 		Utilities.log(runner, "Click on ayoubProjectDeepTest1 project");
 		
-		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[3]/button[2]")).click();
+		driver.findElement(By.xpath("//*[@name='create-application-button']")).click();
 		Utilities.log(runner, "Click on Upload button");
 		
 		Utilities.sleep(runner, 20000);
 		try
 		{
+			driver.get(Main.cs.URL_ADDRESS + "/index.html#/devices");
+			Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
+			driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/applications");
 			Utilities.sleep(runner, 2000);
 			driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/div/div/md-content/div/div/table/tbody/tr[td[contains(@aria-label,'SampleRecyclerView4RnD')]]")).click();
 			Utilities.log(runner, "Click on sample application");
@@ -118,7 +121,7 @@ public class ApplicationAction extends AdminBaseTest {
 		}
 		catch(Exception e) 
 		{
-			Assert.fail("The assign doesn't found");
+			Assert.fail("The assign did not work");
 		}
 		
 	}

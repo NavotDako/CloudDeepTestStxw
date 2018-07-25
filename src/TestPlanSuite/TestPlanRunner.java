@@ -109,7 +109,7 @@ public class TestPlanRunner extends BaseRunner {
      */
     private boolean createProjectsInstance() {
         try {
-            projectsMGR = new ProjectsManager(Main.cloudServer);
+            projectsMGR = new ProjectsManager(Main.cs);
 //            projectsMGR.createProjectByAPI();
 
         } catch (Exception e) {

@@ -35,8 +35,8 @@ public class SeleniumHelper {
 
         DesiredCapabilities dc = new DesiredCapabilities();
         dc.setCapability("platformName", "chrome");
-        dc.setCapability("username", Main.cloudServer.getUser());
-        dc.setCapability("password", Main.cloudServer.getPass());
+        dc.setCapability("username", Main.cs.getUser());
+        dc.setCapability("password", Main.cs.getPass());
 //        dc.setCapability("projectName", Main.cloudServer.getProject()); //only required if your user has several projects assigned to it. Otherwise, exclude this capability.
         dc.setCapability("generateReport", true);
         dc.setCapability("testName", thread.getName());
@@ -45,7 +45,7 @@ public class SeleniumHelper {
         dc.setCapability("newCommandTimeout", 120);
 
         try {
-            driver = new RemoteWebDriver(new URL("http://" + Main.cloudServer.getServerHostName() + ":" + Main.cloudServer.getPort() + "/wd/hub/"), dc);
+            driver = new RemoteWebDriver(new URL("http://" + Main.cs.getServerHostName() + ":" + Main.cs.getPort() + "/wd/hub/"), dc);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class SeleniumHelper {
         if (this.loggedIn) {
             return true;
         }
-        driver.get("http://" + Main.cloudServer.getServerHostName() + ":" + Main.cloudServer.getPort());
+        driver.get("http://" + Main.cs.getServerHostName() + ":" + Main.cs.getPort());
 
         //needs login
         try {

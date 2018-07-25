@@ -52,7 +52,7 @@ public abstract class BaseBaseTest {
         dc.setCapability("testName", testName);
 //        dc.setCapability("newSessionWaitTimeout", 90);
         dc.setCapability(CapabilityType.BROWSER_NAME, BrowserType.CHROME);
-        dc.setCapability("newCommandTimeout", 300);
+        dc.setCapability("newCommandTimeout",300);
         dc.setCapability(ChromeOptions.CAPABILITY, chromeOption);
         needToQuitDriverOnFinish = true;
         String cloudURL = (Main.cs.getIsSecured()? "https://" : "http://") + Main.cs.getServerHostName() + ":" + Main.cs.getPort() + "/wd/hub/";

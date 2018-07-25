@@ -43,7 +43,7 @@ public class Project {
     }
 
     public Project(Project proj) {
-        this.restAPIBuilder = new RestAPIBuilder(Main.cloudServer);
+        this.restAPIBuilder = new RestAPIBuilder(Main.cs);
         this.projName = proj.getProjName();
         this.projId = proj.getProjId();
         this.projUsers = proj.getProjUsers();

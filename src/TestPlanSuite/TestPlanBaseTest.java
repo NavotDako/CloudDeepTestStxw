@@ -34,7 +34,10 @@ public abstract class TestPlanBaseTest extends BaseBaseTest {
     protected SeleniumHelper seleniumHelper;
     protected Project testPlanProject;
     protected User user;
-
+    @Override
+    protected boolean testingOnADevice() {
+        return false;
+    }
     @Before
     public void setup() {
         runner = (TestPlanRunner) Thread.currentThread();
@@ -49,7 +52,7 @@ public abstract class TestPlanBaseTest extends BaseBaseTest {
 
 
         Utilities.log(runner, "building rest api request");
-        restAPIBuilder = new RestAPIBuilder(Main.cloudServer);
+        restAPIBuilder = new RestAPIBuilder(Main.cs);
         url = restAPIBuilder.getPrefix() + restAPIBuilder.getCloudIP() + ":" + restAPIBuilder.getCloudPort() + "/api/v1/execution-plan/execute-test-plan";
         httpClient = HttpClients.createDefault();
         uploadFile = new HttpPost(url.toString());

@@ -67,8 +67,9 @@ public class DeviceGroupAction extends AdminBaseTest {
 	{
 		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
 		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/projects");
-		
-		
+		Utilities.sleep(runner, 3000);
+
+
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[span[contains(text(),'Add')]]")).click();
 		Utilities.log(runner, "Click on Add button");
 		
@@ -130,6 +131,7 @@ public class DeviceGroupAction extends AdminBaseTest {
 	{
 		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/devices");
 		driver.get(Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
+		Utilities.sleep(runner, 5000);
 		Utilities.log(runner, "Go to " + Main.cs.URL_ADDRESS + "/index.html#" + "/device-groups");
 		
 		WaitForElement("//*[@id='full-page-container']/div[1]/div/div/div/div[1]/input");

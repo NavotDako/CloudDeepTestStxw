@@ -64,7 +64,11 @@ public class DHMAction extends AdminBaseTest {
 		Utilities.log(runner, "Click on Edit button");
 		
 		DHMName = "DemoHostMachine" + System.currentTimeMillis();
-		WaitForElement("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='Name']]/input");
+		if(!WaitForElement("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='Name']]/input")){
+			Utilities.log(runner, "Perhaps another test added a host machine, clicking edit again");
+			driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/button[contains(@aria-label,'Edit')]")).click();
+			WaitForElement("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='Name']]/input");
+		}
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='Name']]/input")).clear();
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/form/div[2]/div[label[text()='Name']]/input")).sendKeys(DHMName);
 		Utilities.log(runner, "Write " + DHMName + " in Name Input");

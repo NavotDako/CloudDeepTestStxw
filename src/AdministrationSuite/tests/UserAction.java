@@ -85,7 +85,7 @@ public class UserAction extends AdminBaseTest {
 		Utilities.sleep(runner, 2000);
 		
 		waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div[3]/span", "Users: 1 /");
-		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
+		driver.findElement(By.xpath("//*[@cs-select-row='user']")).click();
 		Utilities.log(runner, "Click on " + userName + " line in table");
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/button[span[contains(text(),'Delete')]]")).click();
@@ -111,7 +111,7 @@ public class UserAction extends AdminBaseTest {
 		{
 			Assert.fail("The Project doesn't found");
 		}
-		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
+		driver.findElement(By.xpath("//*[@cs-select-row='project']")).click();
 		Utilities.log(runner, "Click on ayoubProjectDeepTest1 Project");
 		
 		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[contains(@aria-label,'Manage')]")).click();

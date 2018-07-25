@@ -37,6 +37,7 @@ public class FindByUIAutomator extends AppiumGridBaseTest{
         Main.cs.devicesToAvoid.get(FindByUIAutomator.class).add("015d28568f541e0f");
         Main.cs.devicesToAvoid.get(FindByUIAutomator.class).add("016fd8f1dd4f22bd");
         Main.cs.devicesToAvoid.get(FindByUIAutomator.class).add("81HEBL222ND4");
+        Main.cs.devicesToAvoid.get(FindByUIAutomator.class).add("LGD85589b241b0");
     }
     @Override
     public void createCapabilities() {
@@ -56,6 +57,7 @@ public class FindByUIAutomator extends AppiumGridBaseTest{
         dc.setCapability(MobileCapabilityType.APP, application);
 //        dc.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, 60);
         dc.setCapability("instrumentApp", false);
+        dc.setCapability("testName","FindByUIAutomator " + device);
         //This feature will work only with new uiautomator - added a predicate to make sure the version is > 4
         dc.setCapability("accessKey", Enums.getAccessKey(user));
     }

@@ -34,14 +34,14 @@ public class ProjectAction extends AdminBaseTest {
 		
 		waitForText("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/div[2]/span", "Projects: 1 /");
 		Utilities.sleep(runner, 2000);
-		driver.findElement(By.xpath("//*[@id='content-after-toolbar']/div/div/div[1]/md-content/md-virtual-repeat-container/div/div[2]/div/table/tbody/tr")).click();
-		Utilities.log(runner, "Click on " + projectName + " line in the table");
+		findProjAndClickDelete();
 		
-		Utilities.sleep(runner, 2000);
-		driver.findElement(By.xpath("//*[@id='full-page-container']/div[1]/div/div/div/div/div/div/button[contains(@aria-label,'Delete')]")).click();
-		Utilities.log(runner, "Click on Delete button");
-		
-		WaitForElement("/html/body/div[1]/div/div/div");
+		if(!WaitForElement("/html/body/div[1]/div/div/div")){
+			Utilities.log(runner, "someone refreshed the page, retrying");
+			findProjAndClickDelete();
+			WaitForElement("/html/body/div[1]/div/div/div");
+
+		}
 		driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div[3]/button[contains(text(),'Delete')]")).click();
 		Utilities.log(runner, "Click on Delete button");
 		
@@ -53,7 +53,16 @@ public class ProjectAction extends AdminBaseTest {
 		
 		
 	}
-	
+
+	private void findProjAndClickDelete() {
+		driver.findElement(By.xpath("//*[@cs-select-row='project']")).click();
+		Utilities.log(runner, "Click on " + projectName + " line in the table");
+
+		Utilities.sleep(runner, 2000);
+		driver.findElement(By.xpath("//*[@aria-label='Delete']")).click();
+		Utilities.log(runner, "Click on Delete button");
+	}
+
 	private void AssignProject() 
 	{
 		Utilities.sleep(runner, 2000);

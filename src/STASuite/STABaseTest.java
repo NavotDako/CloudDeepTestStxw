@@ -39,4 +39,8 @@ public class STABaseTest extends BaseBaseTest{
         Main.overallWriter.flush();
     }
 
+    @Override
+    protected boolean testingOnADevice() {
+        return true;
+    }
 }

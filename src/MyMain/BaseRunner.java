@@ -55,12 +55,12 @@ public class BaseRunner extends Thread {
         return Main.enums.USERS[userNum];
     }
 
-    public String getUserType(String UserName) {
-        if (UserName.contains("ProjectAdmin")) {
+    public String getUserType(String userName) {
+        if (userName.contains("ProjectAdmin")) {
             Utilities.log(currentThread().getName() + " - ProjectAdmin");
             return "ProjectAdmin";
         } else {
-            if (UserName.contains("Admin")) {
+            if (userName.contains("Admin") || userName.equals("khaleda")) {
                 Utilities.log(currentThread().getName() + " - Admin");
                 return "Admin";
             }

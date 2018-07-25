@@ -103,6 +103,13 @@ public class Utilities {
 
         return attachmentsFolder;
     }
+    public static File createSupportDataFolder() {
+        File attachmentsFolder = new File(Main.logsFolder + "/SupportData");
+        if (!attachmentsFolder.exists())
+            attachmentsFolder.mkdir();
+
+        return attachmentsFolder;
+    }
     public static File createLogsFolderForRun() {
         File logs = new File("logs");
         if (!logs.exists())
