@@ -7,6 +7,7 @@ import STXWSuite.STXWRunner;
 import TestPlanSuite.TestPlanRunner;
 import Utils.Utilities;
 import cloudHealthMonitors.CloudMonitor;
+import cloudHealthMonitors.CollectSupportData;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,6 +24,7 @@ public class Main {
     public static Enums enums = new Enums();
     public static File logsFolder;
     public static File reporterAttachmentsFolder;
+    public static File supportDataFolder;
     public static Map<String, Integer> suites = new HashMap<>();
     public static PrintWriter overallWriter;
     public static PrintWriter summaryWriter;
@@ -36,8 +38,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        suites.put("STXWRunner", 5);
-        suites.put("AdminRunner", 5);
+        suites.put("STXWRunner", 3);
+        suites.put("AdminRunner", 3);
         suites.put("STARunner", 0);
         suites.put("TestPlanRunner", 0);
         suites.put("STGridRunner", 6);
@@ -46,13 +48,14 @@ public class Main {
 
         logsFolder = Utilities.createLogsFolderForRun();
         reporterAttachmentsFolder = Utilities.createAttachmentsFolder();
+        supportDataFolder = Utilities.createSupportDataFolder();
         overallWriter = Utilities.createReportFile(logsFolder, "", "OverallReport");
         summaryWriter = Utilities.createReportFile(logsFolder, "", "Summary");
         exceptionWriter = Utilities.createReportFile(logsFolder, "", "ExceptionWriter");
         cloudHealth = Utilities.createReportFile(logsFolder, "", "CloudMonitor");
 
         new CloudMonitor().start();
-
+        new CollectSupportData().start();
         CloudDevicesInfo = cs.doGet("devices");
         Utilities.log(CloudDevicesInfo);
         cs.updateAvailableDevices(CloudDevicesInfo);
